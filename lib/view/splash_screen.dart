@@ -1,7 +1,9 @@
 import 'dart:async' show Timer;
 import 'package:flutter/material.dart';
+import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,23 +14,33 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late SensorDataProvider _sensorDataProvider;
+
   @override
   void initState() {
-    super.initState();
+    _sensorDataProvider =
+        Provider.of<SensorDataProvider>(context, listen: false);
+    _sensorDataProvider.getAllSensorData();
     Timer(const Duration(seconds: 5), () {
+      // if (AuthService.currentUser == null) {
+      //   Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
+      // } else {
+      //   Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
+      // }
       Navigator.popAndPushNamed(context, WelcomeScreen.routeNames);
     });
+    super.initState();
   }
 
   // @override
   // void didChangeDependencies() {
-  //   Future.delayed(Duration.zero, () {
-  //     if (AuthService.currentUser == null) {
-  //       Navigator.pushReplacementNamed(context, SignInScreen.routeNames);
-  //     } else {
-  //       Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
-  //     }
-  //   });
+  //   // Future.delayed(Duration.zero, () {
+  //   //   if (AuthService.currentUser == null) {
+  //   //     Navigator.pushReplacementNamed(context, SignInScreen.routeNames);
+  //   //   } else {
+  //   //     Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
+  //   //   }
+  //   // });
   //   super.didChangeDependencies();
   // }
 

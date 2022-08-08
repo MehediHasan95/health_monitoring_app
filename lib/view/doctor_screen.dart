@@ -14,7 +14,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscureText = true;
-  String _errMsg = '';
+  final String _errMsg = '';
 
   @override
   void dispose() {

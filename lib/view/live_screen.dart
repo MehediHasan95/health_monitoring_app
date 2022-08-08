@@ -4,6 +4,7 @@ import 'package:health_monitoring_app/controller/load_data.dart';
 import 'package:health_monitoring_app/model/sensor_data.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/not_found.dart';
+import 'package:health_monitoring_app/view/send_database.dart';
 
 class LiveScreen extends StatefulWidget {
   const LiveScreen({Key? key}) : super(key: key);
@@ -208,7 +209,7 @@ class _LiveScreenState extends State<LiveScreen> {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.pushNamed(context, DashScreen.routeNames);
+                      Navigator.pushNamed(context, SendDatabase.routeNames);
                     },
                     child: const Text('Send to Database'),
                   ),

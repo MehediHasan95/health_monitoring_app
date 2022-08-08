@@ -11,6 +11,18 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  // @override
+  // void initState() {
+  //   Future.delayed(Duration.zero, () {
+  //     if (AuthService.currentUser == null) {
+  //       Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
+  //     } else {
+  //       Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
+  //     }
+  //   });
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               onPressed: () {
                 Navigator.pushNamed(context, SignInScreen.routeNames);
               },
-              child: const Text('USER'),
+              child: const Text('User'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -60,7 +72,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               onPressed: () {
                 Navigator.pushNamed(context, DoctorScreen.routeNames);
               },
-              child: const Text('DOCTOR'),
+              child: const Text('Doctor'),
             ),
           ],
         )),
