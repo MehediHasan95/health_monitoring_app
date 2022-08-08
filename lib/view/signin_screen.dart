@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
+import 'package:health_monitoring_app/view/forgot_password.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
 import 'package:health_monitoring_app/view/signup_screen.dart';
 
@@ -54,10 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   style: TextStyle(color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                // Image.asset('assets/welcome.jpg'),
+                Image.asset('assets/signin.jpg'),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
@@ -96,6 +94,23 @@ class _SignInScreenState extends State<SignInScreen> {
                     }
                     return null;
                   },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const ForgotPassword();
+                    }));
+                  },
+                  child: const Text(
+                    'Forgot password?',
+                    style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.end,
+                  ),
                 ),
                 const SizedBox(
                   height: 10,

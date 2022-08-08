@@ -3,7 +3,6 @@ import 'package:health_monitoring_app/model/sensor_data_model.dart';
 
 class DatabaseHelper {
   static const _sensorDataCollection = 'sensorData';
-
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   static Future<void> addSensorData(SensorDataModel sensorDataModel) {

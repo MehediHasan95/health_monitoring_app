@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
+import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 class DashScreen extends StatefulWidget {
@@ -27,7 +29,12 @@ class _DashScreenState extends State<DashScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {},
+            onPressed: () {
+              AuthService.signOut().then((_) {
+                Navigator.pushReplacementNamed(
+                    context, WelcomeScreen.routeNames);
+              });
+            },
           )
         ],
       ),
@@ -42,7 +49,32 @@ class _DashScreenState extends State<DashScreen> {
           );
         },
       ),
-      drawer: const Drawer(child: Text('Health Corner')),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+                decoration: BoxDecoration(color: Colors.blue.shade900),
+                child: const Center(
+                  child: Text(
+                    'Health Corner',
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  ),
+                )),
+            const ListTile(
+              leading: Icon(Icons.tips_and_updates),
+              title: Text('Tips'),
+            ),
+            const ListTile(
+              leading: Icon(Icons.attribution),
+              title: Text('About'),
+            ),
+            const ListTile(
+              leading: Icon(Icons.contact_mail),
+              title: Text('Contact'),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

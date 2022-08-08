@@ -53,10 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: TextStyle(color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                // Image.asset('assets/welcome.jpg'),
+                Image.asset('assets/signin.jpg'),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: _emailController,

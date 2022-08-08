@@ -1,25 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 
-class DoctorScreen extends StatefulWidget {
-  const DoctorScreen({Key? key}) : super(key: key);
-  static const String routeNames = '/DoctorScreen';
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({Key? key}) : super(key: key);
 
   @override
-  State<DoctorScreen> createState() => _DoctorScreenState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _DoctorScreenState extends State<DoctorScreen> {
+class _ForgotPasswordState extends State<ForgotPassword> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _obscureText = true;
-  final String _errMsg = '';
 
   @override
   void dispose() {
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
@@ -35,7 +32,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
               shrinkWrap: true,
               children: [
                 Text(
-                  'DOCTOR PORTAL',
+                  'RESET PASSWORD',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
@@ -46,17 +43,17 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   height: 5,
                 ),
                 const Text(
-                  "Doctor sign in only",
+                  "Enter your email we'll send a reset link",
                   style: TextStyle(color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
-                Image.asset('assets/doctor-login.jpg'),
+                Image.asset('assets/forgot-password.png'),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
                   decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.email),
-                      hintText: 'Enter your email address'),
+                      hintText: 'user@example.com'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return emptyFieldErrMsg;
@@ -65,55 +62,51 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   },
                 ),
                 const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  obscureText: _obscureText,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        icon: Icon(_obscureText
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                      hintText: 'Enter your password'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return emptyFieldErrMsg;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _passwordReset,
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue.shade900,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  child: const Text('Sign In'),
+                  child: const Text('Reset password'),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  _errMsg,
-                  style: const TextStyle(color: Colors.redAccent),
-                  textAlign: TextAlign.center,
-                )
               ],
             )),
       ),
     );
+  }
+
+  void _passwordReset() async {
+    try {
+      await AuthService.passwordReset(_emailController.text.trim());
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              content: Text(
+                'Email send succefully',
+                textAlign: TextAlign.center,
+              ),
+            );
+          });
+    } on FirebaseAuthException catch (error) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+                error.message.toString(),
+                textAlign: TextAlign.center,
+              ),
+            );
+          });
+    }
   }
 }
