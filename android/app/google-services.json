@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "742010384852",
+    "project_id": "health-monitoring-app-ac6c7",
+    "storage_bucket": "health-monitoring-app-ac6c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742010384852:android:e42ba361a024e9cbbf2641",
+        "android_client_info": {
+          "package_name": "com.example.health_monitoring_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742010384852-kcgdac5pqg65gmljat0n50gdkgeuslpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI5Z99l8Fh-JRE48bwuV1Dy-SDS99eLQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742010384852-kcgdac5pqg65gmljat0n50gdkgeuslpg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
