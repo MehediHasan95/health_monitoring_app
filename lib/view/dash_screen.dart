@@ -13,6 +13,8 @@ class DashScreen extends StatefulWidget {
 }
 
 class _DashScreenState extends State<DashScreen> {
+  final user = AuthService.currentUser;
+
   late SensorDataProvider _sensorDataProvider;
   @override
   void didChangeDependencies() {
@@ -27,7 +29,6 @@ class _DashScreenState extends State<DashScreen> {
         backgroundColor: Colors.blue.shade900,
         title: const Text('Dashboard'),
         actions: [
-          const Text('SignOut'),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
@@ -54,24 +55,41 @@ class _DashScreenState extends State<DashScreen> {
         child: ListView(
           children: [
             DrawerHeader(
-                decoration: BoxDecoration(color: Colors.blue.shade900),
-                child: const Center(
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade900,
+                  // image: const DecorationImage(
+                  //   image: AssetImage("assets/heart-beat.png"),
+                  // )
+                ),
+                child: Center(
                   child: Text(
-                    'Health Corner',
-                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    '${user?.email}',
+                    style: const TextStyle(color: Colors.white),
                   ),
                 )),
             const ListTile(
+              leading: Icon(Icons.stream),
+              title: Text('Live'),
+            ),
+            const ListTile(
               leading: Icon(Icons.tips_and_updates),
-              title: Text('Tips'),
+              title: Text('Health Tips'),
             ),
             const ListTile(
               leading: Icon(Icons.attribution),
-              title: Text('About'),
+              title: Text('About us'),
             ),
             const ListTile(
-              leading: Icon(Icons.contact_mail),
-              title: Text('Contact'),
+              leading: Icon(Icons.contact_support),
+              title: Text('Contact us'),
+            ),
+            const ListTile(
+              leading: Icon(Icons.logo_dev),
+              title: Text('Developer Info'),
+            ),
+            const ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Sign Out'),
             )
           ],
         ),
