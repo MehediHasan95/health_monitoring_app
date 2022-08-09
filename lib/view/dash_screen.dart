@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
+import 'package:health_monitoring_app/view/about_screen.dart';
+import 'package:health_monitoring_app/view/health_tips_screen.dart';
+import 'package:health_monitoring_app/view/live_screen.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -28,17 +31,17 @@ class _DashScreenState extends State<DashScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
         title: const Text('Dashboard'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              AuthService.signOut().then((_) {
-                Navigator.pushReplacementNamed(
-                    context, WelcomeScreen.routeNames);
-              });
-            },
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.logout),
+        //     onPressed: () {
+        //       AuthService.signOut().then((_) {
+        //         Navigator.pushReplacementNamed(
+        //             context, WelcomeScreen.routeNames);
+        //       });
+        //     },
+        //   )
+        // ],
       ),
       body: ListView.builder(
         itemCount: _sensorDataProvider.submitDataList.length,
@@ -67,33 +70,42 @@ class _DashScreenState extends State<DashScreen> {
                     style: const TextStyle(color: Colors.white),
                   ),
                 )),
-            const ListTile(
-              leading: Icon(Icons.stream),
-              title: Text('Live'),
+            ListTile(
+              onTap: (() {
+                Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
+              }),
+              leading: const Icon(Icons.stream),
+              title: const Text('Live'),
             ),
-            const ListTile(
-              leading: Icon(Icons.tips_and_updates),
-              title: Text('Health Tips'),
+            ListTile(
+              onTap: () {
+                Navigator.pushReplacementNamed(
+                    context, HealthTipsScreen.routeNames);
+              },
+              leading: const Icon(Icons.tips_and_updates),
+              title: const Text('Health Tips'),
             ),
-            const ListTile(
-              leading: Icon(Icons.attribution),
-              title: Text('About us'),
+            ListTile(
+              onTap: (() {
+                Navigator.pushReplacementNamed(context, AboutScreen.routeNames);
+              }),
+              leading: const Icon(Icons.attribution),
+              title: const Text('About us'),
             ),
-            const ListTile(
-              leading: Icon(Icons.contact_support),
-              title: Text('Contact us'),
-            ),
-            const ListTile(
-              leading: Icon(Icons.logo_dev),
-              title: Text('Developer Info'),
-            ),
-            const ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Sign Out'),
+            ListTile(
+              onTap: _signOut,
+              leading: const Icon(Icons.logout),
+              title: const Text('Sign Out'),
             )
           ],
         ),
       ),
     );
+  }
+
+  void _signOut() {
+    AuthService.signOut().then((_) {
+      Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
+    });
   }
 }

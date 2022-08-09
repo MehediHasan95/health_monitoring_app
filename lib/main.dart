@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
+import 'package:health_monitoring_app/view/about_screen.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
+import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
 
 import 'package:health_monitoring_app/view/send_database.dart';
@@ -40,6 +42,8 @@ class MyApp extends StatelessWidget {
           LiveScreen.routeNames: (context) => const LiveScreen(),
           DashScreen.routeNames: (context) => const DashScreen(),
           SendDatabase.routeNames: (context) => const SendDatabase(),
+          AboutScreen.routeNames: (context) => const AboutScreen(),
+          HealthTipsScreen.routeNames: (context) => const HealthTipsScreen(),
         },
       ),
     );
