@@ -167,7 +167,9 @@ class _SendDatabaseState extends State<SendDatabase> {
           dateTime = null;
         });
         showMsg(context, 'Saved your records');
-      }).catchError((error) {});
+      }).catchError((error) {
+        showMsg(context, error);
+      });
     }
   }
 }

@@ -58,10 +58,10 @@ class _SignInScreenState extends State<SignInScreen> {
                 Image.asset('assets/signin.jpg'),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  autofillHints: const [AutofillHints.email],
                   controller: _emailController,
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      hintText: 'Enter your email address'),
+                      prefixIcon: Icon(Icons.email), hintText: 'Email ID'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return emptyFieldErrMsg;
@@ -87,7 +87,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           });
                         },
                       ),
-                      hintText: 'Enter your password'),
+                      hintText: 'Password'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return emptyFieldErrMsg;
@@ -105,10 +105,11 @@ class _SignInScreenState extends State<SignInScreen> {
                       return const ForgotPassword();
                     }));
                   },
-                  child: const Text(
+                  child: Text(
                     'Forgot password?',
                     style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.bold),
+                        color: Colors.blue.shade900,
+                        fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                   ),
                 ),

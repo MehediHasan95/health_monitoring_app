@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-const String emptyFieldErrMsg = 'This field must not be empty';
+const String emptyFieldErrMsg = 'This field may not be empty';
 
 void showMsg(BuildContext context, String msg) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Colors.greenAccent,
       content: Text(
-    msg,
-    style: const TextStyle(color: Colors.greenAccent),
-    textAlign: TextAlign.center,
-  )));
+        msg,
+        style: TextStyle(color: Colors.grey.shade800),
+        textAlign: TextAlign.center,
+      )));
 }

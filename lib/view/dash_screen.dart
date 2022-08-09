@@ -27,6 +27,7 @@ class _DashScreenState extends State<DashScreen> {
         backgroundColor: Colors.blue.shade900,
         title: const Text('Dashboard'),
         actions: [
+          const Text('SignOut'),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {

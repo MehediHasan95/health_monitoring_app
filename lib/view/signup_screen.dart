@@ -56,10 +56,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Image.asset('assets/signin.jpg'),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  autofillHints: const [AutofillHints.email],
                   controller: _emailController,
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      hintText: 'Enter your email address'),
+                      prefixIcon: Icon(Icons.email), hintText: 'Email ID'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return emptyFieldErrMsg;
@@ -85,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           });
                         },
                       ),
-                      hintText: 'Enter your password'),
+                      hintText: 'Password'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return emptyFieldErrMsg;
@@ -122,17 +122,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // ignore: non_constant_identifier_names
   void _SignUpUser() async {
-    try {
-      final uid = await AuthService.signUpUser(
-          _emailController.text, _passwordController.text);
-      if (uid != null) {
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, SignInScreen.routeNames);
+    if (_formKey.currentState!.validate()) {
+      try {
+        final uid = await AuthService.signUpUser(
+            _emailController.text, _passwordController.text);
+        if (uid != null) {
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacementNamed(context, SignInScreen.routeNames);
+        }
+      } on FirebaseAuthException catch (error) {
+        setState(() {
+          _errMsg = error.message!;
+        });
       }
-    } on FirebaseAuthException catch (error) {
-      setState(() {
-        _errMsg = error.message!;
-      });
     }
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -22,8 +20,7 @@ class AuthService {
     return _auth.signOut();
   }
 
-  static Future<void> passwordReset(String email) async {
-    final credential = await _auth.sendPasswordResetEmail(email: email);
-    return credential;
+  static Future<void> passwordReset(String email) {
+    return _auth.sendPasswordResetEmail(email: email);
   }
 }

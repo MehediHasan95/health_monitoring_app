@@ -53,10 +53,10 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 Image.asset('assets/doctor-login.jpg'),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  autofillHints: const [AutofillHints.email],
                   controller: _emailController,
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      hintText: 'Enter your email address'),
+                      prefixIcon: Icon(Icons.email), hintText: 'Email ID'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return emptyFieldErrMsg;
@@ -82,7 +82,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                           });
                         },
                       ),
-                      hintText: 'Enter your password'),
+                      hintText: 'Password'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return emptyFieldErrMsg;

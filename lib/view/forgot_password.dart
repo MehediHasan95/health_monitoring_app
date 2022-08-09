@@ -13,6 +13,7 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  String _errMsg = '';
 
   @override
   void dispose() {
@@ -43,17 +44,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   height: 5,
                 ),
                 const Text(
-                  "Enter your email we'll send a reset link",
+                  "You have requested to reset your password",
                   style: TextStyle(color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
                 Image.asset('assets/forgot-password.png'),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  autofillHints: const [AutofillHints.email],
                   controller: _emailController,
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      hintText: 'user@example.com'),
+                      prefixIcon: Icon(Icons.email), hintText: 'Email ID'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return emptyFieldErrMsg;
@@ -77,6 +78,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(
                   height: 10,
                 ),
+                Text(
+                  _errMsg,
+                  style: const TextStyle(color: Colors.redAccent),
+                  textAlign: TextAlign.center,
+                )
               ],
             )),
       ),
@@ -84,29 +90,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   }
 
   void _passwordReset() async {
-    try {
-      await AuthService.passwordReset(_emailController.text.trim());
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              content: Text(
-                'Email send succefully',
-                textAlign: TextAlign.center,
-              ),
-            );
-          });
-    } on FirebaseAuthException catch (error) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: Text(
-                error.message.toString(),
-                textAlign: TextAlign.center,
-              ),
-            );
-          });
+    if (_formKey.currentState!.validate()) {
+      try {
+        await AuthService.passwordReset(_emailController.text.trim());
+        setState(() {
+          showMsg(context, 'We have e-mailed your password reset link');
+        });
+      } on FirebaseAuthException catch (error) {
+        setState(() {
+          _errMsg = error.message!;
+        });
+      }
     }
   }
 }
