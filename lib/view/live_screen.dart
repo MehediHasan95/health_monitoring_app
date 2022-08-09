@@ -24,14 +24,10 @@ class _LiveScreenState extends State<LiveScreen> {
 
   @override
   void initState() {
-    super.initState();
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      getSensorData();
+    Timer.periodic(const Duration(milliseconds: 250), (timer) async {
+      _streamController.sink.add(await LoadData().loadSensorData());
     });
-  }
-
-  Future<void> getSensorData() async {
-    _streamController.sink.add(await LoadData().loadSensorData());
+    super.initState();
   }
 
   @override
@@ -44,7 +40,6 @@ class _LiveScreenState extends State<LiveScreen> {
             switch (snapdata.connectionState) {
               case ConnectionState.waiting:
                 return const NotFound();
-
               default:
                 if (snapdata.hasError) {
                   return const Center(

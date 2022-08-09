@@ -1,12 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
+import 'package:health_monitoring_app/view/doctor_dashboard.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
-
 import 'package:health_monitoring_app/view/send_database.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
 import 'package:health_monitoring_app/view/signup_screen.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (create) => SensorDataProvider())
+        ChangeNotifierProvider(create: (create) => SensorDataProvider()),
+        ChangeNotifierProvider(create: (create) => DoctorProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -41,6 +43,7 @@ class MyApp extends StatelessWidget {
           DoctorScreen.routeNames: (context) => const DoctorScreen(),
           LiveScreen.routeNames: (context) => const LiveScreen(),
           DashScreen.routeNames: (context) => const DashScreen(),
+          DoctorDashboard.routeNames: (context) => const DoctorDashboard(),
           SendDatabase.routeNames: (context) => const SendDatabase(),
           AboutScreen.routeNames: (context) => const AboutScreen(),
           HealthTipsScreen.routeNames: (context) => const HealthTipsScreen(),

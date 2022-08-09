@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_monitoring_app/auth/auth_service.dart';
+import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
+import 'package:health_monitoring_app/view/doctor_dashboard.dart';
+import 'package:provider/provider.dart';
 
 class DoctorScreen extends StatefulWidget {
   const DoctorScreen({Key? key}) : super(key: key);
@@ -14,7 +19,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscureText = true;
-  final String _errMsg = '';
+  String _errMsg = '';
 
   @override
   void dispose() {
@@ -94,7 +99,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   height: 10,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _doctorSignIn,
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue.shade900,
                     shape: RoundedRectangleBorder(
@@ -115,5 +120,32 @@ class _DoctorScreenState extends State<DoctorScreen> {
             )),
       ),
     );
+  }
+
+  void _doctorSignIn() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        final uid = await AuthService.signInUser(
+            _emailController.text, _passwordController.text);
+        if (uid != null) {
+          final isDoctor =
+              // ignore: use_build_context_synchronously
+              await Provider.of<DoctorProvider>(context, listen: false)
+                  .isDoctor(AuthService.currentUser!.email!);
+          if (isDoctor) {
+            // ignore: use_build_context_synchronously
+            Navigator.pushReplacementNamed(context, DoctorDashboard.routeNames);
+          } else {
+            setState(() {
+              _errMsg = 'This panel is only for registered doctors';
+            });
+          }
+        }
+      } on FirebaseAuthException catch (error) {
+        setState(() {
+          _errMsg = error.message!;
+        });
+      }
+    }
   }
 }

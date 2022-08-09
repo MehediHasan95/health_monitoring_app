@@ -16,9 +16,10 @@ class DashScreen extends StatefulWidget {
 }
 
 class _DashScreenState extends State<DashScreen> {
+  // int touchedIndex = -1;
   final user = AuthService.currentUser;
-
   late SensorDataProvider _sensorDataProvider;
+
   @override
   void didChangeDependencies() {
     _sensorDataProvider = Provider.of<SensorDataProvider>(context);
@@ -31,17 +32,6 @@ class _DashScreenState extends State<DashScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
         title: const Text('Dashboard'),
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.logout),
-        //     onPressed: () {
-        //       AuthService.signOut().then((_) {
-        //         Navigator.pushReplacementNamed(
-        //             context, WelcomeScreen.routeNames);
-        //       });
-        //     },
-        //   )
-        // ],
       ),
       body: ListView.builder(
         itemCount: _sensorDataProvider.submitDataList.length,

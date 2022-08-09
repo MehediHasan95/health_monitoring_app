@@ -3,6 +3,7 @@ import 'package:health_monitoring_app/model/sensor_data_model.dart';
 
 class DatabaseHelper {
   static const _sensorDataCollection = 'sensorData';
+  static const _doctorCollection = 'doctors';
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   static Future<void> addSensorData(SensorDataModel sensorDataModel) {
@@ -11,6 +12,14 @@ class DatabaseHelper {
     sensorDataModel.id = sensorDoc.id;
     writeBatch.set(sensorDoc, sensorDataModel.toMap());
     return writeBatch.commit();
+  }
+
+  static Future<bool> isDoctor(String email) async {
+    final snapshot = await _db
+        .collection(_doctorCollection)
+        .where('email', isEqualTo: email)
+        .get();
+    return snapshot.docs.isNotEmpty;
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllSensorData() =>

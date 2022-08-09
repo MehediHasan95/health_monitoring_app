@@ -166,7 +166,7 @@ class _SendDatabaseState extends State<SendDatabase> {
           _tempCController.text = '';
           dateTime = null;
         });
-        showMsg(context, 'Saved your records');
+        showMsg(context, 'Submission Successful');
       }).catchError((error) {
         showMsg(context, error);
       });

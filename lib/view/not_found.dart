@@ -19,10 +19,6 @@ class _NotFoundState extends State<NotFound> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 24.0),
-              //   child: LottieBuilder.asset("assets/notFound.jpg"),
-              // ),
               Image.asset('assets/notFound.jpg'),
               Text(
                 "I'm Sorry",
