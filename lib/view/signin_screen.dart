@@ -106,10 +106,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     }));
                   },
                   child: Text(
-                    'Forgot password?',
+                    'Forgot password',
                     style: TextStyle(
-                        color: Colors.blue.shade900,
-                        fontWeight: FontWeight.bold),
+                      color: Colors.blue.shade900,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.end,
                   ),
                 ),
@@ -144,7 +145,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: () {
                         Navigator.pushNamed(context, SignUpScreen.routeNames);
                       },
-                      child: const Text('Sign Up'),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     )
                   ],
                 )

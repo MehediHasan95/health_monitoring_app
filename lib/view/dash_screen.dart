@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
+import 'package:health_monitoring_app/view/chart.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
@@ -16,7 +17,6 @@ class DashScreen extends StatefulWidget {
 }
 
 class _DashScreenState extends State<DashScreen> {
-  // int touchedIndex = -1;
   final user = AuthService.currentUser;
   late SensorDataProvider _sensorDataProvider;
 
@@ -34,9 +34,9 @@ class _DashScreenState extends State<DashScreen> {
         title: const Text('Dashboard'),
       ),
       body: ListView.builder(
-        itemCount: _sensorDataProvider.submitDataList.length,
+        itemCount: _sensorDataProvider.getValueFromDB.length,
         itemBuilder: (context, index) {
-          final sensorValue = _sensorDataProvider.submitDataList[index];
+          final sensorValue = _sensorDataProvider.getValueFromDB[index];
           return ListTile(
             title: Text(sensorValue.bpm!),
             subtitle: Text(sensorValue.spo2!),
@@ -62,25 +62,31 @@ class _DashScreenState extends State<DashScreen> {
                 )),
             ListTile(
               onTap: (() {
-                Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
+                Navigator.popAndPushNamed(context, LiveScreen.routeNames);
               }),
               leading: const Icon(Icons.stream),
               title: const Text('Live'),
             ),
             ListTile(
               onTap: () {
-                Navigator.pushReplacementNamed(
-                    context, HealthTipsScreen.routeNames);
+                Navigator.popAndPushNamed(context, HealthTipsScreen.routeNames);
               },
               leading: const Icon(Icons.tips_and_updates),
               title: const Text('Health Tips'),
             ),
             ListTile(
               onTap: (() {
-                Navigator.pushReplacementNamed(context, AboutScreen.routeNames);
+                Navigator.popAndPushNamed(context, AboutScreen.routeNames);
               }),
               leading: const Icon(Icons.attribution),
               title: const Text('About us'),
+            ),
+            ListTile(
+              onTap: (() {
+                Navigator.popAndPushNamed(context, Chart.routeNames);
+              }),
+              leading: const Icon(Icons.attribution),
+              title: const Text('Chart'),
             ),
             ListTile(
               onTap: _signOut,

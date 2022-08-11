@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
+import 'package:health_monitoring_app/view/successfull_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -113,6 +114,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _errMsg,
                   style: const TextStyle(color: Colors.redAccent),
                   textAlign: TextAlign.center,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Already member?'),
+                    TextButton(
+                      style:
+                          TextButton.styleFrom(primary: Colors.blue.shade900),
+                      onPressed: () {
+                        Navigator.pushNamed(context, SignInScreen.routeNames);
+                      },
+                      child: const Text(
+                        'Sign In',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
                 )
               ],
             )),
@@ -128,7 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _emailController.text, _passwordController.text);
         if (uid != null) {
           // ignore: use_build_context_synchronously
-          Navigator.pushReplacementNamed(context, SignInScreen.routeNames);
+          Navigator.pushReplacementNamed(context, SuccessfullScreen.routeNames);
         }
       } on FirebaseAuthException catch (error) {
         setState(() {

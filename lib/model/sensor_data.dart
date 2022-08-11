@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:convert' show json;
 
 List<SensorData> sensorDataFromJson(String str) =>
     List<SensorData>.from(json.decode(str).map((x) => SensorData.fromJson(x)));

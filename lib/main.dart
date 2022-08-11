@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
+import 'package:health_monitoring_app/view/chart.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/doctor_dashboard.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
@@ -12,6 +13,7 @@ import 'package:health_monitoring_app/view/send_database.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
 import 'package:health_monitoring_app/view/signup_screen.dart';
 import 'package:health_monitoring_app/view/splash_screen.dart';
+import 'package:health_monitoring_app/view/successfull_screen.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +49,8 @@ class MyApp extends StatelessWidget {
           SendDatabase.routeNames: (context) => const SendDatabase(),
           AboutScreen.routeNames: (context) => const AboutScreen(),
           HealthTipsScreen.routeNames: (context) => const HealthTipsScreen(),
+          SuccessfullScreen.routeNames: (context) => const SuccessfullScreen(),
+          Chart.routeNames: (context) => const Chart(),
         },
       ),
     );
