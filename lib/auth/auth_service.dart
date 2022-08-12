@@ -4,6 +4,11 @@ class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static User? get currentUser => _auth.currentUser;
 
+  //GET UID
+  Future<String?> getCurrentUID() async {
+    return currentUser?.uid;
+  }
+
   static Future<String?> signInUser(String email, String password) async {
     final credential = await _auth.signInWithEmailAndPassword(
         email: email, password: password);

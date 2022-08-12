@@ -38,7 +38,6 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
             color: Colors.lightGreen,
             child: Column(
               children: [
-                Text('User: ${sensorValue.id!}'),
                 Text('Heart-rate: ${sensorValue.bpm!}'),
                 Text('Oxygen-level: ${sensorValue.spo2!}'),
                 Text('Body-temp: ${sensorValue.tempC!}'),
