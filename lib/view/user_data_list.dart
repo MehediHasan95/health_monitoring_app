@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
+import 'package:intl/intl.dart';
 
 class UserDataList extends StatelessWidget {
   final SensorDataModel _sensorDataModel;
@@ -16,7 +17,7 @@ class UserDataList extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Date: ${_sensorDataModel.setTimestamp}',
+                  'Date: ${DateFormat('dd/MM/yyyy, hh:mm a').format(_sensorDataModel.timestamp!).toString()}',
                   style: const TextStyle(fontSize: 20),
                 ),
               ],

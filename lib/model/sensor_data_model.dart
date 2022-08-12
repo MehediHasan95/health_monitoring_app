@@ -4,33 +4,34 @@ class SensorDataModel {
   String? bpm;
   String? spo2;
   String? tempC;
-  Timestamp? setTimestamp;
+  DateTime? timestamp;
+  // Timestamp? timestamp;
 
   SensorDataModel({
     this.bpm,
     this.spo2,
     this.tempC,
-    this.setTimestamp,
+    this.timestamp,
   });
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'bpm': bpm,
         'spo2': spo2,
         'tempC': tempC,
-        'timestamp': setTimestamp,
+        'timestamp': timestamp,
       };
 
   SensorDataModel.fromSnapshot(snapshot)
       : bpm = snapshot.data()['bpm'],
         spo2 = snapshot.data()['spo2'],
         tempC = snapshot.data()['tempC'],
-        setTimestamp = snapshot.data()['setTimestamp'];
+        timestamp = snapshot.data()['timestamp'].toDate();
 
   factory SensorDataModel.fromMap(Map<String, dynamic> map) => SensorDataModel(
       bpm: map['bpm'],
       spo2: map['spo2'],
       tempC: map['tempC'],
-      setTimestamp: map['timestamp']);
+      timestamp: map['timestamp']);
 }
 
 

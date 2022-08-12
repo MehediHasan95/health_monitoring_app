@@ -8,7 +8,7 @@ void showMsg(BuildContext context, String msg) {
       content: Text(
         msg,
         style: TextStyle(
-            color: Colors.lightGreen[600], fontWeight: FontWeight.bold),
+            color: Colors.green.shade800, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       )));
 }
