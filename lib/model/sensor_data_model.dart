@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class SensorDataModel {
   String? bpm;
   String? spo2;
   String? tempC;
   DateTime? timestamp;
-  // Timestamp? timestamp;
 
   SensorDataModel({
     this.bpm,

@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class SendDatabase extends StatefulWidget {
@@ -19,7 +17,6 @@ class _SendDatabaseState extends State<SendDatabase> {
   final _bpmController = TextEditingController();
   final _spo2Controller = TextEditingController();
   final _tempCController = TextEditingController();
-  // DateTime? dateTime;
   @override
   void dispose() {
     _bpmController.dispose();
@@ -34,12 +31,6 @@ class _SendDatabaseState extends State<SendDatabase> {
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
         title: const Text('Send to database'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: _saveSensorDataToDatabase,
-          )
-        ],
       ),
       body: Form(
         key: _formKey,
@@ -49,8 +40,7 @@ class _SendDatabaseState extends State<SendDatabase> {
             TextFormField(
               controller: _bpmController,
               keyboardType: TextInputType.number,
-              decoration:
-                  const InputDecoration(hintText: 'Enter your Hear-rate'),
+              decoration: const InputDecoration(hintText: 'Hear Rate'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return emptyFieldErrMsg;
@@ -64,8 +54,7 @@ class _SendDatabaseState extends State<SendDatabase> {
             TextFormField(
               controller: _spo2Controller,
               keyboardType: TextInputType.number,
-              decoration:
-                  const InputDecoration(hintText: 'Enter your Oxygen-Level'),
+              decoration: const InputDecoration(hintText: 'Oxygen Saturation'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return emptyFieldErrMsg;
@@ -79,8 +68,7 @@ class _SendDatabaseState extends State<SendDatabase> {
             TextFormField(
               controller: _tempCController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  hintText: 'Enter your Body-Temparature'),
+              decoration: const InputDecoration(hintText: 'Temperature'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return emptyFieldErrMsg;
@@ -89,66 +77,23 @@ class _SendDatabaseState extends State<SendDatabase> {
               },
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
-            // Card(
-            //   elevation: 3.0,
-            //   child: Padding(
-            //     padding:
-            //         const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //       children: [
-            //         TextButton(
-            //           onPressed: _showDatePickerDialog,
-            //           child: Text(dateTime == null
-            //               ? 'Please select date'
-            //               : DateFormat('dd/MM/yyyy').format(dateTime!)),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Material(
-                elevation: 1.0,
-                color: Colors.blue.shade900,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: _saveSensorDataToDatabase,
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Send',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
+            ElevatedButton(
+              onPressed: _saveSensorDataToDatabase,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue.shade900,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
+              child: const Text('Submit'),
             ),
           ],
         ),
       ),
     );
   }
-
-  // void _showDatePickerDialog() async {
-  //   final selectedDate = await showDatePicker(
-  //       context: context,
-  //       initialDate: DateTime.now(),
-  //       firstDate: DateTime(DateTime.now().year - 1),
-  //       lastDate: DateTime.now());
-  //   if (selectedDate != null) {
-  //     setState(() {
-  //       dateTime = selectedDate;
-  //     });
-  //   }
-  // }
 
   void _saveSensorDataToDatabase() {
     if (_formKey.currentState!.validate()) {
@@ -165,9 +110,8 @@ class _SendDatabaseState extends State<SendDatabase> {
           _bpmController.text = '';
           _spo2Controller.text = '';
           _tempCController.text = '';
-          // dateTime = null;
         });
-        showMsg(context, 'Submission Successful');
+        showMsg(context, 'Submit Successfull');
       }).catchError((error) {
         showMsg(context, error);
       });

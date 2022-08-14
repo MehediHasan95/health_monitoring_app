@@ -13,7 +13,6 @@ class _HealthTipsScreenState extends State<HealthTipsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amber[100],
       appBar: AppBar(
         title: const Text("Health Tips"),
         backgroundColor: Colors.blue.shade900,

@@ -16,10 +16,6 @@ class SensorData {
     this.avgSpo2,
     this.avgBodyTempC,
     this.avgBodyTempF,
-    this.roomTempC,
-    this.roomTempF,
-    this.avgRoomTempC,
-    this.avgRoomTempF,
   });
 
   double? bodyTempC;
@@ -30,10 +26,6 @@ class SensorData {
   double? avgSpo2;
   double? avgBodyTempC;
   double? avgBodyTempF;
-  double? roomTempC;
-  double? roomTempF;
-  double? avgRoomTempC;
-  double? avgRoomTempF;
 
   factory SensorData.fromJson(Map<String, dynamic> json) => SensorData(
         bodyTempC: json["bodyTempC"].toDouble(),
@@ -44,10 +36,6 @@ class SensorData {
         avgSpo2: json["avgSpo2"].toDouble(),
         avgBodyTempC: json["avgBodyTempC"].toDouble(),
         avgBodyTempF: json["avgBodyTempF"].toDouble(),
-        roomTempC: json["roomTempC"].toDouble(),
-        roomTempF: json["roomTempF"].toDouble(),
-        avgRoomTempC: json["avgRoomTempC"].toDouble(),
-        avgRoomTempF: json["avgRoomTempF"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -59,9 +47,5 @@ class SensorData {
         "avgSpo2": avgSpo2,
         "avgBodyTempC": avgBodyTempC,
         "avgBodyTempF": avgBodyTempF,
-        "roomTempC": roomTempC,
-        "roomTempF": roomTempF,
-        "avgRoomTempC": avgRoomTempC,
-        "avgRoomTempF": avgRoomTempF,
       };
 }

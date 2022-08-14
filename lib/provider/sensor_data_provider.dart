@@ -9,11 +9,11 @@ class SensorDataProvider extends ChangeNotifier {
     return DatabaseHelper.addSensorData(sensorDataModel);
   }
 
-  void getAllSensorData() {
-    DatabaseHelper.fetchAllSensorData().listen((event) {
-      getValueFromDB = List.generate(event.docs.length,
-          (index) => SensorDataModel.fromMap(event.docs[index].data()));
-      notifyListeners();
-    });
-  }
+  // void getAllSensorData() {
+  //   DatabaseHelper.fetchAllSensorData().listen((event) {
+  //     getValueFromDB = List.generate(event.docs.length,
+  //         (index) => SensorDataModel.fromMap(event.docs[index].data()));
+  //     notifyListeners();
+  //   });
+  // }
 }

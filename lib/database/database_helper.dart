@@ -5,7 +5,7 @@ import 'package:health_monitoring_app/model/sensor_data_model.dart';
 class DatabaseHelper {
   static const _sensorDataCollection = 'sensorData';
   static const _doctorCollection = 'doctors';
-  static final FirebaseFirestore _db = FirebaseFirestore.instance;
+  static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   // static Future<void> addSensorData(SensorDataModel sensorDataModel) {
   //   final writeBatch = _db.batch();
@@ -15,8 +15,17 @@ class DatabaseHelper {
   //   return writeBatch.commit();
   // }
 
+  static Future<void> addSensorData(SensorDataModel sensorDataModel) {
+    final uid = AuthService.currentUser?.uid;
+    return db
+        .collection(_sensorDataCollection)
+        .doc(uid)
+        .collection('userData')
+        .add(sensorDataModel.toJson());
+  }
+
   static Future<bool> isDoctor(String email) async {
-    final snapshot = await _db
+    final snapshot = await db
         .collection(_doctorCollection)
         .where('email', isEqualTo: email)
         .get();
@@ -24,21 +33,5 @@ class DatabaseHelper {
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllSensorData() =>
-      _db.collection(_sensorDataCollection).snapshots();
-
-  //NEW
-  static Future<void> addSensorData(SensorDataModel sensorDataModel) {
-    // final writeBatch = _db.batch();
-
-    final uid = AuthService.currentUser?.uid;
-
-    return _db
-        .collection(_sensorDataCollection)
-        .doc(uid)
-        .collection('userData')
-        .add(sensorDataModel.toJson());
-    // sensorDataModel.id = sensorDoc.id;
-    // writeBatch.set(sensorDoc, sensorDataModel.toMap());
-    // return writeBatch.commit();
-  }
+      db.collection(_sensorDataCollection).snapshots();
 }

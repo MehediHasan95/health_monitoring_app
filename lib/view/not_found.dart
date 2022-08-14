@@ -30,7 +30,7 @@ class _NotFoundState extends State<NotFound> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 60),
                 child: Text(
-                  "If your device isn't connected please connect your device properly and try again later",
+                  "Please turn on your device",
                   style: TextStyle(color: Colors.redAccent),
                   textAlign: TextAlign.center,
                 ),

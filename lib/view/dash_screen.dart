@@ -1,17 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
-import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
-import 'package:health_monitoring_app/view/chart.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
 import 'package:health_monitoring_app/view/user_data_list.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
-import 'package:provider/provider.dart';
 
 class DashScreen extends StatefulWidget {
   const DashScreen({Key? key}) : super(key: key);
@@ -23,8 +18,8 @@ class DashScreen extends StatefulWidget {
 
 class _DashScreenState extends State<DashScreen> {
   final user = AuthService.currentUser;
-  // late SensorDataProvider _sensorDataProvider;
 
+  // late SensorDataProvider _sensorDataProvider;
   // @override
   // void didChangeDependencies() {
   //   getUsersDataList();
@@ -85,7 +80,7 @@ class _DashScreenState extends State<DashScreen> {
               onTap: (() {
                 Navigator.popAndPushNamed(context, LiveScreen.routeNames);
               }),
-              leading: const Icon(Icons.stream),
+              leading: const Icon(Icons.online_prediction),
               title: const Text('Live'),
             ),
             ListTile(
@@ -101,13 +96,6 @@ class _DashScreenState extends State<DashScreen> {
               }),
               leading: const Icon(Icons.attribution),
               title: const Text('About us'),
-            ),
-            ListTile(
-              onTap: (() {
-                Navigator.popAndPushNamed(context, Chart.routeNames);
-              }),
-              leading: const Icon(Icons.attribution),
-              title: const Text('Chart'),
             ),
             ListTile(
               onTap: _signOut,
@@ -129,7 +117,7 @@ class _DashScreenState extends State<DashScreen> {
   //user data
   Future getUsersDataList() async {
     final uid = AuthService.currentUser?.uid;
-    var data = await FirebaseFirestore.instance
+    var data = await DatabaseHelper.db
         .collection('sensorData')
         .doc(uid)
         .collection('userData')

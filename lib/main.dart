@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
-import 'package:health_monitoring_app/view/chart.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/doctor_dashboard.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
@@ -50,7 +49,6 @@ class MyApp extends StatelessWidget {
           AboutScreen.routeNames: (context) => const AboutScreen(),
           HealthTipsScreen.routeNames: (context) => const HealthTipsScreen(),
           SuccessfullScreen.routeNames: (context) => const SuccessfullScreen(),
-          Chart.routeNames: (context) => const Chart(),
         },
       ),
     );
