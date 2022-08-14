@@ -17,6 +17,7 @@ class _SendDatabaseState extends State<SendDatabase> {
   final _bpmController = TextEditingController();
   final _spo2Controller = TextEditingController();
   final _tempCController = TextEditingController();
+
   @override
   void dispose() {
     _bpmController.dispose();
@@ -107,9 +108,9 @@ class _SendDatabaseState extends State<SendDatabase> {
           .saveSensorData(sensorDataModel)
           .then((value) {
         setState(() {
-          _bpmController.text = '';
-          _spo2Controller.text = '';
-          _tempCController.text = '';
+          _bpmController.clear();
+          _spo2Controller.clear();
+          _tempCController.clear();
         });
         showMsg(context, 'Submit Successfull');
       }).catchError((error) {

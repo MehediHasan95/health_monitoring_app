@@ -3,6 +3,7 @@ import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
+import 'package:health_monitoring_app/view/doctor_list.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
 import 'package:health_monitoring_app/view/user_data_list.dart';
@@ -89,6 +90,13 @@ class _DashScreenState extends State<DashScreen> {
               },
               leading: const Icon(Icons.tips_and_updates),
               title: const Text('Health Tips'),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.popAndPushNamed(context, DoctorList.routeNames);
+              },
+              leading: const Icon(Icons.local_hospital),
+              title: const Text('Doctor List'),
             ),
             ListTile(
               onTap: (() {

@@ -32,6 +32,6 @@ class DatabaseHelper {
     return snapshot.docs.isNotEmpty;
   }
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllSensorData() =>
-      db.collection(_sensorDataCollection).snapshots();
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllDoctorData() =>
+      db.collection(_doctorCollection).snapshots();
 }

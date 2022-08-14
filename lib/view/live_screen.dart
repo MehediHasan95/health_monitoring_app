@@ -2,13 +2,9 @@ import 'dart:async' show StreamController, Timer;
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/controller/load_data.dart';
 import 'package:health_monitoring_app/model/sensor_data.dart';
-import 'package:health_monitoring_app/model/sensor_data_model.dart';
-import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
-import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/not_found.dart';
 import 'package:health_monitoring_app/view/send_database.dart';
-import 'package:provider/provider.dart';
 
 class LiveScreen extends StatefulWidget {
   const LiveScreen({Key? key}) : super(key: key);

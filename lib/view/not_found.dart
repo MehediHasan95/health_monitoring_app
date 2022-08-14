@@ -30,7 +30,7 @@ class _NotFoundState extends State<NotFound> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 60),
                 child: Text(
-                  "Please turn on your device",
+                  "Please turn on your sensor device for a better experience",
                   style: TextStyle(color: Colors.redAccent),
                   textAlign: TextAlign.center,
                 ),

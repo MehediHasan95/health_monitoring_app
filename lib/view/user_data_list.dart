@@ -10,78 +10,99 @@ class UserDataList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.grey.shade900,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Date & Time:',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                Text(
-                  DateFormat('dd/MM/yyyy, hh:mm a')
-                      .format(_sensorDataModel.timestamp!)
-                      .toString(),
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Heart-rate:',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                Text(
-                  '${_sensorDataModel.bpm}',
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // const Icon(Icons.favorite),
-                const Text(
-                  'Oxygen-level:',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                Text(
-                  '${_sensorDataModel.spo2}%',
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // const Icon(Icons.favorite),
-                const Text(
-                  'Temperature:',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                Text(
-                  '${_sensorDataModel.tempC}°C',
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ],
-            ),
-          ],
+    // final myNumber = double.parse(_sensorDataModel.tempC!) +
+    //     double.parse(_sensorDataModel.bpm!);
+    // print(myNumber / 2);
+
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Card(
+        color: Colors.white70,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(
+                    Icons.alarm,
+                    color: Colors.black87,
+                  ),
+                  const Text(
+                    '',
+                    style: TextStyle(fontSize: 20, color: Colors.black87),
+                  ),
+                  Text(
+                    DateFormat('dd/MM/yyyy, hh:mm a')
+                        .format(_sensorDataModel.timestamp!)
+                        .toString(),
+                    style: const TextStyle(fontSize: 20, color: Colors.black87),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(
+                    Icons.favorite,
+                    color: Colors.black87,
+                  ),
+                  // const Text(
+                  //   'Heart-rate:',
+                  //   style: TextStyle(fontSize: 20, color: Colors.black87),
+                  // ),
+                  Text(
+                    '${_sensorDataModel.bpm}',
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(
+                    Icons.water_drop,
+                    color: Colors.black87,
+                  ),
+                  // const Text(
+                  //   'Oxygen-level:',
+                  //   style: TextStyle(fontSize: 20, color: Colors.black87),
+                  // ),
+                  Text(
+                    '${_sensorDataModel.spo2}%',
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(
+                    Icons.thermostat,
+                    color: Colors.black87,
+                  ),
+                  // const Text(
+                  //   'Temperature:',
+                  //   style: TextStyle(fontSize: 20, color: Colors.black87),
+                  // ),
+                  Text(
+                    '${_sensorDataModel.tempC}°C',
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

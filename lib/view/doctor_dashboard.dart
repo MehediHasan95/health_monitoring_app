@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
-import 'package:health_monitoring_app/view/user_data_list.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 
 class DoctorDashboard extends StatefulWidget {
@@ -15,28 +14,73 @@ class DoctorDashboard extends StatefulWidget {
 
 class _DoctorDashboardState extends State<DoctorDashboard> {
   final user = AuthService.currentUser;
-  // late SensorDataProvider _sensorDataProvider;
-
-  List<Object> _dataList = [];
+  final _searchController = TextEditingController();
 
   @override
-  void didChangeDependencies() {
-    // _sensorDataProvider = Provider.of<SensorDataProvider>(context);
-    super.didChangeDependencies();
-    getUsersDataList();
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
+
+  List<Object> _dataList = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
+        title: const Text(
+          'Doctor Portal',
+        ),
       ),
-      body: ListView.builder(
-        itemCount: _dataList.length,
-        itemBuilder: (context, index) {
-          return UserDataList(_dataList[index] as SensorDataModel);
-        },
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _searchController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                // suffixIcon: Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: _searchFromDB,
+                ),
+                hintText: 'Search UID',
+                border: const OutlineInputBorder(),
+              ),
+            ),
+          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: ElevatedButton(
+          //     onPressed: _searchFromDB,
+          //     style: ElevatedButton.styleFrom(
+          //       primary: Colors.blue.shade900,
+          //       minimumSize: const Size.fromHeight(35),
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(30.0),
+          //       ),
+          //     ),
+          //     child: const Text('Search Now'),
+          //   ),
+          // ),
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: _dataList.length,
+              itemBuilder: (context, index) {
+                final getValue = _dataList[index] as SensorDataModel;
+                return ListTile(
+                  title: Text(getValue.bpm!),
+                  subtitle: Text(getValue.spo2!),
+                  trailing: Text(getValue.tempC!),
+                );
+              },
+            ),
+          )
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -71,11 +115,10 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     });
   }
 
-  Future getUsersDataList() async {
-    // final uid = AuthService.currentUser?.uid;
+  void _searchFromDB() async {
     var data = await DatabaseHelper.db
         .collection('sensorData')
-        .doc()
+        .doc(_searchController.text)
         .collection('userData')
         .orderBy('timestamp', descending: true)
         .get();
@@ -83,6 +126,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     setState(() {
       _dataList =
           List.from(data.docs.map((doc) => SensorDataModel.fromSnapshot(doc)));
+      _searchController.clear();
     });
   }
 }
