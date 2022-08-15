@@ -20,14 +20,6 @@ class DashScreen extends StatefulWidget {
 class _DashScreenState extends State<DashScreen> {
   final user = AuthService.currentUser;
 
-  // late SensorDataProvider _sensorDataProvider;
-  // @override
-  // void didChangeDependencies() {
-  //   getUsersDataList();
-  //   _sensorDataProvider = Provider.of<SensorDataProvider>(context);
-  //   super.didChangeDependencies();
-  // }
-
   List<Object> _dataList = [];
 
   @override
@@ -38,6 +30,10 @@ class _DashScreenState extends State<DashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // _dataList.forEach((element) {
+
+    // });
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
@@ -46,21 +42,10 @@ class _DashScreenState extends State<DashScreen> {
       body: ListView.builder(
         itemCount: _dataList.length,
         itemBuilder: (context, index) {
+          // final getValue = _dataList[index] as SensorDataModel;
           return UserDataList(_dataList[index] as SensorDataModel);
         },
       ),
-
-      // body: ListView.builder(
-      //   itemCount: _sensorDataProvider.getValueFromDB.length,
-      //   itemBuilder: (context, index) {
-      //     final sensorValue = _sensorDataProvider.getValueFromDB[index];
-      //     return ListTile(
-      //       title: Text(sensorValue.bpm!),
-      //       subtitle: Text(sensorValue.spo2!),
-      //       trailing: Text(sensorValue.tempC!),
-      //     );
-      //   },
-      // ),
       drawer: Drawer(
         child: ListView(
           children: [

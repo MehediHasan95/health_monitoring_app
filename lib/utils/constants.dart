@@ -4,11 +4,11 @@ const String emptyFieldErrMsg = 'This field may not be empty';
 
 void showMsg(BuildContext context, String msg) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: Colors.lightGreen[100],
+      backgroundColor: Colors.lightGreen,
       content: Text(
         msg,
-        style: TextStyle(
-            color: Colors.green.shade800, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       )));
 }

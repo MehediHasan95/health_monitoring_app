@@ -34,7 +34,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         ),
       ),
       body: Column(
-        children: <Widget>[
+        children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
@@ -51,35 +51,27 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
               ),
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: ElevatedButton(
-          //     onPressed: _searchFromDB,
-          //     style: ElevatedButton.styleFrom(
-          //       primary: Colors.blue.shade900,
-          //       minimumSize: const Size.fromHeight(35),
-          //       shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(30.0),
-          //       ),
-          //     ),
-          //     child: const Text('Search Now'),
+          PatientDataList()
+          // Expanded(
+          //   child: Column(
+          //     children: [
+          //       PatientDataList(),
+          //     ],
           //   ),
-          // ),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: _dataList.length,
-              itemBuilder: (context, index) {
-                final getValue = _dataList[index] as SensorDataModel;
-                return ListTile(
-                  title: Text(getValue.bpm!),
-                  subtitle: Text(getValue.spo2!),
-                  trailing: Text(getValue.tempC!),
-                );
-              },
-            ),
-          )
+          //   // child: ListView.builder(
+          //   //   scrollDirection: Axis.vertical,
+          //   //   shrinkWrap: true,
+          //   //   itemCount: _dataList.length,
+          //   //   itemBuilder: (context, index) {
+          //   //     final getValue = _dataList[index] as SensorDataModel;
+          //   //     return ListTile(
+          //   //       title: Text(getValue.bpm!),
+          //   //       subtitle: Text(getValue.spo2!),
+          //   //       trailing: Text(getValue.tempC!),
+          //   //     );
+          //   //   },
+          //   // ),
+          // )
         ],
       ),
       drawer: Drawer(
@@ -128,5 +120,22 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
           List.from(data.docs.map((doc) => SensorDataModel.fromSnapshot(doc)));
       _searchController.clear();
     });
+  }
+
+  // ignore: non_constant_identifier_names
+  Widget PatientDataList() {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: _dataList.length,
+      itemBuilder: (context, index) {
+        final getValue = _dataList[index] as SensorDataModel;
+        return ListTile(
+          title: Text(getValue.bpm!),
+          subtitle: Text(getValue.spo2!),
+          trailing: Text(getValue.tempC!),
+        );
+      },
+    );
   }
 }

@@ -87,6 +87,6 @@ class _DoctorListState extends State<DoctorList> {
   }
 
   void _contactWithDoctor() {
-    print(uid);
+    // print(uid);
   }
 }

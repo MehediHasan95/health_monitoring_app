@@ -2,9 +2,12 @@ import 'dart:async' show StreamController, Timer;
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/controller/load_data.dart';
 import 'package:health_monitoring_app/model/sensor_data.dart';
+import 'package:health_monitoring_app/model/sensor_data_model.dart';
+import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
+import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/not_found.dart';
-import 'package:health_monitoring_app/view/send_database.dart';
+import 'package:provider/provider.dart';
 
 class LiveScreen extends StatefulWidget {
   const LiveScreen({Key? key}) : super(key: key);
@@ -16,11 +19,6 @@ class LiveScreen extends StatefulWidget {
 
 class _LiveScreenState extends State<LiveScreen> {
   final StreamController<SensorData> _streamController = StreamController();
-  @override
-  void dispose() {
-    super.dispose();
-    _streamController.close();
-  }
 
   @override
   void initState() {
@@ -59,6 +57,7 @@ class _LiveScreenState extends State<LiveScreen> {
 
 // ignore: non_constant_identifier_names
   Widget DisplayDataWidget(SensorData sensorData) {
+    // final data = sensorData.bodyTempC;
     return SafeArea(
       child: Scaffold(
         // backgroundColor: Colors.white,
@@ -87,7 +86,7 @@ class _LiveScreenState extends State<LiveScreen> {
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
-                  children: <Widget>[
+                  children: [
                     Card(
                       color: Colors.white70,
                       child: Column(
@@ -233,22 +232,36 @@ class _LiveScreenState extends State<LiveScreen> {
                   ],
                 ),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  final sensorDataModel = SensorDataModel(
+                    bpm: sensorData.bpm.toString(),
+                    spo2: sensorData.spo2.toString(),
+                    tempC: sensorData.bodyTempC.toString(),
+                    timestamp: DateTime.now(),
+                  );
+                  Provider.of<SensorDataProvider>(context, listen: false)
+                      .saveSensorData(sensorDataModel)
+                      .then((value) {
+                    showMsg(context, 'SUBMITTED SUCCESSFULLY');
+                  }).catchError((error) {
+                    showMsg(context, error);
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue.shade900,
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(30),
+                ),
+                child: const Icon(Icons.done_all),
+              ),
+              const Text("Press this button after 10 sec"),
+              const SizedBox(height: 50),
               ListView(
+                scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: const EdgeInsets.all(25.0),
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue.shade900,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, SendDatabase.routeNames);
-                    },
-                    child: const Text('Send to Database'),
-                  ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue.shade900,
@@ -261,7 +274,6 @@ class _LiveScreenState extends State<LiveScreen> {
                     },
                     child: const Text('Dashboard'),
                   ),
-                  const SizedBox(height: 10),
                 ],
               ),
             ],
@@ -270,4 +282,28 @@ class _LiveScreenState extends State<LiveScreen> {
       ),
     );
   }
+
+  // void _saveSensorDataToDatabase() {
+  //   if (_formKey.currentState!.validate()) {
+  //     final sensorDataModel = SensorDataModel(
+  //       bpm: _bpmController.text,
+  //       spo2: _spo2Controller.text,
+  //       tempC: _tempCController.text,
+  //       timestamp: DateTime.now(),
+  //     );
+  //     Provider.of<SensorDataProvider>(context, listen: false)
+  //         .saveSensorData(sensorDataModel)
+  //         .then((value) {
+  //       setState(() {
+  //         _bpmController.clear();
+  //         _spo2Controller.clear();
+  //         _tempCController.clear();
+  //       });
+  //       showMsg(context, 'SUBMITTED SUCCESSFULLY');
+  //     }).catchError((error) {
+  //       showMsg(context, error);
+  //     });
+  //   }
+  // }
+
 }

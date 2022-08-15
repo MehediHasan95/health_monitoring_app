@@ -10,9 +10,12 @@ class UserDataList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final myNumber = double.parse(_sensorDataModel.tempC!) +
-    //     double.parse(_sensorDataModel.bpm!);
-    // print(myNumber / 2);
+    // final myNumber = double.parse(_sensorDataModel.bpm!) +
+    //     double.parse(_sensorDataModel.bpm!) +
+    // print(myNumber);
+
+    // List<String?> sum = [];
+    // sum.add(_sensorDataModel.bpm);
 
     return Padding(
       padding: const EdgeInsets.all(5.0),
