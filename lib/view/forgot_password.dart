@@ -95,7 +95,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         await AuthService.passwordReset(_emailController.text.trim());
         setState(() {
           _emailController.text = '';
-          showMsg(context, 'We have e-mailed your password reset link');
+          showFlushBar(context, 'We have e-mailed your password reset link');
         });
       } on FirebaseAuthException catch (error) {
         setState(() {

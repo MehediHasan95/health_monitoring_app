@@ -57,10 +57,17 @@ class _LiveScreenState extends State<LiveScreen> {
 
 // ignore: non_constant_identifier_names
   Widget DisplayDataWidget(SensorData sensorData) {
-    // final data = sensorData.bodyTempC;
+    bool isButtonActive = false;
+    final isBpmTrue = sensorData.bpm;
+    final isSpO2True = sensorData.spo2;
+
+    if (isBpmTrue! > 65.0 || isSpO2True! > 80) {
+      isButtonActive = true;
+    }
+
     return SafeArea(
       child: Scaffold(
-        // backgroundColor: Colors.white,
+        backgroundColor: Colors.grey,
         body: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 10.0,
@@ -233,29 +240,33 @@ class _LiveScreenState extends State<LiveScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  final sensorDataModel = SensorDataModel(
-                    bpm: sensorData.bpm.toString(),
-                    spo2: sensorData.spo2.toString(),
-                    tempC: sensorData.bodyTempC.toString(),
-                    timestamp: DateTime.now(),
-                  );
-                  Provider.of<SensorDataProvider>(context, listen: false)
-                      .saveSensorData(sensorDataModel)
-                      .then((value) {
-                    showMsg(context, 'SUBMITTED SUCCESSFULLY');
-                  }).catchError((error) {
-                    showMsg(context, error);
-                  });
-                },
+                onPressed: isButtonActive == true
+                    ? () {
+                        final sensorDataModel = SensorDataModel(
+                          bpm: sensorData.bpm.toString(),
+                          spo2: sensorData.spo2.toString(),
+                          tempC: sensorData.bodyTempC.toString(),
+                          timestamp: DateTime.now(),
+                        );
+                        Provider.of<SensorDataProvider>(context, listen: false)
+                            .saveSensorData(sensorDataModel)
+                            .then((value) {
+                          setState(() {
+                            isButtonActive == false;
+                          });
+                          showFlushBar(context, "Succufully");
+                        }).catchError((error) {
+                          showFlushBar(context, error);
+                        });
+                      }
+                    : null,
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue.shade900,
+                  primary: Colors.green,
                   shape: const CircleBorder(),
                   padding: const EdgeInsets.all(30),
                 ),
                 child: const Icon(Icons.done_all),
               ),
-              const Text("Press this button after 10 sec"),
               const SizedBox(height: 50),
               ListView(
                 scrollDirection: Axis.vertical,
