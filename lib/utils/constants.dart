@@ -11,11 +11,11 @@ void showFlushBar(BuildContext context, String msg) => Flushbar(
         color: Colors.white,
       ),
       message: msg,
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: Colors.grey.shade800,
       duration: const Duration(milliseconds: 4200),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
-      borderRadius: BorderRadius.circular(23),
+      borderRadius: BorderRadius.circular(13),
     ).show(context);
 
 // SnackBar

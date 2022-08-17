@@ -15,6 +15,7 @@ class Chart extends StatefulWidget {
 class _ChartState extends State<Chart> {
   int touchedIndex = 0;
 
+  // ignore: unused_field
   List<Object> _dataList = [];
 
   Future getUsersDataList() async {

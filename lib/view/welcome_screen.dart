@@ -60,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               onPressed: () {
                 Navigator.pushNamed(context, SignInScreen.routeNames);
               },
-              child: const Text('User'),
+              child: const Text('USER'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -72,7 +72,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               onPressed: () {
                 Navigator.pushNamed(context, DoctorScreen.routeNames);
               },
-              child: const Text('Doctor'),
+              child: const Text('DOCTOR'),
             ),
           ],
         )),

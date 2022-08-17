@@ -4,19 +4,11 @@ import 'package:intl/intl.dart';
 
 class UserDataList extends StatelessWidget {
   final SensorDataModel _sensorDataModel;
-
   // ignore: use_key_in_widget_constructors
   const UserDataList(this._sensorDataModel);
 
   @override
   Widget build(BuildContext context) {
-    // final myNumber = double.parse(_sensorDataModel.bpm!) +
-    //     double.parse(_sensorDataModel.bpm!) +
-    // print(myNumber);
-
-    // List<String?> sum = [];
-    // sum.add(_sensorDataModel.bpm);
-
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Card(

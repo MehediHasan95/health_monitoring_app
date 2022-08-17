@@ -306,7 +306,7 @@ class _LiveScreenState extends State<LiveScreen> {
     );
   }
 
-  // int timeLeft = 100;
+  // int timeLeft = 10;
   // void startCountDown() {
   //   Timer.periodic(
   //     const Duration(seconds: 1),

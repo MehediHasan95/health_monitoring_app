@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
@@ -8,8 +7,8 @@ import 'package:health_monitoring_app/view/chart.dart';
 import 'package:health_monitoring_app/view/doctor_list.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
+import 'package:health_monitoring_app/view/user_data_list.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
-import 'package:intl/intl.dart';
 
 class DashScreen extends StatefulWidget {
   const DashScreen({Key? key}) : super(key: key);
@@ -22,6 +21,8 @@ class DashScreen extends StatefulWidget {
 class _DashScreenState extends State<DashScreen> {
   final userInfo = AuthService.currentUser;
   final uid = AuthService.currentUser?.uid;
+  // ignore: prefer_typing_uninitialized_variables
+  var dayCount;
   double totalBpm = 0;
   double totalSpo2 = 0;
   double totalTempC = 0;
@@ -47,131 +48,162 @@ class _DashScreenState extends State<DashScreen> {
         backgroundColor: Colors.blue.shade900,
         title: const Text('Dashboard'),
       ),
+
       body: Column(
         children: [
-          Text(averageBpm.toStringAsFixed(2),
-              style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
-          Text(averageSpo2.toStringAsFixed(2),
-              style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: _dataList.length,
-            itemBuilder: (context, index) {
-              final getValue = _dataList[index] as SensorDataModel;
-              // return UserDataList(_dataList[index] as SensorDataModel);
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    gradient: LinearGradient(
-                      colors: [Colors.blueAccent, Colors.blue.shade900],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'After [$dayCount] days your average value',
+              style: const TextStyle(fontSize: 18),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  Image.asset(
+                    'assets/heart-beat.png',
+                    height: 50,
                   ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, left: 30),
-                        child: Row(
-                          children: [
-                            // Icon(Icons.alarm),
-                            const FaIcon(FontAwesomeIcons.clock,
-                                color: Colors.white),
-                            const SizedBox(width: 10),
-                            Text(
-                              DateFormat('dd/MM/yyyy, hh:mm a')
-                                  .format(getValue.timestamp!)
-                                  .toString(),
-                              style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Row(
-                            children: [
-                              // Icon(Icons.favorite),
-                              const FaIcon(FontAwesomeIcons.heartPulse,
-                                  color: Colors.white),
-                              const SizedBox(width: 10),
-                              Text(getValue.bpm!,
-                                  style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              // Icon(Icons.water_drop),
-                              const FaIcon(FontAwesomeIcons.droplet,
-                                  color: Colors.white),
-                              const SizedBox(width: 10),
-                              Text('${getValue.spo2!}%',
-                                  style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Row(
-                            children: [
-                              // Icon(Icons.thermostat),
-                              const FaIcon(FontAwesomeIcons.temperatureFull,
-                                  color: Colors.white),
-                              const SizedBox(width: 10),
-                              Text('${getValue.tempC}°C',
-                                  style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              // Icon(Icons.thermostat),
-                              const FaIcon(FontAwesomeIcons.temperatureFull,
-                                  color: Colors.white),
-                              const SizedBox(width: 10),
-                              Text('${getValue.tempF}°F',
-                                  style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                  Text(
+                    'Heart-rate',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
                   ),
+                  Text(
+                    '${averageBpm.toStringAsFixed(2)}bpm',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Image.asset(
+                    'assets/oxygen.png',
+                    height: 50,
+                  ),
+                  Text(
+                    'Oxygen',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
+                  ),
+                  Text(
+                    '${averageSpo2.toStringAsFixed(2)}%',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
+                  )
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  Image.asset(
+                    'assets/celsius.png',
+                    height: 50,
+                  ),
+                  Text(
+                    'Celsius',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
+                  ),
+                  Text(
+                    '${averageTempC.toStringAsFixed(2)}°C',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Image.asset(
+                    'assets/fahrenheit.png',
+                    height: 50,
+                  ),
+                  Text(
+                    'Fahrenheit',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
+                  ),
+                  Text(
+                    '${averageTempF.toStringAsFixed(2)}°F',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
+                  )
+                ],
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: [
+                const Expanded(
+                    child: Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Divider(
+                    color: Colors.black,
+                  ),
+                )),
+                Text(
+                  'Data Sheets',
+                  style: TextStyle(color: Colors.grey.shade800),
                 ),
-              );
-            },
+                const Expanded(
+                    child: Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Divider(
+                    color: Colors.black,
+                  ),
+                )),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _dataList.length,
+              itemBuilder: (context, index) {
+                // final getValue = _dataList[index] as SensorDataModel;
+                return UserDataList(_dataList[index] as SensorDataModel);
+              },
+            ),
           ),
         ],
       ),
+
+      // body: ListView.builder(
+      //   scrollDirection: Axis.vertical,
+      //   shrinkWrap: true,
+      //   itemCount: _dataList.length,
+      //   itemBuilder: (context, index) {
+      //     // final getValue = _dataList[index] as SensorDataModel;
+      //     return UserDataList(_dataList[index] as SensorDataModel);
+      //   },
+      // ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -220,18 +252,13 @@ class _DashScreenState extends State<DashScreen> {
               onTap: (() {
                 Navigator.popAndPushNamed(context, Chart.routeNames);
               }),
-              leading: const Icon(Icons.attribution),
-              title: const Text('Pie Chart'),
+              leading: const Icon(Icons.chat_rounded),
+              title: const Text('Chart'),
             ),
             ListTile(
               onTap: _signOut,
               leading: const Icon(Icons.logout),
               title: const Text('Sign Out'),
-            ),
-            ListTile(
-              onTap: getAverageValue,
-              leading: const Icon(Icons.local_activity),
-              title: const Text('Get Sum'),
             ),
           ],
         ),
@@ -239,13 +266,14 @@ class _DashScreenState extends State<DashScreen> {
     );
   }
 
+// SignOut method
   void _signOut() {
     AuthService.signOut().then((_) {
       Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
     });
   }
 
-  //user data
+  //Get User Data List
   Future getUsersDataList() async {
     var data = await DatabaseHelper.db
         .collection('sensorData')
@@ -260,24 +288,27 @@ class _DashScreenState extends State<DashScreen> {
     });
   }
 
+// Calculate average value
   Future getAverageValue() async {
     await DatabaseHelper.db.collection('sensorData/$uid/userData').get().then(
       (querySnapshot) {
-        for (var result in querySnapshot.docs) {
-          totalBpm = totalBpm + double.parse(result.data()['bpm']);
-          averageBpm = totalBpm / 5;
+        int totalElements = querySnapshot.docs.length;
+        dayCount = totalElements;
+        for (var elements in querySnapshot.docs) {
+          totalBpm = totalBpm + double.parse(elements.data()['bpm']);
+          averageBpm = totalBpm / totalElements;
         }
-        for (var result in querySnapshot.docs) {
-          totalSpo2 = totalSpo2 + double.parse(result.data()['spo2']);
-          averageSpo2 = totalSpo2 / 5;
+        for (var elements in querySnapshot.docs) {
+          totalSpo2 = totalSpo2 + double.parse(elements.data()['spo2']);
+          averageSpo2 = totalSpo2 / totalElements;
         }
-        for (var result in querySnapshot.docs) {
-          totalTempC = totalTempC + double.parse(result.data()['tempC']);
-          averageTempC = totalTempC / 5;
+        for (var elements in querySnapshot.docs) {
+          totalTempC = totalTempC + double.parse(elements.data()['tempC']);
+          averageTempC = totalTempC / totalElements;
         }
-        for (var result in querySnapshot.docs) {
-          totaltempF = totaltempF + double.parse(result.data()['tempF']);
-          averageTempF = totaltempF / 5;
+        for (var elements in querySnapshot.docs) {
+          totaltempF = totaltempF + double.parse(elements.data()['tempF']);
+          averageTempF = totaltempF / totalElements;
         }
         setState(() {
           averageBpm;

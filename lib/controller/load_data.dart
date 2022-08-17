@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 
 class LoadData {
   Future<SensorData> loadSensorData() async {
-    final url = Uri.parse('http://192.168.0.102/');
+    final url = Uri.parse('http://192.168.0.103/');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
