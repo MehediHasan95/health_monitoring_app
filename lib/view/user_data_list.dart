@@ -29,7 +29,7 @@ class UserDataList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Icon(
-                    Icons.alarm,
+                    Icons.access_time_filled,
                     color: Colors.black87,
                   ),
                   const Text(
@@ -97,6 +97,27 @@ class UserDataList extends StatelessWidget {
                   // ),
                   Text(
                     '${_sensorDataModel.tempC}°C',
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(
+                    Icons.thermostat,
+                    color: Colors.black87,
+                  ),
+                  // const Text(
+                  //   'Temperature:',
+                  //   style: TextStyle(fontSize: 20, color: Colors.black87),
+                  // ),
+
+                  Text(
+                    '${_sensorDataModel.tempF}°F',
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

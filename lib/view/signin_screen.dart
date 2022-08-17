@@ -138,12 +138,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('New member?'),
+                    const Text("Don't have an account?"),
                     TextButton(
                       style:
                           TextButton.styleFrom(primary: Colors.blue.shade900),
                       onPressed: () {
-                        Navigator.pushNamed(context, SignUpScreen.routeNames);
+                        Navigator.popAndPushNamed(
+                            context, SignUpScreen.routeNames);
                       },
                       child: const Text(
                         'Sign Up',

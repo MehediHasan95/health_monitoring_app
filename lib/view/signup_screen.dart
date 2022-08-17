@@ -118,12 +118,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Already member?'),
+                    const Text('Already have an account?'),
                     TextButton(
                       style:
                           TextButton.styleFrom(primary: Colors.blue.shade900),
                       onPressed: () {
-                        Navigator.pushNamed(context, SignInScreen.routeNames);
+                        Navigator.popAndPushNamed(
+                            context, SignInScreen.routeNames);
                       },
                       child: const Text(
                         'Sign In',
@@ -146,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _emailController.text, _passwordController.text);
         if (uid != null) {
           // ignore: use_build_context_synchronously
-          Navigator.pushReplacementNamed(context, SuccessfullScreen.routeNames);
+          Navigator.popAndPushNamed(context, SuccessfullScreen.routeNames);
         }
       } on FirebaseAuthException catch (error) {
         setState(() {

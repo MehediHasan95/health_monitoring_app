@@ -61,13 +61,15 @@ class _LiveScreenState extends State<LiveScreen> {
     final isBpmTrue = sensorData.bpm;
     final isSpO2True = sensorData.spo2;
 
-    if (isBpmTrue! > 65.0 || isSpO2True! > 80) {
+    if (isBpmTrue! >= 65.0 && isSpO2True! >= 90) {
       isButtonActive = true;
+    } else {
+      isButtonActive = false;
     }
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 10.0,
@@ -156,7 +158,7 @@ class _LiveScreenState extends State<LiveScreen> {
                             height: 60,
                           ),
                           Text(
-                            'Oxygen Saturation',
+                            'Oxygen Level',
                             style: TextStyle(
                                 fontSize: 20, color: Colors.grey[800]),
                           ),
@@ -240,33 +242,43 @@ class _LiveScreenState extends State<LiveScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: isButtonActive == true
-                    ? () {
-                        final sensorDataModel = SensorDataModel(
-                          bpm: sensorData.bpm.toString(),
-                          spo2: sensorData.spo2.toString(),
-                          tempC: sensorData.bodyTempC.toString(),
-                          timestamp: DateTime.now(),
-                        );
-                        Provider.of<SensorDataProvider>(context, listen: false)
-                            .saveSensorData(sensorDataModel)
-                            .then((value) {
-                          setState(() {
-                            isButtonActive == false;
+                  onPressed: isButtonActive == true
+                      ? () {
+                          final sensorDataModel = SensorDataModel(
+                            bpm: sensorData.bpm.toString(),
+                            spo2: sensorData.spo2.toString(),
+                            tempC: sensorData.bodyTempC.toString(),
+                            tempF: sensorData.bodyTempF.toString(),
+                            timestamp: DateTime.now(),
+                          );
+                          Provider.of<SensorDataProvider>(context,
+                                  listen: false)
+                              .saveSensorData(sensorDataModel)
+                              .then((value) {
+                            setState(() {
+                              isButtonActive == false;
+                            });
+                            showFlushBar(
+                              context,
+                              "Your record has been saved successfully",
+                            );
+                          }).catchError((error) {
+                            showFlushBar(context, error);
                           });
-                          showFlushBar(context, "Succufully");
-                        }).catchError((error) {
-                          showFlushBar(context, error);
-                        });
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(30),
-                ),
-                child: const Icon(Icons.done_all),
-              ),
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green,
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(30),
+                  ),
+                  // child: const Icon(Icons.done_all),
+                  child: Column(
+                    children: const [
+                      Text('PRESS'),
+                      Text('NOW'),
+                    ],
+                  )),
               const SizedBox(height: 50),
               ListView(
                 scrollDirection: Axis.vertical,
@@ -294,27 +306,19 @@ class _LiveScreenState extends State<LiveScreen> {
     );
   }
 
-  // void _saveSensorDataToDatabase() {
-  //   if (_formKey.currentState!.validate()) {
-  //     final sensorDataModel = SensorDataModel(
-  //       bpm: _bpmController.text,
-  //       spo2: _spo2Controller.text,
-  //       tempC: _tempCController.text,
-  //       timestamp: DateTime.now(),
-  //     );
-  //     Provider.of<SensorDataProvider>(context, listen: false)
-  //         .saveSensorData(sensorDataModel)
-  //         .then((value) {
-  //       setState(() {
-  //         _bpmController.clear();
-  //         _spo2Controller.clear();
-  //         _tempCController.clear();
-  //       });
-  //       showMsg(context, 'SUBMITTED SUCCESSFULLY');
-  //     }).catchError((error) {
-  //       showMsg(context, error);
-  //     });
-  //   }
+  // int timeLeft = 100;
+  // void startCountDown() {
+  //   Timer.periodic(
+  //     const Duration(seconds: 1),
+  //     (timer) {
+  //       if (timeLeft > 0) {
+  //         setState(() {
+  //           timeLeft--;
+  //         });
+  //       } else {
+  //         timer.cancel();
+  //       }
+  //     },
+  //   );
   // }
-
 }

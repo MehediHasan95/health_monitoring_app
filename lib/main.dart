@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
+import 'package:health_monitoring_app/view/chart.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/doctor_dashboard.dart';
 import 'package:health_monitoring_app/view/doctor_list.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.blue),
+        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Roboto"),
         home: const SplashScreen(),
         routes: {
           WelcomeScreen.routeNames: (context) => const WelcomeScreen(),
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
           HealthTipsScreen.routeNames: (context) => const HealthTipsScreen(),
           SuccessfullScreen.routeNames: (context) => const SuccessfullScreen(),
           DoctorList.routeNames: (context) => const DoctorList(),
+          Chart.routeNames: (context) => const Chart(),
         },
       ),
     );
