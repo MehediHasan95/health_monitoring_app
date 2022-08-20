@@ -1,6 +1,8 @@
 import 'dart:async' show StreamController, Timer;
 import 'package:flutter/material.dart';
+import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/controller/load_data.dart';
+import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
@@ -26,6 +28,8 @@ class _LiveScreenState extends State<LiveScreen> {
       _streamController.sink.add(await LoadData().loadSensorData());
     });
     super.initState();
+    getUserProfileInfo();
+    greetingMessage();
   }
 
   @override
@@ -67,28 +71,38 @@ class _LiveScreenState extends State<LiveScreen> {
       isButtonActive = false;
     }
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10.0,
-          ),
+    return Scaffold(
+      backgroundColor: Colors.white70,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "$welcomeMsg,",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade900),
+                      ),
+                      Text(
+                        username,
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade900),
+                      ),
+                    ],
+                  ),
                   Image.asset(
                     'assets/live.png',
                     height: 60,
-                  ),
-                  Text(
-                    '',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: Colors.grey[800]),
                   ),
                 ],
               ),
@@ -275,8 +289,7 @@ class _LiveScreenState extends State<LiveScreen> {
                   // child: const Icon(Icons.done_all),
                   child: Column(
                     children: const [
-                      Text('PRESS'),
-                      Text('NOW'),
+                      Text('SAVE'),
                     ],
                   )),
               const SizedBox(height: 50),
@@ -304,6 +317,35 @@ class _LiveScreenState extends State<LiveScreen> {
         ),
       ),
     );
+  }
+
+// Show user profile info
+  String username = '';
+  Future getUserProfileInfo() async {
+    final uid = AuthService.currentUser?.uid;
+    await DatabaseHelper.db.collection('userProfileInfo').doc(uid).get().then(
+      (querySnapshot) {
+        username = querySnapshot.data()!['username'];
+      },
+    );
+    setState(() {
+      username;
+    });
+  }
+
+// Show greeting message
+  String welcomeMsg = '';
+  void greetingMessage() {
+    var hour = DateTime.now().hour;
+    if (hour <= 12) {
+      welcomeMsg = 'Good Morning';
+    } else if ((hour > 12) && (hour <= 16)) {
+      welcomeMsg = 'Good Afternoon';
+    } else if ((hour > 16) && (hour < 20)) {
+      welcomeMsg = 'Good Evening';
+    } else {
+      welcomeMsg = 'Good Night';
+    }
   }
 
   // int timeLeft = 10;

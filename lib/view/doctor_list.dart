@@ -15,6 +15,7 @@ class _DoctorListState extends State<DoctorList> {
   final uid = AuthService.currentUser?.uid;
 
   late DoctorProvider _doctorDataProvider;
+
   @override
   void didChangeDependencies() {
     _doctorDataProvider = Provider.of<DoctorProvider>(context);

@@ -25,7 +25,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Timer(const Duration(seconds: 5), () {
       if (AuthService.currentUser == null) {
-        // Navigator.pushReplacement(context, WelcomeScreen.routeNames);
         Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
       } else {
         Navigator.pushReplacementNamed(context, LiveScreen.routeNames);

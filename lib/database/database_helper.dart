@@ -3,17 +3,20 @@ import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
 
 class DatabaseHelper {
+  static const _usersProfileCollection = 'userProfileInfo';
   static const _sensorDataCollection = 'sensorData';
   static const _doctorCollection = 'doctors';
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  // static Future<void> addSensorData(SensorDataModel sensorDataModel) {
-  //   final writeBatch = _db.batch();
-  //   final sensorDoc = _db.collection(_sensorDataCollection).doc();
-  //   sensorDataModel.id = sensorDoc.id;
-  //   writeBatch.set(sensorDoc, sensorDataModel.toMap());
-  //   return writeBatch.commit();
-  // }
+  // Create User Database
+  static Future<void> createUserProfileInfo(
+      String username, String gender) async {
+    final uid = AuthService.currentUser?.uid;
+    return await db
+        .collection(_usersProfileCollection)
+        .doc(uid!)
+        .set({"username": username, "gender": gender});
+  }
 
   static Future<void> addSensorData(SensorDataModel sensorDataModel) {
     final uid = AuthService.currentUser?.uid;
@@ -24,6 +27,7 @@ class DatabaseHelper {
         .add(sensorDataModel.toJson());
   }
 
+// Doctor login method
   static Future<bool> isDoctor(String email) async {
     final snapshot = await db
         .collection(_doctorCollection)

@@ -1,4 +1,6 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
@@ -9,6 +11,7 @@ import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
 import 'package:health_monitoring_app/view/user_data_list.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class DashScreen extends StatefulWidget {
   const DashScreen({Key? key}) : super(key: key);
@@ -39,6 +42,7 @@ class _DashScreenState extends State<DashScreen> {
     super.didChangeDependencies();
     getUsersDataList();
     getAverageValue();
+    getUserProfileInfo();
   }
 
   @override
@@ -48,137 +52,285 @@ class _DashScreenState extends State<DashScreen> {
         backgroundColor: Colors.blue.shade900,
         title: const Text('Dashboard'),
       ),
-
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'After [$dayCount] days your average value',
-              style: const TextStyle(fontSize: 18),
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Tooltip(
+                              message: "Heart rate",
+                              showDuration: const Duration(seconds: 2),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircularPercentIndicator(
+                                  animation: true,
+                                  animationDuration: 1000,
+                                  radius: 55,
+                                  lineWidth: 15,
+                                  percent: averageBpm / 180,
+                                  progressColor: Colors.red,
+                                  center: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const FaIcon(
+                                        FontAwesomeIcons.heartPulse,
+                                        color: Colors.redAccent,
+                                      ),
+                                      Text(averageBpm.toStringAsFixed(2),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800)),
+                                      Text('BPM',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800))
+                                    ],
+                                  ),
+                                  footer: Text('Heart-rate',
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800)),
+                                ),
+                              ),
+                            ),
+                            Tooltip(
+                              message: "Oxygen Level",
+                              showDuration: const Duration(seconds: 2),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircularPercentIndicator(
+                                  animation: true,
+                                  animationDuration: 1000,
+                                  radius: 55,
+                                  lineWidth: 15,
+                                  percent: averageSpo2 / 120,
+                                  progressColor: Colors.orange,
+                                  center: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const FaIcon(
+                                        FontAwesomeIcons.droplet,
+                                        color: Colors.orange,
+                                      ),
+                                      Text(averageSpo2.toStringAsFixed(2),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800)),
+                                      Text('%',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800))
+                                    ],
+                                  ),
+                                  footer: Text('Oxygen',
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // part - 2
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Tooltip(
+                              message: "Body temperature Celcius",
+                              showDuration: const Duration(seconds: 2),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircularPercentIndicator(
+                                  animation: true,
+                                  animationDuration: 1000,
+                                  radius: 55,
+                                  lineWidth: 15,
+                                  percent: averageTempC / 100,
+                                  progressColor: Colors.blue,
+                                  center: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const FaIcon(
+                                        FontAwesomeIcons.temperatureFull,
+                                        color: Colors.blue,
+                                      ),
+                                      Text(averageTempC.toStringAsFixed(2),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800)),
+                                      Text('°C',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800))
+                                    ],
+                                  ),
+                                  footer: Text('Celsius',
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800)),
+                                ),
+                              ),
+                            ),
+                            Tooltip(
+                              message: "Body temperature Fahrenheit",
+                              showDuration: const Duration(seconds: 2),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircularPercentIndicator(
+                                  animation: true,
+                                  animationDuration: 1000,
+                                  radius: 55,
+                                  lineWidth: 15,
+                                  percent: averageTempF / 200,
+                                  progressColor: Colors.green,
+                                  center: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const FaIcon(
+                                        FontAwesomeIcons.temperatureHalf,
+                                        color: Colors.green,
+                                      ),
+                                      Text(
+                                        averageTempF.toStringAsFixed(2),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey.shade800),
+                                      ),
+                                      Text('°F',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800))
+                                    ],
+                                  ),
+                                  footer: Text('Fahrenheit',
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        const Text('AVERAGE', style: TextStyle(fontSize: 20)),
+                        const Text('VALUE', style: TextStyle(fontSize: 20)),
+                        AvatarGlow(
+                          endRadius: 50,
+                          glowColor: Colors.green,
+                          child: Text('${dayCount ?? 00}',
+                              style: TextStyle(
+                                  fontSize: 60,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.pink.shade800)),
+                        ),
+                        const Text('AFTER', style: TextStyle(fontSize: 20)),
+                        const Text('DAYS', style: TextStyle(fontSize: 20)),
+                      ],
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: [
-                  Image.asset(
-                    'assets/heart-beat.png',
-                    height: 50,
-                  ),
-                  Text(
-                    'Heart-rate',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
-                  ),
-                  Text(
-                    '${averageBpm.toStringAsFixed(2)}bpm',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Image.asset(
-                    'assets/oxygen.png',
-                    height: 50,
-                  ),
-                  Text(
-                    'Oxygen',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
-                  ),
-                  Text(
-                    '${averageSpo2.toStringAsFixed(2)}%',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
-                  )
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: [
-                  Image.asset(
-                    'assets/celsius.png',
-                    height: 50,
-                  ),
-                  Text(
-                    'Celsius',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
-                  ),
-                  Text(
-                    '${averageTempC.toStringAsFixed(2)}°C',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Image.asset(
-                    'assets/fahrenheit.png',
-                    height: 50,
-                  ),
-                  Text(
-                    'Fahrenheit',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
-                  ),
-                  Text(
-                    '${averageTempF.toStringAsFixed(2)}°F',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
-                  )
-                ],
-              ),
-            ],
-          ),
+          // Second part
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
             child: Row(
               children: [
-                const Expanded(
-                    child: Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Divider(
-                    color: Colors.black,
-                  ),
-                )),
                 Text(
-                  'Data Sheets',
-                  style: TextStyle(color: Colors.grey.shade800),
-                ),
-                const Expanded(
-                    child: Padding(
-                  padding: EdgeInsets.only(left: 8.0),
-                  child: Divider(
-                    color: Colors.black,
+                  'Daily activity report:',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.grey.shade800,
                   ),
-                )),
+                ),
+              ],
+            ),
+          ),
+          Center(
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: Table(
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    columnWidths: const {
+                      0: FlexColumnWidth(0.36),
+                      1: FlexColumnWidth(0.16),
+                      2: FlexColumnWidth(0.16),
+                      3: FlexColumnWidth(0.16),
+                      4: FlexColumnWidth(0.16),
+                    },
+                    border: TableBorder.all(color: Colors.white),
+                    children: [
+                      TableRow(
+                          decoration:
+                              const BoxDecoration(color: Colors.amberAccent),
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 10.0),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Date & Time',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey.shade800))
+                                  ]),
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('HR',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade800))
+                                ]),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('OL',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade800))
+                                ]),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('BTC',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade800))
+                                ]),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'BTF',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade800),
+                                  ),
+                                ]),
+                          ]),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -194,16 +346,6 @@ class _DashScreenState extends State<DashScreen> {
           ),
         ],
       ),
-
-      // body: ListView.builder(
-      //   scrollDirection: Axis.vertical,
-      //   shrinkWrap: true,
-      //   itemCount: _dataList.length,
-      //   itemBuilder: (context, index) {
-      //     // final getValue = _dataList[index] as SensorDataModel;
-      //     return UserDataList(_dataList[index] as SensorDataModel);
-      //   },
-      // ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -215,11 +357,23 @@ class _DashScreenState extends State<DashScreen> {
                   // )
                 ),
                 child: Center(
-                  child: Text(
-                    '${userInfo?.email}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                )),
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      username,
+                      style: const TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    Text(
+                      gender,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      "${userInfo?.email}",
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ))),
             ListTile(
               onTap: (() {
                 Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
@@ -285,6 +439,22 @@ class _DashScreenState extends State<DashScreen> {
     setState(() {
       _dataList =
           List.from(data.docs.map((doc) => SensorDataModel.fromSnapshot(doc)));
+    });
+  }
+
+  String username = '';
+  String gender = '';
+  Future getUserProfileInfo() async {
+    final uid = AuthService.currentUser?.uid;
+    await DatabaseHelper.db.collection('userProfileInfo').doc(uid).get().then(
+      (querySnapshot) {
+        username = querySnapshot.data()!['username'];
+        gender = querySnapshot.data()!['gender'];
+      },
+    );
+    setState(() {
+      username;
+      gender;
     });
   }
 

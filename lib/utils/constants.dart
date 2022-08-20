@@ -15,7 +15,7 @@ void showFlushBar(BuildContext context, String msg) => Flushbar(
       duration: const Duration(milliseconds: 4200),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
-      borderRadius: BorderRadius.circular(13),
+      borderRadius: BorderRadius.circular(10),
     ).show(context);
 
 // SnackBar

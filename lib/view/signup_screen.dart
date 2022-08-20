@@ -5,6 +5,8 @@ import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
 import 'package:health_monitoring_app/view/successfull_screen.dart';
 
+const gender = ["Male", "Female"];
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
   static const String routeNames = '/SignUpScreen';
@@ -15,13 +17,16 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscureText = true;
   String _errMsg = '';
+  String? selectGender;
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -56,6 +61,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Image.asset('assets/signin.jpg'),
                 TextFormField(
+                  keyboardType: TextInputType.name,
+                  autofillHints: const [AutofillHints.name],
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person), hintText: 'Username'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return emptyFieldErrMsg;
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                DropdownButtonFormField<String>(
+                  hint: const Text('Gender'),
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                  value: selectGender,
+                  onChanged: ((value) {
+                    setState(() {
+                      selectGender = value;
+                    });
+                  }),
+                  items: gender
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
+                          ))
+                      .toList(),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return emptyFieldErrMsg;
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   autofillHints: const [AutofillHints.email],
                   controller: _emailController,
@@ -69,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 TextFormField(
                   obscureText: _obscureText,
@@ -143,8 +191,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _SignUpUser() async {
     if (_formKey.currentState!.validate()) {
       try {
-        final uid = await AuthService.signUpUser(
-            _emailController.text, _passwordController.text);
+        final uid = await AuthService.signUpUser(_nameController.text,
+            selectGender!, _emailController.text, _passwordController.text);
         if (uid != null) {
           // ignore: use_build_context_synchronously
           Navigator.popAndPushNamed(context, SuccessfullScreen.routeNames);

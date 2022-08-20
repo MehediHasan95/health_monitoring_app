@@ -9,118 +9,40 @@ class UserDataList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Card(
-        color: Colors.white70,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Center(
+        child: Column(children: [
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4.0),
+        child: Table(
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          columnWidths: const {
+            0: FlexColumnWidth(0.36),
+            1: FlexColumnWidth(0.16),
+            2: FlexColumnWidth(0.16),
+            3: FlexColumnWidth(0.16),
+            4: FlexColumnWidth(0.16),
+          },
+          border: TableBorder.all(color: Colors.white),
+          children: [
+            TableRow(
+                decoration: BoxDecoration(color: Colors.amberAccent.shade100),
                 children: [
-                  const Icon(
-                    Icons.access_time_filled,
-                    color: Colors.black87,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Column(children: [
+                      Text(DateFormat('dd/MM/yy, hh:mm a')
+                          .format(_sensorDataModel.timestamp!)
+                          .toString())
+                    ]),
                   ),
-                  const Text(
-                    '',
-                    style: TextStyle(fontSize: 20, color: Colors.black87),
-                  ),
-                  Text(
-                    DateFormat('dd/MM/yyyy, hh:mm a')
-                        .format(_sensorDataModel.timestamp!)
-                        .toString(),
-                    style: const TextStyle(fontSize: 20, color: Colors.black87),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(
-                    Icons.favorite,
-                    color: Colors.black87,
-                  ),
-                  // const Text(
-                  //   'Heart-rate:',
-                  //   style: TextStyle(fontSize: 20, color: Colors.black87),
-                  // ),
-                  Text(
-                    '${_sensorDataModel.bpm}',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(
-                    Icons.water_drop,
-                    color: Colors.black87,
-                  ),
-                  // const Text(
-                  //   'Oxygen-level:',
-                  //   style: TextStyle(fontSize: 20, color: Colors.black87),
-                  // ),
-                  Text(
-                    '${_sensorDataModel.spo2}%',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(
-                    Icons.thermostat,
-                    color: Colors.black87,
-                  ),
-                  // const Text(
-                  //   'Temperature:',
-                  //   style: TextStyle(fontSize: 20, color: Colors.black87),
-                  // ),
-                  Text(
-                    '${_sensorDataModel.tempC}°C',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(
-                    Icons.thermostat,
-                    color: Colors.black87,
-                  ),
-                  // const Text(
-                  //   'Temperature:',
-                  //   style: TextStyle(fontSize: 20, color: Colors.black87),
-                  // ),
-
-                  Text(
-                    '${_sensorDataModel.tempF}°F',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                  Column(children: [Text('${_sensorDataModel.bpm}b')]),
+                  Column(children: [Text('${_sensorDataModel.spo2}%')]),
+                  Column(children: [Text('${_sensorDataModel.tempC}°C')]),
+                  Column(children: [Text('${_sensorDataModel.tempF}°F')]),
+                ]),
+          ],
         ),
       ),
-    );
+    ]));
   }
 }
