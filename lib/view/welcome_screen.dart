@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -26,56 +27,71 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Form(
-            child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          shrinkWrap: true,
-          children: [
-            Text(
-              'Welcome',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 50,
-                  color: Colors.blue.shade900),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Text(
-              "It’s a Good Day to Have a Good Day!",
-              style: TextStyle(color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-            Image.asset('assets/welcome.jpg'),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.pink.shade200, Colors.purple.shade900],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter)),
+        child: Center(
+          child: Form(
+              child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            shrinkWrap: true,
+            children: [
+              const Text(
+                'Welcome',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 50,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
               ),
-              onPressed: () {
-                Navigator.pushNamed(context, SignInScreen.routeNames);
-              },
-              child: const Text('USER'),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
+              const SizedBox(
+                height: 5,
               ),
-              onPressed: () {
-                Navigator.pushNamed(context, DoctorScreen.routeNames);
-              },
-              child: const Text('DOCTOR'),
-            ),
-          ],
-        )),
+              const Text(
+                "It’s a Good Day to Have a Good Day!",
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              // Image.asset('assets/welcome.png'),
+              LottieBuilder.asset(
+                'assets/welcome.json',
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.pink.shade200,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, SignInScreen.routeNames);
+                },
+                child: const Text('USER'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.pink.shade200,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, DoctorScreen.routeNames);
+                },
+                child: const Text('DOCTOR'),
+              ),
+            ],
+          )),
+        ),
       ),
     );
   }

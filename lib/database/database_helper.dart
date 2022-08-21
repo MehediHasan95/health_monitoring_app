@@ -5,7 +5,7 @@ import 'package:health_monitoring_app/model/sensor_data_model.dart';
 class DatabaseHelper {
   static const _usersProfileCollection = 'userProfileInfo';
   static const _sensorDataCollection = 'sensorData';
-  static const _doctorCollection = 'doctors';
+  static const _doctorCollection = 'doctor';
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   // Create User Database

@@ -22,23 +22,37 @@ class UserDataList extends StatelessWidget {
             3: FlexColumnWidth(0.16),
             4: FlexColumnWidth(0.16),
           },
-          border: TableBorder.all(color: Colors.white),
+          border: TableBorder.all(width: 0, color: Colors.white),
           children: [
             TableRow(
-                decoration: BoxDecoration(color: Colors.amberAccent.shade100),
+                decoration: BoxDecoration(color: Colors.pink.shade200),
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Column(children: [
-                      Text(DateFormat('dd/MM/yy, hh:mm a')
-                          .format(_sensorDataModel.timestamp!)
-                          .toString())
+                      Text(
+                          DateFormat('dd/MM/yy, hh:mm a')
+                              .format(_sensorDataModel.timestamp!)
+                              .toString(),
+                          style: const TextStyle(color: Colors.white))
                     ]),
                   ),
-                  Column(children: [Text('${_sensorDataModel.bpm}b')]),
-                  Column(children: [Text('${_sensorDataModel.spo2}%')]),
-                  Column(children: [Text('${_sensorDataModel.tempC}°C')]),
-                  Column(children: [Text('${_sensorDataModel.tempF}°F')]),
+                  Column(children: [
+                    Text('${_sensorDataModel.bpm}b',
+                        style: const TextStyle(color: Colors.white))
+                  ]),
+                  Column(children: [
+                    Text('${_sensorDataModel.spo2}%',
+                        style: const TextStyle(color: Colors.white))
+                  ]),
+                  Column(children: [
+                    Text('${_sensorDataModel.tempC}°C',
+                        style: const TextStyle(color: Colors.white))
+                  ]),
+                  Column(children: [
+                    Text('${_sensorDataModel.tempF}°F',
+                        style: const TextStyle(color: Colors.white))
+                  ]),
                 ]),
           ],
         ),

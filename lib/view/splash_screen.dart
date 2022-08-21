@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _doctorDataProvider = Provider.of<DoctorProvider>(context, listen: false);
     _doctorDataProvider.getAllDoctorData();
 
-    Timer(const Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 6), () {
       if (AuthService.currentUser == null) {
         Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
       } else {
@@ -36,28 +36,36 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade900,
-      body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          LottieBuilder.asset(
-            'assets/splash.json',
-          ),
-          const SizedBox(
-            height: 150,
-          ),
-          const Text(
-            'Health Corner',
-            style: TextStyle(
-                fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          const Text(
-            'Live healthy, Stay young at heart',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white,
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.pink.shade200, Colors.purple.shade900],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter)),
+        child: Center(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            LottieBuilder.asset(
+              'assets/splash.json',
             ),
-          ),
-        ]),
+            const SizedBox(
+              height: 150,
+            ),
+            const Text(
+              'Health Corner',
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              'Live healthy, Stay young at heart',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }

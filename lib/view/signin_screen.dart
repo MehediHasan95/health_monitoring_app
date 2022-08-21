@@ -32,129 +32,168 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Form(
-            key: _formKey,
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              shrinkWrap: true,
-              children: [
-                Text(
-                  'SIGN IN',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: Colors.blue.shade900),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Text(
-                  'Please sign in to continue',
-                  style: TextStyle(color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
-                Image.asset('assets/signin.jpg'),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  autofillHints: const [AutofillHints.email],
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email), hintText: 'Email ID'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return emptyFieldErrMsg;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  obscureText: _obscureText,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        icon: Icon(_obscureText
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                      hintText: 'Password'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return emptyFieldErrMsg;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const ForgotPassword();
-                    }));
-                  },
-                  child: Text(
-                    'Forgot password',
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.pink.shade200, Colors.purple.shade900],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter)),
+        child: Center(
+          child: Form(
+              key: _formKey,
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                shrinkWrap: true,
+                children: [
+                  const Text(
+                    'SIGN IN',
                     style: TextStyle(
-                      color: Colors.blue.shade900,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.end,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  onPressed: _signInUser,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue.shade900,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
+                  const SizedBox(
+                    height: 5,
                   ),
-                  child: const Text('Sign In'),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  _errMsg,
-                  style: const TextStyle(color: Colors.redAccent),
-                  textAlign: TextAlign.center,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Don't have an account?"),
-                    TextButton(
-                      style:
-                          TextButton.styleFrom(primary: Colors.blue.shade900),
-                      onPressed: () {
-                        Navigator.popAndPushNamed(
-                            context, SignUpScreen.routeNames);
-                      },
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                  const Text(
+                    'Please sign in to continue',
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // Image.asset(
+                  //   'assets/man.png',
+                  //   height: 100,
+                  // ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    autofillHints: const [AutofillHints.email],
+                    controller: _emailController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.email,
+                          color: Colors.white,
+                        ),
+                        fillColor: Colors.white30,
+                        filled: true,
+                        hintText: 'Email ID',
+                        hintStyle: TextStyle(color: Colors.white)),
+                    cursorColor: Colors.white,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return emptyFieldErrMsg;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    obscureText: _obscureText,
+                    controller: _passwordController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                        suffixIcon: IconButton(
+                          color: Colors.white,
+                          icon: Icon(_obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                        fillColor: Colors.white30,
+                        filled: true,
+                        hintText: 'Password',
+                        hintStyle: const TextStyle(color: Colors.white)),
+                    cursorColor: Colors.white,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return emptyFieldErrMsg;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const ForgotPassword();
+                      }));
+                    },
+                    child: const Text(
+                      'Forgot password',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
-                  ],
-                )
-              ],
-            )),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: _signInUser,
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.pink.shade200,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: const Text('Sign In'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    _errMsg,
+                    style: const TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an account?",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      TextButton(
+                        style:
+                            TextButton.styleFrom(primary: Colors.pink.shade200),
+                        onPressed: () {
+                          Navigator.popAndPushNamed(
+                              context, SignUpScreen.routeNames);
+                        },
+                        child: const Text(
+                          'Sign Up',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )),
+        ),
       ),
     );
   }

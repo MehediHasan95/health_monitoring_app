@@ -35,154 +35,210 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Form(
-            key: _formKey,
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              shrinkWrap: true,
-              children: [
-                Text(
-                  'SIGN UP',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: Colors.blue.shade900),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Text(
-                  "Create an account. It's free",
-                  style: TextStyle(color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
-                Image.asset('assets/signin.jpg'),
-                TextFormField(
-                  keyboardType: TextInputType.name,
-                  autofillHints: const [AutofillHints.name],
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person), hintText: 'Username'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return emptyFieldErrMsg;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                DropdownButtonFormField<String>(
-                  hint: const Text('Gender'),
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.person),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.pink.shade200, Colors.purple.shade900],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter)),
+        child: Center(
+          child: Form(
+              key: _formKey,
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                shrinkWrap: true,
+                children: [
+                  const Text(
+                    'SIGN UP',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
                   ),
-                  value: selectGender,
-                  onChanged: ((value) {
-                    setState(() {
-                      selectGender = value;
-                    });
-                  }),
-                  items: gender
-                      .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ))
-                      .toList(),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return emptyFieldErrMsg;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  autofillHints: const [AutofillHints.email],
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email), hintText: 'Email ID'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return emptyFieldErrMsg;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  obscureText: _obscureText,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        icon: Icon(_obscureText
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  const Text(
+                    "Create an account. It's free",
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  // Image.asset('assets/signin.jpg'),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.name,
+                    autofillHints: const [AutofillHints.name],
+                    controller: _nameController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        fillColor: Colors.white30,
+                        filled: true,
+                        hintText: 'Username',
+                        hintStyle: TextStyle(color: Colors.white)),
+                    cursorColor: Colors.white,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return emptyFieldErrMsg;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  DropdownButtonFormField<String>(
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.accessibility,
+                          color: Colors.white,
+                        ),
+                        fillColor: Colors.white30,
+                        filled: true,
+                        hintText: "Gender",
+                        hintStyle: TextStyle(color: Colors.white)),
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.white,
+                    ),
+                    dropdownColor: Colors.pink.shade200,
+                    value: selectGender,
+                    onChanged: ((value) {
+                      setState(() {
+                        selectGender = value;
+                      });
+                    }),
+                    items: gender
+                        .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e),
+                            ))
+                        .toList(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return emptyFieldErrMsg;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    autofillHints: const [AutofillHints.email],
+                    controller: _emailController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.email,
+                          color: Colors.white,
+                        ),
+                        fillColor: Colors.white30,
+                        filled: true,
+                        hintText: 'Email ID',
+                        hintStyle: TextStyle(color: Colors.white)),
+                    cursorColor: Colors.white,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return emptyFieldErrMsg;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    obscureText: _obscureText,
+                    controller: _passwordController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                        suffixIcon: IconButton(
+                          color: Colors.white,
+                          icon: Icon(_obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                        fillColor: Colors.white30,
+                        filled: true,
+                        hintText: 'Password',
+                        hintStyle: const TextStyle(color: Colors.white)),
+                    cursorColor: Colors.white,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return emptyFieldErrMsg;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: _SignUpUser,
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.pink.shade200,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
-                      hintText: 'Password'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return emptyFieldErrMsg;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  onPressed: _SignUpUser,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue.shade900,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: const Text(
+                      'Sign Up',
                     ),
                   ),
-                  child: const Text('Sign Up'),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  _errMsg,
-                  style: const TextStyle(color: Colors.redAccent),
-                  textAlign: TextAlign.center,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Already have an account?'),
-                    TextButton(
-                      style:
-                          TextButton.styleFrom(primary: Colors.blue.shade900),
-                      onPressed: () {
-                        Navigator.popAndPushNamed(
-                            context, SignInScreen.routeNames);
-                      },
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    _errMsg,
+                    style: const TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Already have an account?',
+                        style: TextStyle(color: Colors.white),
                       ),
-                    )
-                  ],
-                )
-              ],
-            )),
+                      TextButton(
+                        style:
+                            TextButton.styleFrom(primary: Colors.pink.shade200),
+                        onPressed: () {
+                          Navigator.popAndPushNamed(
+                              context, SignInScreen.routeNames);
+                        },
+                        child: const Text(
+                          'Sign In',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )),
+        ),
       ),
     );
   }
