@@ -41,7 +41,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     'FORGOT PASSWORD',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 30,
+                        fontSize: 25,
                         color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
@@ -98,7 +98,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                   Text(
                     _errMsg,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.yellowAccent),
                     textAlign: TextAlign.center,
                   )
                 ],

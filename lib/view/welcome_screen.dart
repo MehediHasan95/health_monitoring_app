@@ -40,10 +40,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             shrinkWrap: true,
             children: [
               const Text(
-                'Welcome',
+                'WELCOME',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 50,
+                    fontSize: 40,
                     color: Colors.white),
                 textAlign: TextAlign.center,
               ),
@@ -55,16 +55,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
               // Image.asset('assets/welcome.png'),
               LottieBuilder.asset(
                 'assets/welcome.json',
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Colors.pink.shade200,

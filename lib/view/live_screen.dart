@@ -1,5 +1,8 @@
 import 'dart:async' show StreamController, Timer;
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/controller/load_data.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
@@ -9,6 +12,7 @@ import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/not_found.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class LiveScreen extends StatefulWidget {
@@ -61,18 +65,22 @@ class _LiveScreenState extends State<LiveScreen> {
 
 // ignore: non_constant_identifier_names
   Widget DisplayDataWidget(SensorData sensorData) {
-    bool isButtonActive = false;
+    bool isButtonActive;
+    bool isFingerTop;
     final isBpmTrue = sensorData.bpm;
     final isSpO2True = sensorData.spo2;
 
-    if (isBpmTrue! >= 65.0 && isSpO2True! >= 90) {
+    if (isBpmTrue! >= 60.0 && isSpO2True! >= 90) {
       isButtonActive = true;
+      isFingerTop = false;
     } else {
       isButtonActive = false;
+      isFingerTop = true;
     }
 
     return Scaffold(
       body: Container(
+        // color: Colors.deepPurple,
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 colors: [Colors.pink.shade200, Colors.purple.shade900],
@@ -92,23 +100,32 @@ class _LiveScreenState extends State<LiveScreen> {
                         Text(
                           welcomeMsg,
                           style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          username,
-                          style: const TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
                         ),
+                        AnimatedTextKit(
+                          animatedTexts: [
+                            TypewriterAnimatedText(
+                              username,
+                              textStyle: const TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.yellowAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              speed: const Duration(milliseconds: 500),
+                            ),
+                          ],
+                          totalRepeatCount: 1,
+                          pause: const Duration(milliseconds: 100),
+                          displayFullTextOnTap: true,
+                          stopPauseOnTap: true,
+                        ),
                       ],
                     ),
-                    Image.asset(
-                      'assets/live.png',
-                      height: 60,
-                    ),
+                    SizedBox(
+                        height: 50,
+                        child: LottieBuilder.asset('assets/live.json')),
                   ],
                 ),
                 Expanded(
@@ -260,43 +277,64 @@ class _LiveScreenState extends State<LiveScreen> {
                     ],
                   ),
                 ),
-                ElevatedButton(
-                    onPressed: isButtonActive == true
-                        ? () {
-                            final sensorDataModel = SensorDataModel(
-                              bpm: sensorData.bpm.toString(),
-                              spo2: sensorData.spo2.toString(),
-                              tempC: sensorData.bodyTempC.toString(),
-                              tempF: sensorData.bodyTempF.toString(),
-                              timestamp: DateTime.now(),
-                            );
-                            Provider.of<SensorDataProvider>(context,
-                                    listen: false)
-                                .saveSensorData(sensorDataModel)
-                                .then((value) {
-                              setState(() {
-                                isButtonActive == false;
-                              });
-                              showFlushBar(
-                                context,
-                                "Your record has been saved successfully",
-                              );
-                            }).catchError((error) {
-                              showFlushBar(context, error);
-                            });
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.pink,
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(30),
-                    ),
-                    // child: const Icon(Icons.done_all),
+                Visibility(
+                  visible: isFingerTop,
+                  child: SizedBox(
+                    width: 200,
                     child: Column(
-                      children: const [
-                        Text('SAVE'),
+                      children: [
+                        Image.asset(
+                          'assets/sensor.png',
+                          height: 50,
+                        ),
+                        Text(
+                          "Please put your finger on the sensor",
+                          // style: TextStyle(color: Colors.yellowAccent),
+                          style: GoogleFonts.signikaNegative(
+                              color: Colors.yellowAccent),
+                          textAlign: TextAlign.center,
+                        ),
                       ],
-                    )),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: isButtonActive,
+                  child: AvatarGlow(
+                    endRadius: 50,
+                    glowColor: Colors.white,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final sensorDataModel = SensorDataModel(
+                          bpm: sensorData.bpm.toString(),
+                          spo2: sensorData.spo2.toString(),
+                          tempC: sensorData.bodyTempC.toString(),
+                          tempF: sensorData.bodyTempF.toString(),
+                          timestamp: DateTime.now(),
+                        );
+                        Provider.of<SensorDataProvider>(context, listen: false)
+                            .saveSensorData(sensorDataModel)
+                            .then((value) {
+                          setState(() {
+                            isButtonActive == false;
+                          });
+                          showFlushBar(
+                            context,
+                            "Your record has been saved successfully",
+                          );
+                        }).catchError((error) {
+                          showFlushBar(context, error);
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.pink,
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(25),
+                      ),
+                      child: const Text("SAVE"),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 50),
                 ListView(
                   scrollDirection: Axis.vertical,

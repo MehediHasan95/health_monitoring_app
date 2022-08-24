@@ -18,6 +18,20 @@ void showFlushBar(BuildContext context, String msg) => Flushbar(
       borderRadius: BorderRadius.circular(10),
     ).show(context);
 
+void showFlushBarQRCode(BuildContext context, String msg) => Flushbar(
+      icon: const Icon(
+        Icons.qr_code_scanner,
+        size: 25,
+        color: Colors.white,
+      ),
+      message: msg,
+      backgroundColor: Colors.grey.shade800,
+      duration: const Duration(milliseconds: 3000),
+      flushbarPosition: FlushbarPosition.TOP,
+      margin: const EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(10),
+    ).show(context);
+
 // SnackBar
 void showSnackBar(BuildContext context, String msg) =>
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));

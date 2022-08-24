@@ -48,7 +48,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                     'DOCTOR PORTAL',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 30,
+                        fontSize: 25,
                         color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
@@ -140,7 +140,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   ),
                   Text(
                     _errMsg,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.yellowAccent),
                     textAlign: TextAlign.center,
                   )
                 ],

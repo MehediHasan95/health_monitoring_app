@@ -12,7 +12,7 @@ class UserDataList extends StatelessWidget {
     return Center(
         child: Column(children: [
       Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4.0),
+        margin: const EdgeInsets.only(left: 5.0, right: 5.0),
         child: Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: const {
@@ -25,7 +25,7 @@ class UserDataList extends StatelessWidget {
           border: TableBorder.all(width: 0, color: Colors.white),
           children: [
             TableRow(
-                decoration: BoxDecoration(color: Colors.pink.shade200),
+                decoration: BoxDecoration(color: Colors.purple.shade900),
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),

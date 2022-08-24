@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
-import 'package:health_monitoring_app/view/chart.dart';
+import 'package:health_monitoring_app/view/barcode_generator.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/doctor_dashboard.dart';
-import 'package:health_monitoring_app/view/doctor_list.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
@@ -49,8 +48,7 @@ class MyApp extends StatelessWidget {
           AboutScreen.routeNames: (context) => const AboutScreen(),
           HealthTipsScreen.routeNames: (context) => const HealthTipsScreen(),
           SuccessfullScreen.routeNames: (context) => const SuccessfullScreen(),
-          DoctorList.routeNames: (context) => const DoctorList(),
-          Chart.routeNames: (context) => const Chart(),
+          BarcodeGenerate.routeNames: (context) => const BarcodeGenerate(),
         },
       ),
     );

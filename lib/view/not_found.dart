@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
-import 'package:lottie/lottie.dart';
 
 class NotFound extends StatefulWidget {
   const NotFound({Key? key}) : super(key: key);
@@ -33,9 +32,7 @@ class _NotFoundState extends State<NotFound> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                LottieBuilder.asset(
-                  'assets/notFound.json',
-                ),
+                Image.asset('assets/notFound.png'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
