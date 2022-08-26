@@ -6,6 +6,7 @@ import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class DoctorDashboard extends StatefulWidget {
   const DoctorDashboard({Key? key}) : super(key: key);
@@ -16,11 +17,20 @@ class DoctorDashboard extends StatefulWidget {
 }
 
 class _DoctorDashboardState extends State<DoctorDashboard> {
-  bool isVisible = false;
-  bool notFound = false;
-  bool isScan = true;
   final user = AuthService.currentUser;
   String scanQRCode = '';
+  double totalBpm = 0;
+  double totalSpo2 = 0;
+  double totalTempC = 0;
+  double totaltempF = 0;
+  double averageBpm = 0;
+  double averageSpo2 = 0;
+  double averageTempC = 0;
+  double averageTempF = 0;
+
+  bool isVisiable = false;
+  bool isNotFound = false;
+
   List<Object> _dataList = [];
 
   @override
@@ -30,7 +40,13 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Doctor Portal'),
+        title: const Text('Doctor Dashboard'),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 15.0),
+            child: Icon(Icons.logout),
+          )
+        ],
       ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.purple.shade900,
@@ -39,7 +55,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         onTap: (index) {
           _scanQR();
         },
-        height: 60,
+        height: 55,
         items: const [
           Padding(
             padding: EdgeInsets.all(5.0),
@@ -59,64 +75,156 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                 end: Alignment.bottomCenter)),
         child: SafeArea(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Not Found
               Visibility(
-                visible: isScan,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 250.0),
-                  child: Column(
-                    children: const [
-                      Text(
-                        'SCAN NOW',
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                      )
-                    ],
+                visible: isNotFound,
+                child: const Center(
+                  heightFactor: 10.0,
+                  child: Text(
+                    "Not Found",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
+
               Visibility(
-                visible: notFound,
+                visible: isVisiable,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 250.0),
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/notResult.png',
-                        height: 100,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    color: Colors.purple.shade900,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(13),
                       ),
-                      const Text(
-                        'Not Found',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, top: 20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                username,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Gender: $gender',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              const Text(
+                                "AVERAGE VALUE",
+                                style: TextStyle(color: Colors.pink),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              children: [
+                                Text(averageBpm.toStringAsFixed(2),
+                                    style: const TextStyle(
+                                      fontSize: 50,
+                                      color: Colors.white,
+                                    )),
+                                const Text(
+                                  'PR',
+                                  style: TextStyle(
+                                    height: 4,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(averageSpo2.toStringAsFixed(2),
+                                    style: const TextStyle(
+                                      fontSize: 50,
+                                      color: Colors.white,
+                                    )),
+                                const Text(
+                                  '%',
+                                  style: TextStyle(
+                                    height: 4,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              children: [
+                                Text(averageTempC.toStringAsFixed(2),
+                                    style: const TextStyle(
+                                      fontSize: 50,
+                                      color: Colors.white,
+                                    )),
+                                const Text(
+                                  '°C',
+                                  style: TextStyle(
+                                    height: 4,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(averageTempF.toStringAsFixed(2),
+                                    style: const TextStyle(
+                                      fontSize: 50,
+                                      color: Colors.white,
+                                    )),
+                                const Text(
+                                  '°F',
+                                  style: TextStyle(
+                                    height: 4,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20.0, right: 20.0, bottom: 10.0),
+                          child: Text(
+                            "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
               Visibility(
-                visible: isVisible,
+                visible: isVisiable,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(username,
-                              style: const TextStyle(
-                                  fontSize: 25, color: Colors.white)),
-                          Text(gender,
-                              style: const TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: isVisible,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20.0, bottom: 10.0),
                   child: Row(
                     children: const [
                       Expanded(
@@ -128,7 +236,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                         ),
                       ),
                       Text(
-                        "Data Analysis",
+                        'Data Sheet',
                         style: TextStyle(color: Colors.white),
                       ),
                       Expanded(
@@ -143,90 +251,6 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                   ),
                 ),
               ),
-              Visibility(
-                visible: isVisible,
-                child: Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            left: 5.0, right: 5.0, top: 5.0),
-                        child: Table(
-                          defaultVerticalAlignment:
-                              TableCellVerticalAlignment.middle,
-                          columnWidths: const {
-                            0: FlexColumnWidth(0.28),
-                            1: FlexColumnWidth(0.18),
-                            2: FlexColumnWidth(0.18),
-                            3: FlexColumnWidth(0.18),
-                            4: FlexColumnWidth(0.18),
-                          },
-                          border:
-                              TableBorder.all(width: 0, color: Colors.white),
-                          children: [
-                            TableRow(
-                                decoration:
-                                    const BoxDecoration(color: Colors.pink),
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text('Date & Time',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white))
-                                        ]),
-                                  ),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Text('HR',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white))
-                                      ]),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Text('OL',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white))
-                                      ]),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Text('BTC',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white))
-                                      ]),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Text(
-                                          'BTF',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                      ]),
-                                ]),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               Expanded(
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
@@ -234,105 +258,94 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                   itemCount: _dataList.length,
                   itemBuilder: (context, index) {
                     final getValue = _dataList[index] as SensorDataModel;
-                    // return UserDataList(_dataList[index] as SensorDataModel);
-                    return Column(
-                      children: [
-                        Center(
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Card(
+                        color: Colors.white,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20.0, top: 10.0, bottom: 20.0, right: 20.0),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    left: 5.0, right: 5.0),
-                                child: Table(
-                                  defaultVerticalAlignment:
-                                      TableCellVerticalAlignment.middle,
-                                  columnWidths: const {
-                                    0: FlexColumnWidth(0.28),
-                                    1: FlexColumnWidth(0.18),
-                                    2: FlexColumnWidth(0.18),
-                                    3: FlexColumnWidth(0.18),
-                                    4: FlexColumnWidth(0.18),
-                                  },
-                                  border: TableBorder.all(
-                                      width: 0, color: Colors.white),
-                                  children: [
-                                    TableRow(
-                                        decoration: BoxDecoration(
-                                            color: Colors.purple.shade900),
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10.0),
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                      DateFormat('dd/MM/yyyy')
-                                                          .format(getValue
-                                                              .timestamp!)
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white))
-                                                ]),
-                                          ),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text('${getValue.bpm}b',
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white))
-                                              ]),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text('${getValue.spo2}%',
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white))
-                                              ]),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text('${getValue.tempC}°C',
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white))
-                                              ]),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '${getValue.tempF}°F',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                              ]),
-                                        ]),
-                                  ],
-                                ),
+                              Text(
+                                  DateFormat('dd/MM/yyyy, hh:mm a')
+                                      .format(getValue.timestamp!)
+                                      .toString(),
+                                  style: const TextStyle(fontSize: 20)),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("HR:"),
+                                  LinearPercentIndicator(
+                                    animation: true,
+                                    animationDuration: 1000,
+                                    width: 200,
+                                    lineHeight: 15,
+                                    percent: double.parse(getValue.bpm!) / 160,
+                                    progressColor: Colors.green,
+                                    leading: Text("${getValue.bpm!}PR"),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("OL:"),
+                                  LinearPercentIndicator(
+                                    animation: true,
+                                    animationDuration: 1000,
+                                    width: 200,
+                                    lineHeight: 15,
+                                    percent: double.parse(getValue.spo2!) / 150,
+                                    progressColor: Colors.deepPurple,
+                                    leading: Text("${getValue.spo2!}%"),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("BTC:"),
+                                  LinearPercentIndicator(
+                                    animation: true,
+                                    animationDuration: 1000,
+                                    width: 200,
+                                    lineHeight: 15,
+                                    percent: double.parse(getValue.tempC!) / 80,
+                                    progressColor: Colors.deepOrange,
+                                    leading: Text("${getValue.tempC!}°C"),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("BTF:"),
+                                  LinearPercentIndicator(
+                                    animation: true,
+                                    animationDuration: 1000,
+                                    width: 200,
+                                    lineHeight: 15,
+                                    percent: double.parse(getValue.bpm!) / 200,
+                                    progressColor: Colors.deepPurple,
+                                    leading: Text("${getValue.tempF!}°F"),
+                                  )
+                                ],
                               ),
                             ],
                           ),
                         ),
-                        // ListTile(
-                        //   title: Text(getValue.bpm!),
-                        //   subtitle: Text(getValue.spo2!),
-                        //   trailing: Text(getValue.tempC!),
-                        // ),
-                      ],
+                      ),
                     );
                   },
                 ),
@@ -348,11 +361,14 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                 decoration: BoxDecoration(
                   color: Colors.purple.shade900,
                 ),
-                child: Center(
-                  child: Text(
-                    '${user?.email}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${user?.email}',
+                      style: const TextStyle(color: Colors.white),
+                    )
+                  ],
                 )),
             ListTile(
               onTap: _doctorSignOut,
@@ -379,20 +395,46 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         .orderBy('timestamp', descending: true)
         .get();
 
-    if (data.docs.isEmpty) {
-      isVisible = false;
-      notFound = true;
-      isScan = false;
+    if (data.docs.isNotEmpty) {
+      isVisiable = true;
+      isNotFound = false;
+      getUserProfileInfo(scanQRCode);
+      getAverageValue(scanQRCode);
     } else {
-      isVisible = true;
-      notFound = false;
-      isScan = false;
+      isNotFound = true;
     }
-    getUserProfileInfo(scanQRCode);
+
     setState(() {
       _dataList =
           List.from(data.docs.map((doc) => SensorDataModel.fromSnapshot(doc)));
     });
+  }
+
+  Future getAverageValue(String scanQRCode) async {
+    await DatabaseHelper.db
+        .collection('sensorData/$scanQRCode/userData')
+        .get()
+        .then(
+      (querySnapshot) {
+        int totalElements = querySnapshot.docs.length;
+        for (var elements in querySnapshot.docs) {
+          totalBpm = totalBpm + double.parse(elements.data()['bpm']);
+          totalSpo2 = totalSpo2 + double.parse(elements.data()['spo2']);
+          totalTempC = totalTempC + double.parse(elements.data()['tempC']);
+          totaltempF = totaltempF + double.parse(elements.data()['tempF']);
+          averageBpm = totalBpm / totalElements;
+          averageSpo2 = totalSpo2 / totalElements;
+          averageTempC = totalTempC / totalElements;
+          averageTempF = totaltempF / totalElements;
+        }
+        setState(() {
+          averageBpm;
+          averageSpo2;
+          averageTempC;
+          averageTempF;
+        });
+      },
+    );
   }
 
   String username = '';
@@ -408,7 +450,6 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         gender = querySnapshot.data()!['gender'];
       },
     );
-
     setState(() {
       username;
       gender;

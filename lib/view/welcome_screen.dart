@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
-import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -12,18 +11,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  // @override
-  // void initState() {
-  //   Future.delayed(Duration.zero, () {
-  //     if (AuthService.currentUser == null) {
-  //       Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
-  //     } else {
-  //       Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
-  //     }
-  //   });
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,16 +42,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
-              // const SizedBox(
-              //   height: 10,
-              // ),
-              // Image.asset('assets/welcome.png'),
-              LottieBuilder.asset(
-                'assets/welcome.json',
+              Image.asset(
+                'assets/welcome.png',
               ),
-              // const SizedBox(
-              //   height: 10,
-              // ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Colors.pink.shade200,

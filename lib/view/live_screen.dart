@@ -2,7 +2,7 @@ import 'dart:async' show StreamController, Timer;
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/controller/load_data.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
@@ -25,10 +25,9 @@ class LiveScreen extends StatefulWidget {
 
 class _LiveScreenState extends State<LiveScreen> {
   final StreamController<SensorData> _streamController = StreamController();
-
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 250), (timer) async {
+    Timer.periodic(const Duration(milliseconds: 500), (timer) async {
       _streamController.sink.add(await LoadData().loadSensorData());
     });
     super.initState();
@@ -78,9 +77,24 @@ class _LiveScreenState extends State<LiveScreen> {
       isFingerTop = true;
     }
 
+    // Life health condition check
+    String heartHealthMsg = "";
+    if (sensorData.bpm! > 180 && sensorData.spo2! > 100) {
+      heartHealthMsg = "High";
+    } else if (sensorData.bpm! >= 60 &&
+        sensorData.bpm! <= 100 &&
+        sensorData.avgSpo2! >= 95 &&
+        sensorData.spo2! <= 100) {
+      heartHealthMsg = "Excellent";
+    } else if (sensorData.bpm! < 60 &&
+        sensorData.bpm! > 42 &&
+        sensorData.spo2! < 95 &&
+        sensorData.spo2! > 88) {
+      heartHealthMsg = "Low";
+    }
+
     return Scaffold(
       body: Container(
-        // color: Colors.deepPurple,
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 colors: [Colors.pink.shade200, Colors.purple.shade900],
@@ -106,20 +120,17 @@ class _LiveScreenState extends State<LiveScreen> {
                         ),
                         AnimatedTextKit(
                           animatedTexts: [
-                            TypewriterAnimatedText(
+                            TyperAnimatedText(
                               username,
                               textStyle: const TextStyle(
                                 fontSize: 20.0,
-                                color: Colors.yellowAccent,
+                                color: Colors.deepPurple,
                                 fontWeight: FontWeight.bold,
                               ),
-                              speed: const Duration(milliseconds: 500),
+                              speed: const Duration(milliseconds: 250),
                             ),
                           ],
                           totalRepeatCount: 1,
-                          pause: const Duration(milliseconds: 100),
-                          displayFullTextOnTap: true,
-                          stopPauseOnTap: true,
                         ),
                       ],
                     ),
@@ -277,25 +288,20 @@ class _LiveScreenState extends State<LiveScreen> {
                     ],
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      "Heart Condition: ${heartHealthMsg == '' ? '?' : heartHealthMsg}",
+                      style: const TextStyle(
+                          color: Colors.greenAccent,
+                          fontWeight: FontWeight.bold)),
+                ),
                 Visibility(
                   visible: isFingerTop,
-                  child: SizedBox(
-                    width: 200,
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/sensor.png',
-                          height: 50,
-                        ),
-                        Text(
-                          "Please put your finger on the sensor",
-                          // style: TextStyle(color: Colors.yellowAccent),
-                          style: GoogleFonts.signikaNegative(
-                              color: Colors.yellowAccent),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
+                  child: const Text(
+                    "PUT YOUR FINGER ON THE SENSOR",
+                    style: TextStyle(color: Colors.amberAccent),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 Visibility(
@@ -305,6 +311,7 @@ class _LiveScreenState extends State<LiveScreen> {
                     glowColor: Colors.white,
                     child: ElevatedButton(
                       onPressed: () {
+                        HapticFeedback.heavyImpact();
                         final sensorDataModel = SensorDataModel(
                           bpm: sensorData.bpm.toString(),
                           spo2: sensorData.spo2.toString(),
@@ -373,7 +380,9 @@ class _LiveScreenState extends State<LiveScreen> {
       },
     );
     setState(() {
-      username;
+      if (username.isNotEmpty) {
+        username;
+      }
     });
   }
 
@@ -392,19 +401,13 @@ class _LiveScreenState extends State<LiveScreen> {
     }
   }
 
-  // int timeLeft = 10;
-  // void startCountDown() {
-  //   Timer.periodic(
-  //     const Duration(seconds: 1),
-  //     (timer) {
-  //       if (timeLeft > 0) {
-  //         setState(() {
-  //           timeLeft--;
-  //         });
-  //       } else {
-  //         timer.cancel();
-  //       }
-  //     },
-  //   );
+  // String greeting = "Save";
+  // late Timer _timer;
+  // void startTimer() {
+  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       greeting = "${DateTime.now().second}";
+  //     });
+  //   });
   // }
 }

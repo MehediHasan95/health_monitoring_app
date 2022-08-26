@@ -17,7 +17,7 @@ class AuthService {
       String username, String gender, String email, String password) async {
     final credential = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
-    await DatabaseHelper.createUserProfileInfo(username, gender);
+    await DatabaseHelper.createUserProfileInfo(username, gender, email);
     return credential.user?.uid;
   }
 

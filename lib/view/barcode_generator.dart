@@ -44,10 +44,6 @@ class _BarcodeGenerateState extends State<BarcodeGenerate> {
                 ),
               ),
             )),
-            const Text(
-              "SCAN ME",
-              style: TextStyle(color: Colors.white),
-            )
           ],
         ),
       ),

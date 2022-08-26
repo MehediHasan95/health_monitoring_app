@@ -34,9 +34,9 @@ class _HealthTipsScreenState extends State<HealthTipsScreen> {
                 children: [
                   // Card - 1
                   Card(
-                    color: Colors.amber.shade100,
+                    color: Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -75,9 +75,9 @@ class _HealthTipsScreenState extends State<HealthTipsScreen> {
                   ),
                   // Card - 2
                   Card(
-                    color: Colors.amber.shade100,
+                    color: Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -116,9 +116,9 @@ class _HealthTipsScreenState extends State<HealthTipsScreen> {
                   ),
                   // Card - 3
                   Card(
-                    color: Colors.amber.shade100,
+                    color: Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -157,9 +157,9 @@ class _HealthTipsScreenState extends State<HealthTipsScreen> {
                   ),
                   // Card - 4
                   Card(
-                    color: Colors.amber.shade100,
+                    color: Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

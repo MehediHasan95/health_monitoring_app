@@ -10,12 +10,13 @@ class DatabaseHelper {
 
   // Create User Database
   static Future<void> createUserProfileInfo(
-      String username, String gender) async {
+      String username, String gender, String email) async {
     final uid = AuthService.currentUser?.uid;
-    return await db
-        .collection(_usersProfileCollection)
-        .doc(uid!)
-        .set({"username": username, "gender": gender});
+    return await db.collection(_usersProfileCollection).doc(uid!).set({
+      "username": username,
+      "gender": gender,
+      "email": email,
+    });
   }
 
   static Future<void> addSensorData(SensorDataModel sensorDataModel) {
