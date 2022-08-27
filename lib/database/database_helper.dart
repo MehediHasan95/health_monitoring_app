@@ -9,13 +9,14 @@ class DatabaseHelper {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   // Create User Database
-  static Future<void> createUserProfileInfo(
-      String username, String gender, String email) async {
+  static Future<void> createUserProfileInfo(String username, String gender,
+      String email, DateTime dateOfBirth) async {
     final uid = AuthService.currentUser?.uid;
     return await db.collection(_usersProfileCollection).doc(uid!).set({
       "username": username,
       "gender": gender,
       "email": email,
+      "birthday": dateOfBirth,
     });
   }
 

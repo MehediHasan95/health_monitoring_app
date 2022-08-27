@@ -26,6 +26,8 @@ class _DashScreenState extends State<DashScreen> {
   final uid = AuthService.currentUser?.uid;
   // ignore: prefer_typing_uninitialized_variables
   var dayCount;
+  // ignore: prefer_typing_uninitialized_variables
+  var myAge;
   double totalBpm = 0;
   double totalSpo2 = 0;
   double totalTempC = 0;
@@ -414,6 +416,10 @@ class _DashScreenState extends State<DashScreen> {
                         gender,
                         style: const TextStyle(color: Colors.white),
                       ),
+                      Text(
+                        'Age: $myAge',
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ],
                   )),
               ListTile(
@@ -487,17 +493,23 @@ class _DashScreenState extends State<DashScreen> {
 
   String username = '';
   String gender = '';
+  DateTime? age;
   Future getUserProfileInfo() async {
     final uid = AuthService.currentUser?.uid;
     await DatabaseHelper.db.collection('userProfileInfo').doc(uid).get().then(
       (querySnapshot) {
         username = querySnapshot.data()!['username'];
         gender = querySnapshot.data()!['gender'];
+        age = querySnapshot.data()!['birthday'].toDate();
       },
     );
+    final today = DateTime.now();
+    double diffAge = today.difference(age!).inDays / 365;
+    myAge = diffAge.round();
     setState(() {
       username;
       gender;
+      age;
     });
   }
 

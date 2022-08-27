@@ -4,6 +4,7 @@ import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
 import 'package:health_monitoring_app/view/successfull_screen.dart';
+import 'package:intl/intl.dart';
 
 const gender = ["Male", "Female"];
 
@@ -23,6 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscureText = true;
   String _errMsg = '';
   String? selectGender;
+  DateTime? dateOfBirth;
 
   @override
   void dispose() {
@@ -195,6 +197,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     const SizedBox(
+                      height: 8,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: _showDatePickerDialog,
+                      icon: const Icon(Icons.date_range),
+                      label: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 14.0),
+                          child: Text(dateOfBirth == null
+                              ? "Date of Birth"
+                              : DateFormat("dd MMMM yyyy")
+                                  .format(dateOfBirth!))),
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        alignment: Alignment.centerLeft,
+                        primary: Colors.white30,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero),
+                        textStyle: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+
+                    const SizedBox(
                       height: 10,
                     ),
                     ElevatedButton(
@@ -250,8 +274,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _SignUpUser() async {
     if (_formKey.currentState!.validate()) {
       try {
-        final uid = await AuthService.signUpUser(_nameController.text,
-            selectGender!, _emailController.text, _passwordController.text);
+        final uid = await AuthService.signUpUser(
+          _nameController.text,
+          selectGender!,
+          dateOfBirth!,
+          _emailController.text,
+          _passwordController.text,
+        );
         if (uid != null) {
           // ignore: use_build_context_synchronously
           Navigator.popAndPushNamed(context, SuccessfullScreen.routeNames);
@@ -261,6 +290,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
           _errMsg = error.message!;
         });
       }
+    }
+  }
+
+  void _showDatePickerDialog() async {
+    final selectDateOfBirth = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime.now(),
+    );
+    if (selectDateOfBirth != null) {
+      setState(() {
+        dateOfBirth = selectDateOfBirth;
+      });
     }
   }
 }

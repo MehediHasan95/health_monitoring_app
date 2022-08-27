@@ -13,11 +13,12 @@ class AuthService {
   }
 
 // SignUp method
-  static Future<String?> signUpUser(
-      String username, String gender, String email, String password) async {
+  static Future<String?> signUpUser(String username, String gender,
+      DateTime dateOfBirth, String email, String password) async {
     final credential = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
-    await DatabaseHelper.createUserProfileInfo(username, gender, email);
+    await DatabaseHelper.createUserProfileInfo(
+        username, gender, email, dateOfBirth);
     return credential.user?.uid;
   }
 

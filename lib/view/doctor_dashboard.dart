@@ -31,6 +31,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
   bool isVisiable = false;
   bool isNotFound = false;
 
+  // ignore: prefer_typing_uninitialized_variables
+  var myAge;
+
   List<Object> _dataList = [];
 
   @override
@@ -116,7 +119,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                'Gender: $gender',
+                                'Age: $myAge | Gender: $gender',
                                 style: const TextStyle(
                                   color: Colors.white,
                                 ),
@@ -207,14 +210,15 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, bottom: 10.0),
-                          child: Text(
-                            "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
+                        const SizedBox(height: 20)
+                        // Padding(
+                        //   padding: const EdgeInsets.only(
+                        //       left: 20.0, right: 20.0, bottom: 10.0),
+                        //   child: Text(
+                        //     "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
+                        //     style: const TextStyle(color: Colors.white),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -439,6 +443,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
 
   String username = '';
   String gender = '';
+  DateTime? age;
   Future getUserProfileInfo(String scanQRCode) async {
     await DatabaseHelper.db
         .collection('userProfileInfo')
@@ -448,11 +453,16 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       (querySnapshot) {
         username = querySnapshot.data()!['username'];
         gender = querySnapshot.data()!['gender'];
+        age = querySnapshot.data()!['birthday'].toDate();
       },
     );
+    final today = DateTime.now();
+    double diffAge = today.difference(age!).inDays / 365;
+    myAge = diffAge.round();
     setState(() {
       username;
       gender;
+      age;
     });
   }
 
