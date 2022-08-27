@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
+import 'package:health_monitoring_app/provider/user_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
 import 'package:health_monitoring_app/view/barcode_generator.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (create) => SensorDataProvider()),
         ChangeNotifierProvider(create: (create) => DoctorProvider()),
+        ChangeNotifierProvider(create: (create) => UserProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

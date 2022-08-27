@@ -21,10 +21,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _obscureText = true;
-  String _errMsg = '';
   String? selectGender;
   DateTime? dateOfBirth;
+  String _errMsg = '';
+  bool _obscureText = true;
 
   @override
   void dispose() {

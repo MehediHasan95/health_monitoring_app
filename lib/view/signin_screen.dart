@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
+import 'package:health_monitoring_app/provider/user_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/forgot_password.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
 import 'package:health_monitoring_app/view/signup_screen.dart';
+import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -208,7 +210,16 @@ class _SignInScreenState extends State<SignInScreen> {
             _emailController.text, _passwordController.text);
         if (uid != null) {
           // ignore: use_build_context_synchronously
-          Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
+          final isUser = await Provider.of<UserProvider>(context, listen: false)
+              .isUser(AuthService.currentUser!.email!);
+          if (isUser) {
+            // ignore: use_build_context_synchronously
+            Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
+          } else {
+            setState(() {
+              _errMsg = "Sorry doctor you cannot log in as a user";
+            });
+          }
         }
       } on FirebaseAuthException catch (error) {
         setState(() {

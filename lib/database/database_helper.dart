@@ -38,6 +38,15 @@ class DatabaseHelper {
     return snapshot.docs.isNotEmpty;
   }
 
+// User login method
+  static Future<bool> isUser(String email) async {
+    final snapshot = await db
+        .collection(_usersProfileCollection)
+        .where('email', isEqualTo: email)
+        .get();
+    return snapshot.docs.isNotEmpty;
+  }
+
   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllDoctorData() =>
       db.collection(_doctorCollection).snapshots();
 }

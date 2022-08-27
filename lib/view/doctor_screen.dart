@@ -189,7 +189,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
             Navigator.pushReplacementNamed(context, DoctorDashboard.routeNames);
           } else {
             setState(() {
-              _errMsg = 'This panel is only for registered doctors';
+              _errMsg = 'Sorry user you cannot log in as a doctor';
             });
           }
         }
