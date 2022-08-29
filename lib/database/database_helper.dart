@@ -13,6 +13,7 @@ class DatabaseHelper {
       String email, DateTime dateOfBirth) async {
     final uid = AuthService.currentUser?.uid;
     return await db.collection(_usersProfileCollection).doc(uid!).set({
+      "uid": uid,
       "username": username,
       "gender": gender,
       "email": email,
@@ -47,6 +48,6 @@ class DatabaseHelper {
     return snapshot.docs.isNotEmpty;
   }
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllDoctorData() =>
-      db.collection(_doctorCollection).snapshots();
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllUserData() =>
+      db.collection(_usersProfileCollection).snapshots();
 }

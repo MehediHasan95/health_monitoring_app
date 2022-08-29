@@ -87,7 +87,7 @@ class _DashScreenState extends State<DashScreen> {
                                     animationDuration: 1000,
                                     radius: 55,
                                     lineWidth: 15,
-                                    percent: averageBpm / 200,
+                                    percent: averageBpm / 180,
                                     progressColor: Colors.pink,
                                     center: Column(
                                       mainAxisAlignment:
@@ -122,7 +122,7 @@ class _DashScreenState extends State<DashScreen> {
                                     animationDuration: 1000,
                                     radius: 55,
                                     lineWidth: 15,
-                                    percent: averageSpo2 / 120,
+                                    percent: averageSpo2 / 110,
                                     progressColor: Colors.deepPurple,
                                     center: Column(
                                       mainAxisAlignment:
@@ -163,7 +163,7 @@ class _DashScreenState extends State<DashScreen> {
                                     animationDuration: 1000,
                                     radius: 55,
                                     lineWidth: 15,
-                                    percent: averageTempC / 100,
+                                    percent: averageTempC / 50,
                                     progressColor: Colors.deepOrange,
                                     center: Column(
                                       mainAxisAlignment:
@@ -198,7 +198,7 @@ class _DashScreenState extends State<DashScreen> {
                                     animationDuration: 1000,
                                     radius: 55,
                                     lineWidth: 15,
-                                    percent: averageTempF / 200,
+                                    percent: averageTempF / 122,
                                     progressColor: Colors.cyan.shade900,
                                     center: Column(
                                       mainAxisAlignment:
@@ -261,7 +261,7 @@ class _DashScreenState extends State<DashScreen> {
                           AvatarGlow(
                             endRadius: 50,
                             glowColor: Colors.lightGreen,
-                            child: Text('${dayCount == 0 ? "T" : dayCount}',
+                            child: Text('$dayCount',
                                 style: const TextStyle(
                                     fontSize: 60,
                                     fontWeight: FontWeight.bold,
@@ -284,20 +284,34 @@ class _DashScreenState extends State<DashScreen> {
                 visible: isVisible,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 10.0),
+                      horizontal: 8.0, vertical: 8.0),
                   child: Row(
                     children: const [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Divider(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                       Text(
-                        'Daily activity report:',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
+                        'Daily Activity Reports',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Divider(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
+
               Visibility(
                 visible: isVisible,
                 child: Center(
@@ -406,20 +420,23 @@ class _DashScreenState extends State<DashScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      gender == "Male"
+                          ? Image.asset('assets/man.png', height: 80)
+                          : Image.asset('assets/woman.png', height: 80),
                       Text(
-                        username,
+                        username!,
                         style:
                             const TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        gender,
+                        gender!,
                         style: const TextStyle(color: Colors.white),
                       ),
-                      Text(
-                        'Age: $myAge',
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                      // Text(
+                      //   'Age: $myAge',
+                      //   style: const TextStyle(color: Colors.white),
+                      // ),
                     ],
                   )),
               ListTile(
@@ -491,8 +508,8 @@ class _DashScreenState extends State<DashScreen> {
     });
   }
 
-  String username = '';
-  String gender = '';
+  String? username = '';
+  String? gender = '';
   DateTime? age;
   Future getUserProfileInfo() async {
     final uid = AuthService.currentUser?.uid;
@@ -519,7 +536,6 @@ class _DashScreenState extends State<DashScreen> {
     await DatabaseHelper.db.collection('sensorData/$uid/userData').get().then(
       (querySnapshot) {
         int totalElements = querySnapshot.docs.length;
-        // dayCount = totalElements;
         for (var elements in querySnapshot.docs) {
           totalBpm = totalBpm + double.parse(elements.data()['bpm']);
           totalSpo2 = totalSpo2 + double.parse(elements.data()['spo2']);

@@ -1,12 +1,14 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
+import 'package:health_monitoring_app/provider/user_provider.dart';
+import 'package:health_monitoring_app/utils/constants.dart';
+import 'package:health_monitoring_app/view/scan_user_data.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class DoctorDashboard extends StatefulWidget {
   const DoctorDashboard({Key? key}) : super(key: key);
@@ -17,7 +19,8 @@ class DoctorDashboard extends StatefulWidget {
 }
 
 class _DoctorDashboardState extends State<DoctorDashboard> {
-  final user = AuthService.currentUser;
+  late UserProvider _userProvider;
+  final doctor = AuthService.currentUser;
   String scanQRCode = '';
   double totalBpm = 0;
   double totalSpo2 = 0;
@@ -27,14 +30,19 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
   double averageSpo2 = 0;
   double averageTempC = 0;
   double averageTempF = 0;
-
-  bool isVisiable = false;
-  bool isNotFound = false;
-
   // ignore: prefer_typing_uninitialized_variables
   var myAge;
-
   List<Object> _dataList = [];
+
+  bool isUserListVisible = true;
+  bool isDetailVisible = false;
+
+  @override
+  void didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context);
+    super.didChangeDependencies();
+    getDoctorProfileInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,31 +52,6 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text('Doctor Dashboard'),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 15.0),
-            child: Icon(Icons.logout),
-          )
-        ],
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.purple.shade900,
-        buttonBackgroundColor: Colors.pink,
-        color: Colors.purple.shade900,
-        onTap: (index) {
-          _scanQR();
-        },
-        height: 55,
-        items: const [
-          Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Icon(
-              Icons.qr_code_scanner,
-              color: Colors.white,
-              size: 35,
-            ),
-          )
-        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -80,20 +63,53 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Not Found
               Visibility(
-                visible: isNotFound,
-                child: const Center(
-                  heightFactor: 10.0,
-                  child: Text(
-                    "Not Found",
-                    style: TextStyle(color: Colors.white),
+                visible: isUserListVisible,
+                child: Expanded(
+                  flex: 1,
+                  child: ListView.builder(
+                    itemCount: _userProvider.userList.length,
+                    itemBuilder: (context, index) {
+                      final profile = _userProvider.userList[index];
+                      String? userID = profile.uid;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Card(
+                          color: Colors.white70,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          child: ListTile(
+                            onTap: () {
+                              _searchFromDB(userID!);
+                              setState(() {
+                                totalBpm = 0;
+                                totalSpo2 = 0;
+                                totalTempC = 0;
+                                totaltempF = 0;
+                              });
+                            },
+                            leading: profile.gender == 'Male'
+                                ? Image.asset('assets/man.png', height: 50)
+                                : Image.asset('assets/woman.png', height: 50),
+                            title: Text(
+                              "${profile.username!} (${profile.gender!})",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade800),
+                            ),
+                            subtitle: Text(profile.email!),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            iconColor: Colors.green,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
-
               Visibility(
-                visible: isVisiable,
+                visible: isDetailVisible,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
@@ -118,10 +134,28 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                'Age: $myAge | Gender: $gender',
-                                style: const TextStyle(
-                                  color: Colors.white,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Age: $myAge | Gender: $gender',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isUserListVisible = true;
+                                            isDetailVisible = false;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.arrow_back_ios,
+                                            color: Colors.red)),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 5),
@@ -211,21 +245,13 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                           ],
                         ),
                         const SizedBox(height: 20)
-                        // Padding(
-                        //   padding: const EdgeInsets.only(
-                        //       left: 20.0, right: 20.0, bottom: 10.0),
-                        //   child: Text(
-                        //     "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
-                        //     style: const TextStyle(color: Colors.white),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
                 ),
               ),
               Visibility(
-                visible: isVisiable,
+                visible: isDetailVisible,
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: 20.0, right: 20.0, bottom: 10.0),
@@ -240,7 +266,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                         ),
                       ),
                       Text(
-                        'Data Sheet',
+                        'Daily Reports',
                         style: TextStyle(color: Colors.white),
                       ),
                       Expanded(
@@ -255,103 +281,114 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                   ),
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: _dataList.length,
-                  itemBuilder: (context, index) {
-                    final getValue = _dataList[index] as SensorDataModel;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Card(
-                        color: Colors.white,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
+              Visibility(
+                visible: isDetailVisible,
+                child: Expanded(
+                  flex: 1,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: _dataList.length,
+                    itemBuilder: (context, index) {
+                      final getValue = _dataList[index] as SensorDataModel;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Card(
+                          color: Colors.white,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20.0,
+                                top: 10.0,
+                                bottom: 20.0,
+                                right: 20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    DateFormat('dd/MM/yyyy, hh:mm a')
+                                        .format(getValue.timestamp!)
+                                        .toString(),
+                                    style: const TextStyle(fontSize: 20)),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("HR:"),
+                                    LinearPercentIndicator(
+                                      animation: true,
+                                      animationDuration: 1000,
+                                      width: 200,
+                                      lineHeight: 15,
+                                      percent:
+                                          double.parse(getValue.bpm!) / 180,
+                                      progressColor: Colors.green,
+                                      leading: Text("${getValue.bpm!}PR"),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("OL:"),
+                                    LinearPercentIndicator(
+                                      animation: true,
+                                      animationDuration: 1000,
+                                      width: 200,
+                                      lineHeight: 15,
+                                      percent:
+                                          double.parse(getValue.spo2!) / 110,
+                                      progressColor: Colors.deepPurple,
+                                      leading: Text("${getValue.spo2!}%"),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("BTC:"),
+                                    LinearPercentIndicator(
+                                      animation: true,
+                                      animationDuration: 1000,
+                                      width: 200,
+                                      lineHeight: 15,
+                                      percent:
+                                          double.parse(getValue.tempC!) / 50,
+                                      progressColor: Colors.amberAccent,
+                                      leading: Text("${getValue.tempC!}°C"),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("BTF:"),
+                                    LinearPercentIndicator(
+                                      animation: true,
+                                      animationDuration: 1000,
+                                      width: 200,
+                                      lineHeight: 15,
+                                      percent:
+                                          double.parse(getValue.bpm!) / 122,
+                                      progressColor: Colors.pink,
+                                      leading: Text("${getValue.tempF!}°F"),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, top: 10.0, bottom: 20.0, right: 20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  DateFormat('dd/MM/yyyy, hh:mm a')
-                                      .format(getValue.timestamp!)
-                                      .toString(),
-                                  style: const TextStyle(fontSize: 20)),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("HR:"),
-                                  LinearPercentIndicator(
-                                    animation: true,
-                                    animationDuration: 1000,
-                                    width: 200,
-                                    lineHeight: 15,
-                                    percent: double.parse(getValue.bpm!) / 160,
-                                    progressColor: Colors.green,
-                                    leading: Text("${getValue.bpm!}PR"),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("OL:"),
-                                  LinearPercentIndicator(
-                                    animation: true,
-                                    animationDuration: 1000,
-                                    width: 200,
-                                    lineHeight: 15,
-                                    percent: double.parse(getValue.spo2!) / 150,
-                                    progressColor: Colors.deepPurple,
-                                    leading: Text("${getValue.spo2!}%"),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("BTC:"),
-                                  LinearPercentIndicator(
-                                    animation: true,
-                                    animationDuration: 1000,
-                                    width: 200,
-                                    lineHeight: 15,
-                                    percent: double.parse(getValue.tempC!) / 80,
-                                    progressColor: Colors.deepOrange,
-                                    leading: Text("${getValue.tempC!}°C"),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("BTF:"),
-                                  LinearPercentIndicator(
-                                    animation: true,
-                                    animationDuration: 1000,
-                                    width: 200,
-                                    lineHeight: 15,
-                                    percent: double.parse(getValue.bpm!) / 200,
-                                    progressColor: Colors.deepPurple,
-                                    leading: Text("${getValue.tempF!}°F"),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
@@ -368,12 +405,26 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    doctorGender == 'Male'
+                        ? Image.asset('assets/man-doctor.png', height: 80)
+                        : Image.asset('assets/woman-doctor.png', height: 80),
                     Text(
-                      '${user?.email}',
+                      '$doctorName',
                       style: const TextStyle(color: Colors.white),
-                    )
+                    ),
+                    Text(
+                      '$doctorEmail',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ],
                 )),
+            ListTile(
+              onTap: (() {
+                Navigator.popAndPushNamed(context, ScanUserData.routeNames);
+              }),
+              leading: const Icon(Icons.qr_code_scanner),
+              title: const Text('Scan Now'),
+            ),
             ListTile(
               onTap: _doctorSignOut,
               leading: const Icon(Icons.logout),
@@ -391,32 +442,34 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     });
   }
 
-  void _searchFromDB(String scanQRCode) async {
+  void _searchFromDB(String userID) async {
     var data = await DatabaseHelper.db
         .collection('sensorData')
-        .doc(scanQRCode)
+        .doc(userID)
         .collection('userData')
         .orderBy('timestamp', descending: true)
         .get();
 
     if (data.docs.isNotEmpty) {
-      isVisiable = true;
-      isNotFound = false;
-      getUserProfileInfo(scanQRCode);
-      getAverageValue(scanQRCode);
+      getUserProfileInfo(userID);
+      getAverageValue(userID);
+      isDetailVisible = true;
+      isUserListVisible = false;
     } else {
-      isNotFound = true;
+      // ignore: use_build_context_synchronously
+      showNotFoundFlushBar(context, 'Not found');
+      isUserListVisible = true;
+      isDetailVisible = false;
     }
-
     setState(() {
       _dataList =
           List.from(data.docs.map((doc) => SensorDataModel.fromSnapshot(doc)));
     });
   }
 
-  Future getAverageValue(String scanQRCode) async {
+  Future getAverageValue(String userID) async {
     await DatabaseHelper.db
-        .collection('sensorData/$scanQRCode/userData')
+        .collection('sensorData/$userID/userData')
         .get()
         .then(
       (querySnapshot) {
@@ -441,13 +494,14 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     );
   }
 
+// User Profile info
   String username = '';
   String gender = '';
   DateTime? age;
-  Future getUserProfileInfo(String scanQRCode) async {
+  Future getUserProfileInfo(String userID) async {
     await DatabaseHelper.db
         .collection('userProfileInfo')
-        .doc(scanQRCode)
+        .doc(userID)
         .get()
         .then(
       (querySnapshot) {
@@ -466,10 +520,22 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     });
   }
 
-// QR CODE Scan method
-  void _scanQR() async {
-    scanQRCode = await FlutterBarcodeScanner.scanBarcode(
-        "#00FF00", "CLOSE", true, ScanMode.QR);
-    return _searchFromDB(scanQRCode);
+  String? doctorName = '';
+  String? doctorGender = '';
+  String? doctorEmail = '';
+  Future getDoctorProfileInfo() async {
+    final uid = AuthService.currentUser?.uid;
+    await DatabaseHelper.db.collection('doctor').doc(uid).get().then(
+      (querySnapshot) {
+        doctorName = querySnapshot.data()!['name'];
+        doctorGender = querySnapshot.data()!['gender'];
+        doctorEmail = querySnapshot.data()!['email'];
+      },
+    );
+    setState(() {
+      doctorName;
+      doctorGender;
+      doctorEmail;
+    });
   }
 }

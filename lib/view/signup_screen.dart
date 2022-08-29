@@ -85,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           fillColor: Colors.white30,
                           filled: true,
-                          hintText: 'Username',
+                          hintText: 'Name',
                           hintStyle: TextStyle(color: Colors.white)),
                       cursorColor: Colors.white,
                       validator: (value) {
@@ -205,7 +205,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       label: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 14.0),
                           child: Text(dateOfBirth == null
-                              ? "Date of Birth"
+                              ? "Birthday"
                               : DateFormat("dd MMMM yyyy")
                                   .format(dateOfBirth!))),
                       style: ElevatedButton.styleFrom(

@@ -10,6 +10,7 @@ import 'package:health_monitoring_app/view/doctor_dashboard.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
+import 'package:health_monitoring_app/view/scan_user_data.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
 import 'package:health_monitoring_app/view/signup_screen.dart';
 import 'package:health_monitoring_app/view/splash_screen.dart';
@@ -31,9 +32,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (create) => SensorDataProvider()),
-        ChangeNotifierProvider(create: (create) => DoctorProvider()),
-        ChangeNotifierProvider(create: (create) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => SensorDataProvider()),
+        ChangeNotifierProvider(create: (context) => DoctorProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
           HealthTipsScreen.routeNames: (context) => const HealthTipsScreen(),
           SuccessfullScreen.routeNames: (context) => const SuccessfullScreen(),
           BarcodeGenerate.routeNames: (context) => const BarcodeGenerate(),
+          ScanUserData.routeNames: (context) => const ScanUserData(),
         },
       ),
     );

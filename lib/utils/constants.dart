@@ -5,28 +5,29 @@ const String emptyFieldErrMsg = 'This field cannot be empty';
 
 // Flushbar
 void showFlushBar(BuildContext context, String msg) => Flushbar(
-      icon: const Icon(
+      icon: Icon(
         Icons.cloud_done,
         size: 25,
-        color: Colors.white,
+        color: Colors.grey.shade800,
       ),
       message: msg,
-      backgroundColor: Colors.grey.shade800,
+      messageColor: Colors.grey.shade800,
+      backgroundColor: Colors.greenAccent,
       duration: const Duration(milliseconds: 4200),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(10),
     ).show(context);
 
-void showFlushBarQRCode(BuildContext context, String msg) => Flushbar(
+void showNotFoundFlushBar(BuildContext context, String msg) => Flushbar(
       icon: const Icon(
-        Icons.qr_code_scanner,
+        Icons.cancel,
         size: 25,
         color: Colors.white,
       ),
       message: msg,
-      backgroundColor: Colors.grey.shade800,
-      duration: const Duration(milliseconds: 3000),
+      backgroundColor: Colors.redAccent,
+      duration: const Duration(milliseconds: 1500),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(10),

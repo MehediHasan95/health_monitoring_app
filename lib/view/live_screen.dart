@@ -124,7 +124,7 @@ class _LiveScreenState extends State<LiveScreen> {
                               username,
                               textStyle: const TextStyle(
                                 fontSize: 20.0,
-                                color: Colors.deepPurple,
+                                color: Colors.amberAccent,
                                 fontWeight: FontWeight.bold,
                               ),
                               speed: const Duration(milliseconds: 250),
