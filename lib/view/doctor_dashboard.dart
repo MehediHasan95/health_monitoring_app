@@ -153,8 +153,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                             isDetailVisible = false;
                                           });
                                         },
+                                        tooltip: "Go Back",
                                         icon: const Icon(Icons.arrow_back_ios,
-                                            color: Colors.red)),
+                                            color: Colors.pink)),
                                   ],
                                 ),
                               ),
@@ -294,10 +295,10 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Card(
-                          color: Colors.white,
+                          color: Colors.white70,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
-                              Radius.circular(10),
+                              Radius.circular(15),
                             ),
                           ),
                           child: Padding(
@@ -309,78 +310,148 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    DateFormat('dd/MM/yyyy, hh:mm a')
-                                        .format(getValue.timestamp!)
-                                        .toString(),
-                                    style: const TextStyle(fontSize: 20)),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text("HR:"),
-                                    LinearPercentIndicator(
-                                      animation: true,
-                                      animationDuration: 1000,
-                                      width: 200,
-                                      lineHeight: 15,
-                                      percent:
-                                          double.parse(getValue.bpm!) / 180,
-                                      progressColor: Colors.green,
-                                      leading: Text("${getValue.bpm!}PR"),
-                                    )
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: Text(
+                                      DateFormat('dd/MM/yyyy, hh:mm a')
+                                          .format(getValue.timestamp!)
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.grey.shade800)),
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text("OL:"),
-                                    LinearPercentIndicator(
-                                      animation: true,
-                                      animationDuration: 1000,
-                                      width: 200,
-                                      lineHeight: 15,
-                                      percent:
-                                          double.parse(getValue.spo2!) / 110,
-                                      progressColor: Colors.deepPurple,
-                                      leading: Text("${getValue.spo2!}%"),
-                                    )
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("HR:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800)),
+                                      LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 1000,
+                                        width: 200,
+                                        lineHeight: 15,
+                                        percent:
+                                            double.parse(getValue.bpm!) / 180,
+                                        backgroundColor: Colors.white30,
+                                        linearGradient: LinearGradient(
+                                            colors: [
+                                              Colors.red,
+                                              Colors.red.shade900
+                                            ],
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.bottomRight),
+                                        leading: Text("${getValue.bpm!}PR",
+                                            style: TextStyle(
+                                                color: Colors.grey.shade800)),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text("BTC:"),
-                                    LinearPercentIndicator(
-                                      animation: true,
-                                      animationDuration: 1000,
-                                      width: 200,
-                                      lineHeight: 15,
-                                      percent:
-                                          double.parse(getValue.tempC!) / 50,
-                                      progressColor: Colors.amberAccent,
-                                      leading: Text("${getValue.tempC!}°C"),
-                                    )
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("OL:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800)),
+                                      LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 1000,
+                                        width: 200,
+                                        lineHeight: 15,
+                                        percent:
+                                            double.parse(getValue.spo2!) / 110,
+                                        backgroundColor: Colors.white30,
+                                        linearGradient: LinearGradient(
+                                            colors: [
+                                              Colors.green,
+                                              Colors.green.shade900
+                                            ],
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.bottomRight),
+                                        // progressColor: Colors.lightGreen,
+                                        leading: Text("${getValue.spo2!}%",
+                                            style: TextStyle(
+                                                color: Colors.grey.shade800)),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text("BTF:"),
-                                    LinearPercentIndicator(
-                                      animation: true,
-                                      animationDuration: 1000,
-                                      width: 200,
-                                      lineHeight: 15,
-                                      percent:
-                                          double.parse(getValue.bpm!) / 122,
-                                      progressColor: Colors.pink,
-                                      leading: Text("${getValue.tempF!}°F"),
-                                    )
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("BTC:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800)),
+                                      LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 1000,
+                                        width: 200,
+                                        lineHeight: 15,
+                                        percent:
+                                            double.parse(getValue.tempC!) / 50,
+                                        backgroundColor: Colors.white30,
+                                        linearGradient: LinearGradient(
+                                            colors: [
+                                              Colors.blue,
+                                              Colors.blue.shade900
+                                            ],
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.bottomRight),
+                                        // progressColor: Colors.blueAccent,
+                                        leading: Text("${getValue.tempC!}°C",
+                                            style: TextStyle(
+                                                color: Colors.grey.shade800)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("BTF:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800)),
+                                      LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 1000,
+                                        width: 200,
+                                        lineHeight: 15,
+                                        linearGradient: LinearGradient(
+                                          colors: [
+                                            Colors.amber,
+                                            Colors.amber.shade800
+                                          ],
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        percent:
+                                            double.parse(getValue.bpm!) / 122,
+                                        backgroundColor: Colors.white30,
+                                        // progressColor: Colors.amberAccent,
+                                        leading: Text("${getValue.tempF!}°F",
+                                            style: TextStyle(
+                                                color: Colors.grey.shade800)),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -408,12 +479,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                     doctorGender == 'Male'
                         ? Image.asset('assets/man-doctor.png', height: 80)
                         : Image.asset('assets/woman-doctor.png', height: 80),
+                    const SizedBox(height: 10),
                     Text(
                       '$doctorName',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      '$doctorEmail',
                       style: const TextStyle(color: Colors.white),
                     ),
                   ],

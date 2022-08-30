@@ -35,7 +35,11 @@ class _SignInScreenState extends State<SignInScreen> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(

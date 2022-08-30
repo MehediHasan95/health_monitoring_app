@@ -72,6 +72,7 @@ class _LiveScreenState extends State<LiveScreen> {
     if (isBpmTrue! >= 60.0 && isSpO2True! >= 90) {
       isButtonActive = true;
       isFingerTop = false;
+      startTimer();
     } else {
       isButtonActive = false;
       isFingerTop = true;
@@ -401,13 +402,16 @@ class _LiveScreenState extends State<LiveScreen> {
     }
   }
 
-  // String greeting = "Save";
-  // late Timer _timer;
-  // void startTimer() {
-  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     setState(() {
-  //       greeting = "${DateTime.now().second}";
-  //     });
-  //   });
-  // }
+  int timeLeft = 10;
+  void startTimer() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (timeLeft > 0) {
+        setState(() {
+          timeLeft--;
+        });
+      } else {
+        timer.cancel();
+      }
+    });
+  }
 }
