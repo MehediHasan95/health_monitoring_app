@@ -99,7 +99,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                   color: Colors.grey.shade800),
                             ),
                             subtitle: Text(profile.email!),
-                            trailing: const Icon(Icons.arrow_forward_ios),
+                            trailing:
+                                const Icon(Icons.keyboard_double_arrow_right),
                             iconColor: Colors.green,
                           ),
                         ),
@@ -127,12 +128,25 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                username,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
+                              Row(
+                                children: [
+                                  Text(
+                                    username,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  gender == 'Male'
+                                      ? const Icon(
+                                          Icons.male,
+                                          color: Colors.white,
+                                        )
+                                      : const Icon(
+                                          Icons.female,
+                                          color: Colors.white,
+                                        )
+                                ],
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 20.0),
@@ -154,7 +168,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           });
                                         },
                                         tooltip: "Go Back",
-                                        icon: const Icon(Icons.arrow_back_ios,
+                                        icon: const Icon(
+                                            Icons.keyboard_double_arrow_left,
                                             color: Colors.pink)),
                                   ],
                                 ),
@@ -245,7 +260,23 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20.0, right: 20.0, bottom: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "From: ${create!}",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
+                                style: const TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -565,7 +596,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
 // User Profile info
   String username = '';
   String gender = '';
+  String? create = '';
   DateTime? age;
+  DateTime? createDate;
   Future getUserProfileInfo(String userID) async {
     await DatabaseHelper.db
         .collection('userProfileInfo')
@@ -576,8 +609,11 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         username = querySnapshot.data()!['username'];
         gender = querySnapshot.data()!['gender'];
         age = querySnapshot.data()!['birthday'].toDate();
+        createDate = querySnapshot.data()!['create'].toDate();
       },
     );
+    create = DateFormat('dd/MM/yyyy').format(createDate!).toString();
+
     final today = DateTime.now();
     double diffAge = today.difference(age!).inDays / 365;
     myAge = diffAge.round();
@@ -585,6 +621,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       username;
       gender;
       age;
+      createDate;
     });
   }
 
