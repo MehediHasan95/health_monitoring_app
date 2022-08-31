@@ -81,8 +81,7 @@ class _NotFoundState extends State<NotFound> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, DashScreen.routeNames);
+                          Navigator.pushNamed(context, DashScreen.routeNames);
                         },
                         child: const Text('Dashboard'),
                       ),

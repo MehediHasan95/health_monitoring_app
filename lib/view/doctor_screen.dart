@@ -201,7 +201,8 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   .isDoctor(AuthService.currentUser!.email!);
           if (isDoctor) {
             // ignore: use_build_context_synchronously
-            Navigator.pushReplacementNamed(context, DoctorDashboard.routeNames);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                DoctorDashboard.routeNames, (Route<dynamic> route) => false);
           } else {
             setState(() {
               _errMsg = 'Sorry user you cannot log in as a doctor';

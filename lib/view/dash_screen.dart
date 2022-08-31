@@ -485,7 +485,8 @@ class _DashScreenState extends State<DashScreen> {
 // SignOut method
   void _signOut() {
     AuthService.signOut().then((_) {
-      Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          WelcomeScreen.routeNames, (Route<dynamic> route) => false);
     });
   }
 
@@ -501,7 +502,6 @@ class _DashScreenState extends State<DashScreen> {
     if (data.docs.isNotEmpty) {
       isVisible = true;
     }
-
     setState(() {
       _dataList =
           List.from(data.docs.map((doc) => SensorDataModel.fromSnapshot(doc)));

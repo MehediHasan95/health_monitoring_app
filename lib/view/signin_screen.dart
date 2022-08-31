@@ -218,7 +218,8 @@ class _SignInScreenState extends State<SignInScreen> {
               .isUser(AuthService.currentUser!.email!);
           if (isUser) {
             // ignore: use_build_context_synchronously
-            Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                LiveScreen.routeNames, (Route<dynamic> route) => false);
           } else {
             setState(() {
               _errMsg = "Sorry doctor you cannot log in as a user";

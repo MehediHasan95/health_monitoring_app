@@ -6,29 +6,15 @@ const String emptyFieldErrMsg = 'This field cannot be empty';
 
 // Flushbar
 void showFlushBar(BuildContext context, String msg) => Flushbar(
-      icon: Icon(
-        Icons.sentiment_very_satisfied,
-        size: 25,
-        color: Colors.grey.shade800,
-      ),
-      message: msg,
-      messageColor: Colors.grey.shade800,
-      backgroundColor: Colors.greenAccent,
-      duration: const Duration(milliseconds: 4200),
-      flushbarPosition: FlushbarPosition.TOP,
-      margin: const EdgeInsets.all(10),
-      borderRadius: BorderRadius.circular(10),
-    ).show(context);
-
-void showNotFoundFlushBar(BuildContext context, String msg) => Flushbar(
       icon: const Icon(
-        Icons.sentiment_very_dissatisfied,
+        Icons.sentiment_very_satisfied,
         size: 25,
         color: Colors.white,
       ),
       message: msg,
-      backgroundColor: Colors.redAccent,
-      duration: const Duration(milliseconds: 1500),
+      messageColor: Colors.white,
+      backgroundColor: Colors.grey.shade900,
+      duration: const Duration(milliseconds: 4200),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(10),
@@ -42,10 +28,34 @@ void showSnackBar(BuildContext context, String msg) =>
 Future<bool?> showExitWarning(BuildContext context) async => showDialog<bool>(
     context: context,
     builder: (context) => CupertinoAlertDialog(
-          title:
-              Text('Warning!', style: TextStyle(color: Colors.grey.shade800)),
+          title: const Icon(Icons.warning),
           content: Text(
-            'You must sign out first',
-            style: TextStyle(color: Colors.grey.shade700),
+            'Do you want to exit app',
+            style: TextStyle(color: Colors.grey.shade800, fontSize: 18),
           ),
+          actions: [
+            CupertinoDialogAction(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('NO')),
+            CupertinoDialogAction(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('YES')),
+          ],
         ));
+
+// Show not found warning
+Future<bool?> showNotFoundWarning(BuildContext context) async =>
+    showDialog<bool>(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: const Icon(Icons.sentiment_very_dissatisfied),
+              content: Text(
+                'No Information Found',
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 18),
+              ),
+              actions: [
+                CupertinoDialogAction(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text('NO')),
+              ],
+            ));

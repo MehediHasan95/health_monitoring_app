@@ -22,10 +22,9 @@ class DatabaseHelper {
   }
 
   static Future<void> addSensorData(SensorDataModel sensorDataModel) {
-    final uid = AuthService.currentUser?.uid;
     return db
         .collection(_sensorDataCollection)
-        .doc(uid)
+        .doc(_userID)
         .collection('userData')
         .add(sensorDataModel.toJson());
   }
@@ -48,8 +47,7 @@ class DatabaseHelper {
     return snapshot.docs.isNotEmpty;
   }
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllUserData() => db
-      .collection(_usersProfileCollection)
-      .orderBy('create', descending: true)
-      .snapshots();
+// Get all user data
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllUserData() =>
+      db.collection(_usersProfileCollection).snapshots();
 }

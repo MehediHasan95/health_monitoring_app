@@ -529,7 +529,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
 
   void _doctorSignOut() {
     AuthService.signOut().then((_) {
-      Navigator.pushReplacementNamed(context, WelcomeScreen.routeNames);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          WelcomeScreen.routeNames, (Route<dynamic> route) => false);
     });
   }
 
@@ -548,7 +549,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       isUserListVisible = false;
     } else {
       // ignore: use_build_context_synchronously
-      showNotFoundFlushBar(context, 'No information found');
+      showNotFoundWarning(context);
       isUserListVisible = true;
       isDetailVisible = false;
     }

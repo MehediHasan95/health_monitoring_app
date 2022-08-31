@@ -288,7 +288,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
         if (uid != null) {
           // ignore: use_build_context_synchronously
-          Navigator.pushReplacementNamed(context, SuccessfullScreen.routeNames);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              SuccessfullScreen.routeNames, (Route<dynamic> route) => false);
         }
       } on FirebaseAuthException catch (error) {
         setState(() {

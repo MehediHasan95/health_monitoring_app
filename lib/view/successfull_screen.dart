@@ -15,7 +15,8 @@ class _SuccessfullScreenState extends State<SuccessfullScreen> {
   @override
   void initState() {
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, LiveScreen.routeNames);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          LiveScreen.routeNames, (Route<dynamic> route) => false);
     });
     super.initState();
   }

@@ -22,6 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 }
 
 class MyApp extends StatelessWidget {
