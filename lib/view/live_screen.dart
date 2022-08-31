@@ -35,28 +35,48 @@ class _LiveScreenState extends State<LiveScreen> {
     greetingMessage();
   }
 
+  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: const Text('Do you want to exit this app'),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('No')),
+              TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Yes')),
+            ],
+          ));
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: StreamBuilder<SensorData>(
-          stream: _streamController.stream,
-          builder: (context, snapdata) {
-            switch (snapdata.connectionState) {
-              case ConnectionState.waiting:
-                return const NotFound();
-              default:
-                if (snapdata.hasError) {
-                  return const Center(
-                      child: Text(
-                    'Something went wrong!',
-                    style: TextStyle(color: Colors.redAccent),
-                  ));
-                } else {
-                  return DisplayDataWidget(snapdata.data!);
-                }
-            }
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await showWarning(context);
+        return shouldPop ?? false;
+      },
+      child: Scaffold(
+        body: Center(
+          child: StreamBuilder<SensorData>(
+            stream: _streamController.stream,
+            builder: (context, snapdata) {
+              switch (snapdata.connectionState) {
+                case ConnectionState.waiting:
+                  return const NotFound();
+                default:
+                  if (snapdata.hasError) {
+                    return const Center(
+                        child: Text(
+                      'Something went wrong!',
+                      style: TextStyle(color: Colors.redAccent),
+                    ));
+                  } else {
+                    return DisplayDataWidget(snapdata.data!);
+                  }
+              }
+            },
+          ),
         ),
       ),
     );

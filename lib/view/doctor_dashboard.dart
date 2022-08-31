@@ -44,490 +44,514 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     getDoctorProfileInfo();
   }
 
+  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: const Text('Do you want to exit this app'),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('No')),
+              TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Yes')),
+            ],
+          ));
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text('Doctor Dashboard'),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.pink.shade200, Colors.purple.shade900],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter)),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Visibility(
-                visible: isUserListVisible,
-                child: Expanded(
-                  flex: 1,
-                  child: ListView.builder(
-                    itemCount: _userProvider.userList.length,
-                    itemBuilder: (context, index) {
-                      final profile = _userProvider.userList[index];
-                      String? userID = profile.uid;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Card(
-                          color: Colors.white70,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              _searchFromDB(userID!);
-                              setState(() {
-                                totalBpm = 0;
-                                totalSpo2 = 0;
-                                totalTempC = 0;
-                                totaltempF = 0;
-                              });
-                            },
-                            leading: profile.gender == 'Male'
-                                ? Image.asset('assets/man.png', height: 50)
-                                : Image.asset('assets/woman.png', height: 50),
-                            title: Text(
-                              "${profile.username!} (${profile.gender!})",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade800),
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await showWarning(context);
+        return shouldPop ?? false;
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: const Text('Doctor Dashboard'),
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.pink.shade200, Colors.purple.shade900],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter)),
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Visibility(
+                  visible: isUserListVisible,
+                  child: Expanded(
+                    flex: 1,
+                    child: ListView.builder(
+                      itemCount: _userProvider.userList.length,
+                      itemBuilder: (context, index) {
+                        final profile = _userProvider.userList[index];
+                        String? userID = profile.uid;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Card(
+                            color: Colors.white70,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                             ),
-                            subtitle: Text(profile.email!),
-                            trailing: const Icon(Icons.arrow_forward_ios),
-                            iconColor: Colors.green,
+                            child: ListTile(
+                              onTap: () {
+                                _searchFromDB(userID!);
+                                setState(() {
+                                  totalBpm = 0;
+                                  totalSpo2 = 0;
+                                  totalTempC = 0;
+                                  totaltempF = 0;
+                                });
+                              },
+                              leading: profile.gender == 'Male'
+                                  ? Image.asset('assets/man.png', height: 50)
+                                  : Image.asset('assets/woman.png', height: 50),
+                              title: Text(
+                                "${profile.username!} (${profile.gender!})",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade800),
+                              ),
+                              subtitle: Text(profile.email!),
+                              trailing: const Icon(Icons.arrow_forward_ios),
+                              iconColor: Colors.green,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              Visibility(
-                visible: isDetailVisible,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: Colors.purple.shade900,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(13),
+                Visibility(
+                  visible: isDetailVisible,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      color: Colors.purple.shade900,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(13),
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0, top: 20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 20.0, top: 20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      username,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    gender == 'Male'
+                                        ? const Icon(
+                                            Icons.male,
+                                            color: Colors.white,
+                                          )
+                                        : const Icon(
+                                            Icons.female,
+                                            color: Colors.white,
+                                          )
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 20.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Age: $myAge | Gender: $gender',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isUserListVisible = true;
+                                              isDetailVisible = false;
+                                            });
+                                          },
+                                          tooltip: "Go Back",
+                                          icon: const Icon(Icons.arrow_back_ios,
+                                              color: Colors.pink)),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Text(
+                                  "AVERAGE VALUE",
+                                  style: TextStyle(color: Colors.pink),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Row(
                                 children: [
-                                  Text(
-                                    username,
-                                    style: const TextStyle(
+                                  Text(averageBpm.toStringAsFixed(2),
+                                      style: const TextStyle(
+                                        fontSize: 50,
                                         color: Colors.white,
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold),
+                                      )),
+                                  const Text(
+                                    'PR',
+                                    style: TextStyle(
+                                      height: 4,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                  gender == 'Male'
-                                      ? const Icon(
-                                          Icons.male,
-                                          color: Colors.white,
-                                        )
-                                      : const Icon(
-                                          Icons.female,
-                                          color: Colors.white,
-                                        )
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 20.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Age: $myAge | Gender: $gender',
+                              Row(
+                                children: [
+                                  Text(averageSpo2.toStringAsFixed(2),
                                       style: const TextStyle(
+                                        fontSize: 50,
                                         color: Colors.white,
-                                      ),
+                                      )),
+                                  const Text(
+                                    '%',
+                                    style: TextStyle(
+                                      height: 4,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                     ),
-                                    IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isUserListVisible = true;
-                                            isDetailVisible = false;
-                                          });
-                                        },
-                                        tooltip: "Go Back",
-                                        icon: const Icon(Icons.arrow_back_ios,
-                                            color: Colors.pink)),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              const Text(
-                                "AVERAGE VALUE",
-                                style: TextStyle(color: Colors.pink),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              children: [
-                                Text(averageBpm.toStringAsFixed(2),
-                                    style: const TextStyle(
-                                      fontSize: 50,
-                                      color: Colors.white,
-                                    )),
-                                const Text(
-                                  'PR',
-                                  style: TextStyle(
-                                    height: 4,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(averageSpo2.toStringAsFixed(2),
-                                    style: const TextStyle(
-                                      fontSize: 50,
-                                      color: Colors.white,
-                                    )),
-                                const Text(
-                                  '%',
-                                  style: TextStyle(
-                                    height: 4,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              children: [
-                                Text(averageTempC.toStringAsFixed(2),
-                                    style: const TextStyle(
-                                      fontSize: 50,
-                                      color: Colors.white,
-                                    )),
-                                const Text(
-                                  '°C',
-                                  style: TextStyle(
-                                    height: 4,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(averageTempF.toStringAsFixed(2),
-                                    style: const TextStyle(
-                                      fontSize: 50,
-                                      color: Colors.white,
-                                    )),
-                                const Text(
-                                  '°F',
-                                  style: TextStyle(
-                                    height: 4,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, bottom: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "From: ${create!}",
-                                style: const TextStyle(color: Colors.white),
+                              Row(
+                                children: [
+                                  Text(averageTempC.toStringAsFixed(2),
+                                      style: const TextStyle(
+                                        fontSize: 50,
+                                        color: Colors.white,
+                                      )),
+                                  const Text(
+                                    '°C',
+                                    style: TextStyle(
+                                      height: 4,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
-                                style: const TextStyle(color: Colors.white),
-                              )
+                              Row(
+                                children: [
+                                  Text(averageTempF.toStringAsFixed(2),
+                                      style: const TextStyle(
+                                        fontSize: 50,
+                                        color: Colors.white,
+                                      )),
+                                  const Text(
+                                    '°F',
+                                    style: TextStyle(
+                                      height: 4,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20.0, right: 20.0, bottom: 20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "From: ${create!}",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                Text(
+                                  "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
+                                  style: const TextStyle(color: Colors.white),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: isDetailVisible,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20.0, bottom: 10.0),
+                    child: Row(
+                      children: const [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Divider(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Daily Reports',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Divider(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-              Visibility(
-                visible: isDetailVisible,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, bottom: 10.0),
-                  child: Row(
-                    children: const [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 8.0),
-                          child: Divider(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'Daily Reports',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Divider(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: isDetailVisible,
-                child: Expanded(
-                  flex: 1,
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: _dataList.length,
-                    itemBuilder: (context, index) {
-                      final getValue = _dataList[index] as SensorDataModel;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Card(
-                          color: Colors.white70,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15),
+                Visibility(
+                  visible: isDetailVisible,
+                  child: Expanded(
+                    flex: 1,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: _dataList.length,
+                      itemBuilder: (context, index) {
+                        final getValue = _dataList[index] as SensorDataModel;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Card(
+                            color: Colors.white70,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20.0,
+                                  top: 10.0,
+                                  bottom: 20.0,
+                                  right: 20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: Text(
+                                        DateFormat('dd/MM/yyyy, hh:mm a')
+                                            .format(getValue.timestamp!)
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.grey.shade800)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("HR:",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey.shade800)),
+                                        LinearPercentIndicator(
+                                          animation: true,
+                                          animationDuration: 1000,
+                                          width: 200,
+                                          lineHeight: 15,
+                                          percent:
+                                              double.parse(getValue.bpm!) / 180,
+                                          backgroundColor: Colors.white30,
+                                          linearGradient: LinearGradient(
+                                              colors: [
+                                                Colors.red,
+                                                Colors.red.shade900
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.bottomRight),
+                                          leading: Text("${getValue.bpm!}PR",
+                                              style: TextStyle(
+                                                  color: Colors.grey.shade800)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("OL:",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey.shade800)),
+                                        LinearPercentIndicator(
+                                          animation: true,
+                                          animationDuration: 1000,
+                                          width: 200,
+                                          lineHeight: 15,
+                                          percent:
+                                              double.parse(getValue.spo2!) /
+                                                  110,
+                                          backgroundColor: Colors.white30,
+                                          linearGradient: LinearGradient(
+                                              colors: [
+                                                Colors.green,
+                                                Colors.green.shade900
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.bottomRight),
+                                          // progressColor: Colors.lightGreen,
+                                          leading: Text("${getValue.spo2!}%",
+                                              style: TextStyle(
+                                                  color: Colors.grey.shade800)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("BTC:",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey.shade800)),
+                                        LinearPercentIndicator(
+                                          animation: true,
+                                          animationDuration: 1000,
+                                          width: 200,
+                                          lineHeight: 15,
+                                          percent:
+                                              double.parse(getValue.tempC!) /
+                                                  50,
+                                          backgroundColor: Colors.white30,
+                                          linearGradient: LinearGradient(
+                                              colors: [
+                                                Colors.blue,
+                                                Colors.blue.shade900
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.bottomRight),
+                                          // progressColor: Colors.blueAccent,
+                                          leading: Text("${getValue.tempC!}°C",
+                                              style: TextStyle(
+                                                  color: Colors.grey.shade800)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("BTF:",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey.shade800)),
+                                        LinearPercentIndicator(
+                                          animation: true,
+                                          animationDuration: 1000,
+                                          width: 200,
+                                          lineHeight: 15,
+                                          linearGradient: LinearGradient(
+                                            colors: [
+                                              Colors.amber,
+                                              Colors.amber.shade800
+                                            ],
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          percent:
+                                              double.parse(getValue.bpm!) / 122,
+                                          backgroundColor: Colors.white30,
+                                          // progressColor: Colors.amberAccent,
+                                          leading: Text("${getValue.tempF!}°F",
+                                              style: TextStyle(
+                                                  color: Colors.grey.shade800)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20.0,
-                                top: 10.0,
-                                bottom: 20.0,
-                                right: 20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: Text(
-                                      DateFormat('dd/MM/yyyy, hh:mm a')
-                                          .format(getValue.timestamp!)
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.grey.shade800)),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("HR:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey.shade800)),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 1000,
-                                        width: 200,
-                                        lineHeight: 15,
-                                        percent:
-                                            double.parse(getValue.bpm!) / 180,
-                                        backgroundColor: Colors.white30,
-                                        linearGradient: LinearGradient(
-                                            colors: [
-                                              Colors.red,
-                                              Colors.red.shade900
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.bottomRight),
-                                        leading: Text("${getValue.bpm!}PR",
-                                            style: TextStyle(
-                                                color: Colors.grey.shade800)),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("OL:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey.shade800)),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 1000,
-                                        width: 200,
-                                        lineHeight: 15,
-                                        percent:
-                                            double.parse(getValue.spo2!) / 110,
-                                        backgroundColor: Colors.white30,
-                                        linearGradient: LinearGradient(
-                                            colors: [
-                                              Colors.green,
-                                              Colors.green.shade900
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.bottomRight),
-                                        // progressColor: Colors.lightGreen,
-                                        leading: Text("${getValue.spo2!}%",
-                                            style: TextStyle(
-                                                color: Colors.grey.shade800)),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("BTC:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey.shade800)),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 1000,
-                                        width: 200,
-                                        lineHeight: 15,
-                                        percent:
-                                            double.parse(getValue.tempC!) / 50,
-                                        backgroundColor: Colors.white30,
-                                        linearGradient: LinearGradient(
-                                            colors: [
-                                              Colors.blue,
-                                              Colors.blue.shade900
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.bottomRight),
-                                        // progressColor: Colors.blueAccent,
-                                        leading: Text("${getValue.tempC!}°C",
-                                            style: TextStyle(
-                                                color: Colors.grey.shade800)),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("BTF:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey.shade800)),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 1000,
-                                        width: 200,
-                                        lineHeight: 15,
-                                        linearGradient: LinearGradient(
-                                          colors: [
-                                            Colors.amber,
-                                            Colors.amber.shade800
-                                          ],
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                        percent:
-                                            double.parse(getValue.bpm!) / 122,
-                                        backgroundColor: Colors.white30,
-                                        // progressColor: Colors.amberAccent,
-                                        leading: Text("${getValue.tempF!}°F",
-                                            style: TextStyle(
-                                                color: Colors.grey.shade800)),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.purple.shade900,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    doctorGender == 'Male'
-                        ? Image.asset('assets/man-doctor.png', height: 80)
-                        : Image.asset('assets/woman-doctor.png', height: 80),
-                    const SizedBox(height: 10),
-                    Text(
-                      '$doctorName',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
-                )),
-            ListTile(
-              onTap: (() {
-                Navigator.popAndPushNamed(context, ScanUserData.routeNames);
-              }),
-              leading: const Icon(Icons.qr_code_scanner),
-              title: const Text('Scan Now'),
-            ),
-            ListTile(
-              onTap: _doctorSignOut,
-              leading: const Icon(Icons.logout),
-              title: const Text('Sign Out'),
-            )
-          ],
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.purple.shade900,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      doctorGender == 'Male'
+                          ? Image.asset('assets/man-doctor.png', height: 80)
+                          : Image.asset('assets/woman-doctor.png', height: 80),
+                      const SizedBox(height: 10),
+                      Text(
+                        '$doctorName',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  )),
+              ListTile(
+                onTap: (() {
+                  Navigator.popAndPushNamed(context, ScanUserData.routeNames);
+                }),
+                leading: const Icon(Icons.qr_code_scanner),
+                title: const Text('Scan Now'),
+              ),
+              ListTile(
+                onTap: _doctorSignOut,
+                leading: const Icon(Icons.logout),
+                title: const Text('Sign Out'),
+              )
+            ],
+          ),
         ),
       ),
     );
