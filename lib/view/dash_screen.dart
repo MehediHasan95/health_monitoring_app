@@ -444,7 +444,7 @@ class _DashScreenState extends State<DashScreen> {
                   Navigator.pushReplacementNamed(
                       context, LiveScreen.routeNames);
                 }),
-                leading: const Icon(Icons.online_prediction),
+                leading: const Icon(Icons.sensors),
                 title: const Text('Live'),
               ),
               ListTile(

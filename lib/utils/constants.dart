@@ -6,7 +6,7 @@ const String emptyFieldErrMsg = 'This field cannot be empty';
 // Flushbar
 void showFlushBar(BuildContext context, String msg) => Flushbar(
       icon: Icon(
-        Icons.cloud_done,
+        Icons.sentiment_very_satisfied,
         size: 25,
         color: Colors.grey.shade800,
       ),
@@ -21,7 +21,7 @@ void showFlushBar(BuildContext context, String msg) => Flushbar(
 
 void showNotFoundFlushBar(BuildContext context, String msg) => Flushbar(
       icon: const Icon(
-        Icons.cancel,
+        Icons.sentiment_very_dissatisfied,
         size: 25,
         color: Colors.white,
       ),

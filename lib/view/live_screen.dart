@@ -112,26 +112,26 @@ class _LiveScreenState extends State<LiveScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          welcomeMsg,
-                          style: const TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
                         AnimatedTextKit(
                           animatedTexts: [
                             TyperAnimatedText(
-                              username,
+                              'Hello, $username',
                               textStyle: const TextStyle(
-                                fontSize: 20.0,
-                                color: Colors.amberAccent,
+                                fontSize: 16.0,
+                                color: Colors.white70,
                                 fontWeight: FontWeight.bold,
                               ),
                               speed: const Duration(milliseconds: 250),
                             ),
                           ],
                           totalRepeatCount: 1,
+                        ),
+                        Text(
+                          welcomeMsg,
+                          style: const TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       ],
                     ),

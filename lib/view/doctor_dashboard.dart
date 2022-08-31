@@ -99,8 +99,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                   color: Colors.grey.shade800),
                             ),
                             subtitle: Text(profile.email!),
-                            trailing:
-                                const Icon(Icons.keyboard_double_arrow_right),
+                            trailing: const Icon(Icons.arrow_forward_ios),
                             iconColor: Colors.green,
                           ),
                         ),
@@ -168,8 +167,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           });
                                         },
                                         tooltip: "Go Back",
-                                        icon: const Icon(
-                                            Icons.keyboard_double_arrow_left,
+                                        icon: const Icon(Icons.arrow_back_ios,
                                             color: Colors.pink)),
                                   ],
                                 ),
@@ -556,7 +554,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       isUserListVisible = false;
     } else {
       // ignore: use_build_context_synchronously
-      showNotFoundFlushBar(context, 'Not found');
+      showNotFoundFlushBar(context, 'No information found');
       isUserListVisible = true;
       isDetailVisible = false;
     }
