@@ -193,7 +193,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         final uid = await AuthService.signInUser(
-            _emailController.text, _passwordController.text);
+            _emailController.text.toLowerCase(), _passwordController.text);
         if (uid != null) {
           final isDoctor =
               // ignore: use_build_context_synchronously

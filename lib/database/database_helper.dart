@@ -7,18 +7,17 @@ class DatabaseHelper {
   static const _sensorDataCollection = 'sensorData';
   static const _doctorCollection = 'doctor';
   static final FirebaseFirestore db = FirebaseFirestore.instance;
-  static final _user = AuthService.currentUser;
+  static final _userID = AuthService.currentUser?.uid;
 
   // Create User Database
   static Future<void> createUserProfileInfo(String username, String gender,
       String email, DateTime dateOfBirth) async {
-    return await db.collection(_usersProfileCollection).doc(_user?.uid).set({
-      "uid": _user?.uid,
+    return await db.collection(_usersProfileCollection).doc(_userID).set({
+      "uid": _userID,
       "username": username,
       "gender": gender,
       "email": email,
       "birthday": dateOfBirth,
-      "create": _user?.metadata.creationTime,
     });
   }
 

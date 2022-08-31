@@ -1,4 +1,5 @@
 import 'package:another_flushbar/flushbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const String emptyFieldErrMsg = 'This field cannot be empty';
@@ -36,3 +37,15 @@ void showNotFoundFlushBar(BuildContext context, String msg) => Flushbar(
 // SnackBar
 void showSnackBar(BuildContext context, String msg) =>
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+
+// Show warning message
+Future<bool?> showExitWarning(BuildContext context) async => showDialog<bool>(
+    context: context,
+    builder: (context) => CupertinoAlertDialog(
+          title:
+              Text('Warning!', style: TextStyle(color: Colors.grey.shade800)),
+          content: Text(
+            'You must sign out first',
+            style: TextStyle(color: Colors.grey.shade700),
+          ),
+        ));

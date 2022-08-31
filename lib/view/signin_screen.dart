@@ -211,7 +211,7 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         final uid = await AuthService.signInUser(
-            _emailController.text, _passwordController.text);
+            _emailController.text.toLowerCase(), _passwordController.text);
         if (uid != null) {
           // ignore: use_build_context_synchronously
           final isUser = await Provider.of<UserProvider>(context, listen: false)

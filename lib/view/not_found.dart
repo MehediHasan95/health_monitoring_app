@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
+import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 
 class NotFound extends StatefulWidget {
@@ -17,25 +18,11 @@ class _NotFoundState extends State<NotFound> {
     getUserProfileInfo();
   }
 
-  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: const Text('Do you want to exit this app'),
-            actions: [
-              TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('No')),
-              TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Yes')),
-            ],
-          ));
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final shouldPop = await showWarning(context);
+        final shouldPop = await showExitWarning(context);
         return shouldPop ?? false;
       },
       child: Scaffold(
@@ -94,7 +81,8 @@ class _NotFoundState extends State<NotFound> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, DashScreen.routeNames);
+                          Navigator.pushReplacementNamed(
+                              context, DashScreen.routeNames);
                         },
                         child: const Text('Dashboard'),
                       ),

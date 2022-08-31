@@ -283,12 +283,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           _nameController.text,
           selectGender!,
           dateOfBirth!,
-          _emailController.text,
+          _emailController.text.toLowerCase(),
           _passwordController.text,
         );
         if (uid != null) {
           // ignore: use_build_context_synchronously
-          Navigator.popAndPushNamed(context, SuccessfullScreen.routeNames);
+          Navigator.pushReplacementNamed(context, SuccessfullScreen.routeNames);
         }
       } on FirebaseAuthException catch (error) {
         setState(() {

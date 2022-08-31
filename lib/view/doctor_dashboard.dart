@@ -44,25 +44,11 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     getDoctorProfileInfo();
   }
 
-  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: const Text('Do you want to exit this app'),
-            actions: [
-              TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('No')),
-              TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Yes')),
-            ],
-          ));
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final shouldPop = await showWarning(context);
+        final shouldPop = await showExitWarning(context);
         return shouldPop ?? false;
       },
       child: Scaffold(
@@ -279,23 +265,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20.0, right: 20.0, bottom: 20.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "From: ${create!}",
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                Text(
-                                  "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
-                                  style: const TextStyle(color: Colors.white),
-                                )
-                              ],
-                            ),
-                          ),
+                          const SizedBox(height: 20)
                         ],
                       ),
                     ),
@@ -618,9 +588,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
 // User Profile info
   String username = '';
   String gender = '';
-  String? create = '';
   DateTime? age;
-  DateTime? createDate;
   Future getUserProfileInfo(String userID) async {
     await DatabaseHelper.db
         .collection('userProfileInfo')
@@ -631,11 +599,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         username = querySnapshot.data()!['username'];
         gender = querySnapshot.data()!['gender'];
         age = querySnapshot.data()!['birthday'].toDate();
-        createDate = querySnapshot.data()!['create'].toDate();
       },
     );
-    create = DateFormat('dd/MM/yyyy').format(createDate!).toString();
-
     final today = DateTime.now();
     double diffAge = today.difference(age!).inDays / 365;
     myAge = diffAge.round();
@@ -643,7 +608,6 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       username;
       gender;
       age;
-      createDate;
     });
   }
 

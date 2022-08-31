@@ -35,25 +35,11 @@ class _LiveScreenState extends State<LiveScreen> {
     greetingMessage();
   }
 
-  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: const Text('Do you want to exit this app'),
-            actions: [
-              TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('No')),
-              TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Yes')),
-            ],
-          ));
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final shouldPop = await showWarning(context);
+        final shouldPop = await showExitWarning(context);
         return shouldPop ?? false;
       },
       child: Scaffold(

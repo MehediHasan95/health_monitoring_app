@@ -198,23 +198,7 @@ class _ScanUserDataState extends State<ScanUserData> {
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, bottom: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "From: ${create!}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              Text(
-                                "Today: ${DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()}",
-                                style: const TextStyle(color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
+                        const SizedBox(height: 20)
                       ],
                     ),
                   ),
@@ -484,9 +468,7 @@ class _ScanUserDataState extends State<ScanUserData> {
 
   String username = '';
   String gender = '';
-  String? create = '';
   DateTime? age;
-  DateTime? createDate;
   Future getUserProfileInfo(String scanQRCode) async {
     await DatabaseHelper.db
         .collection('userProfileInfo')
@@ -497,10 +479,8 @@ class _ScanUserDataState extends State<ScanUserData> {
         username = querySnapshot.data()!['username'];
         gender = querySnapshot.data()!['gender'];
         age = querySnapshot.data()!['birthday'].toDate();
-        createDate = querySnapshot.data()!['create'].toDate();
       },
     );
-    create = DateFormat('dd/MM/yyyy').format(createDate!).toString();
     final today = DateTime.now();
     double diffAge = today.difference(age!).inDays / 365;
     myAge = diffAge.round();
