@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
+import 'package:health_monitoring_app/doctor_list.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
+import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
 import 'package:health_monitoring_app/view/barcode_generator.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
@@ -12,6 +14,7 @@ import 'package:health_monitoring_app/view/user_data_list.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class DashScreen extends StatefulWidget {
   const DashScreen({Key? key}) : super(key: key);
@@ -22,6 +25,8 @@ class DashScreen extends StatefulWidget {
 }
 
 class _DashScreenState extends State<DashScreen> {
+  late DoctorProvider _doctorProvider;
+
   final userInfo = AuthService.currentUser;
   final uid = AuthService.currentUser?.uid;
   // ignore: prefer_typing_uninitialized_variables
@@ -41,11 +46,13 @@ class _DashScreenState extends State<DashScreen> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
+    _doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+    _doctorProvider.getAllDoctorData();
     getUsersDataList();
     getUserProfileInfo();
     getAverageValue();
     getDateDifference();
+    super.didChangeDependencies();
   }
 
   @override
@@ -400,7 +407,6 @@ class _DashScreenState extends State<DashScreen> {
                   shrinkWrap: true,
                   itemCount: _dataList.length,
                   itemBuilder: (context, index) {
-                    // final getValue = _dataList[index] as SensorDataModel;
                     return UserDataList(_dataList[index] as SensorDataModel);
                   },
                 ),
@@ -454,6 +460,13 @@ class _DashScreenState extends State<DashScreen> {
                 },
                 leading: const Icon(Icons.tips_and_updates),
                 title: const Text('Health Tips'),
+              ),
+              ListTile(
+                onTap: () {
+                  Navigator.popAndPushNamed(context, DoctorList.routeNames);
+                },
+                leading: const Icon(Icons.health_and_safety),
+                title: const Text('Doctor List'),
               ),
               ListTile(
                 onTap: (() {

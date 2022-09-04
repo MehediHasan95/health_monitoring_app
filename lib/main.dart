@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:health_monitoring_app/doctor_list.dart';
+
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
 import 'package:health_monitoring_app/provider/user_provider.dart';
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Roboto"),
+        theme: ThemeData(fontFamily: "Roboto"),
         home: const SplashScreen(),
         routes: {
           WelcomeScreen.routeNames: (context) => const WelcomeScreen(),
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
           SuccessfullScreen.routeNames: (context) => const SuccessfullScreen(),
           BarcodeGenerate.routeNames: (context) => const BarcodeGenerate(),
           ScanUserData.routeNames: (context) => const ScanUserData(),
+          DoctorList.routeNames: (context) => const DoctorList(),
         },
       ),
     );

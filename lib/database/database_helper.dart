@@ -47,7 +47,7 @@ class DatabaseHelper {
     return snapshot.docs.isNotEmpty;
   }
 
-// Get all user data
-  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllUserData() =>
-      db.collection(_usersProfileCollection).snapshots();
+// Get all doctor data
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllDoctorData() =>
+      db.collection(_doctorCollection).snapshots();
 }

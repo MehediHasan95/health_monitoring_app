@@ -69,13 +69,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
-                    // const SizedBox(
-                    //   height: 30,
-                    // ),
-                    // Image.asset(
-                    //   'assets/man.png',
-                    //   height: 100,
-                    // ),
                     const SizedBox(
                       height: 50,
                     ),

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
-import 'package:health_monitoring_app/provider/user_provider.dart';
+import 'package:health_monitoring_app/model/user_profile_model.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/scan_user_data.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:provider/provider.dart';
 
 class DoctorDashboard extends StatefulWidget {
   const DoctorDashboard({Key? key}) : super(key: key);
@@ -19,8 +18,8 @@ class DoctorDashboard extends StatefulWidget {
 }
 
 class _DoctorDashboardState extends State<DoctorDashboard> {
-  late UserProvider _userProvider;
-  final doctor = AuthService.currentUser;
+  final doctorUID = AuthService.currentUser?.uid;
+
   String scanQRCode = '';
   double totalBpm = 0;
   double totalSpo2 = 0;
@@ -33,15 +32,16 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
   // ignore: prefer_typing_uninitialized_variables
   var myAge;
   List<Object> _dataList = [];
+  List<Object> _userProfileList = [];
 
   bool isUserListVisible = true;
   bool isDetailVisible = false;
 
   @override
   void didChangeDependencies() {
-    _userProvider = Provider.of<UserProvider>(context);
     super.didChangeDependencies();
     getDoctorProfileInfo();
+    getUserProfileList();
   }
 
   @override
@@ -73,10 +73,10 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                   child: Expanded(
                     flex: 1,
                     child: ListView.builder(
-                      itemCount: _userProvider.userList.length,
+                      itemCount: _userProfileList.length,
                       itemBuilder: (context, index) {
-                        final profile = _userProvider.userList[index];
-                        String? userID = profile.uid;
+                        final getProfile =
+                            _userProfileList[index] as UserProfileModel;
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Card(
@@ -87,7 +87,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                             ),
                             child: ListTile(
                               onTap: () {
-                                _searchFromDB(userID!);
+                                _searchFromDB(getProfile.uid!);
                                 setState(() {
                                   totalBpm = 0;
                                   totalSpo2 = 0;
@@ -95,18 +95,18 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                   totaltempF = 0;
                                 });
                               },
-                              leading: profile.gender == 'Male'
+                              leading: getProfile.gender == 'Male'
                                   ? Image.asset('assets/man.png', height: 50)
                                   : Image.asset('assets/woman.png', height: 50),
                               title: Text(
-                                "${profile.username!} (${profile.gender!})",
+                                "${getProfile.username!} (${getProfile.gender!})",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey.shade800),
                               ),
-                              subtitle: Text(profile.email!),
-                              trailing: const Icon(Icons.arrow_forward_ios),
-                              iconColor: Colors.green,
+                              subtitle: Text(getProfile.email!),
+                              trailing: const Icon(Icons.arrow_forward_ios,
+                                  color: Colors.green),
                             ),
                           ),
                         );
@@ -628,6 +628,19 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       doctorName;
       doctorGender;
       doctorEmail;
+    });
+  }
+
+  //Get User profile List
+  Future getUserProfileList() async {
+    var data = await DatabaseHelper.db
+        .collection('sendToDoctor')
+        .doc(doctorUID)
+        .collection('userList')
+        .get();
+    setState(() {
+      _userProfileList =
+          List.from(data.docs.map((doc) => UserProfileModel.fromSnapshot(doc)));
     });
   }
 }

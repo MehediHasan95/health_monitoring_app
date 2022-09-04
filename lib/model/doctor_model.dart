@@ -1,24 +1,24 @@
-class UserModel {
+class DoctorModel {
   String? uid;
-  String? username;
+  String? name;
   String? gender;
   String? email;
 
-  UserModel({this.uid, this.username, this.gender, this.email});
+  DoctorModel({this.uid, this.name, this.gender, this.email});
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       'uid': uid,
-      'username': username,
+      'name': name,
       'gender': gender,
       'email': email,
     };
     return map;
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(
+  factory DoctorModel.fromMap(Map<String, dynamic> map) => DoctorModel(
         uid: map['uid'],
-        username: map['username'],
+        name: map['name'],
         gender: map['gender'],
         email: map['email'],
       );

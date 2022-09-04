@@ -30,15 +30,15 @@ Future<bool?> showExitWarning(BuildContext context) async => showDialog<bool>(
     builder: (context) => CupertinoAlertDialog(
           title: const Icon(Icons.warning),
           content: Text(
-            'Do you want to exit app',
+            'Before exiting, you must sign out',
             style: TextStyle(color: Colors.grey.shade800, fontSize: 18),
           ),
           actions: [
             CupertinoDialogAction(
-                onPressed: () => Navigator.pop(context, false),
+                onPressed: () => Navigator.pop(context, true),
                 child: const Text('NO')),
             CupertinoDialogAction(
-                onPressed: () => Navigator.pop(context, true),
+                onPressed: () => Navigator.pop(context, false),
                 child: const Text('YES')),
           ],
         ));

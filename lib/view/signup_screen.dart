@@ -210,7 +210,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       label: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 14.0),
                           child: Text(dateOfBirth == null
-                              ? "Birthday"
+                              ? "Date of Birth"
                               : DateFormat("dd MMMM yyyy")
                                   .format(dateOfBirth!))),
                       style: ElevatedButton.styleFrom(

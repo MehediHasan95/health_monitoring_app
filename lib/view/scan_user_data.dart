@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
+import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -24,7 +25,7 @@ class _ScanUserDataState extends State<ScanUserData> {
   double averageTempC = 0;
   double averageTempF = 0;
   bool isVisiable = false;
-  bool isNotFound = false;
+
   // ignore: prefer_typing_uninitialized_variables
   var myAge;
 
@@ -68,18 +69,6 @@ class _ScanUserDataState extends State<ScanUserData> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Not Found
-              Visibility(
-                visible: isNotFound,
-                child: const Center(
-                  heightFactor: 10.0,
-                  child: Text(
-                    "Not Found",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-
               Visibility(
                 visible: isVisiable,
                 child: Padding(
@@ -426,11 +415,11 @@ class _ScanUserDataState extends State<ScanUserData> {
 
     if (data.docs.isNotEmpty) {
       isVisiable = true;
-      isNotFound = false;
       getUserProfileInfo(scanQRCode);
       getAverageValue(scanQRCode);
     } else {
-      isNotFound = true;
+      // ignore: use_build_context_synchronously
+      showNotFoundWarning(context);
     }
 
     setState(() {

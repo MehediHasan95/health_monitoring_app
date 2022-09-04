@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
-import 'package:health_monitoring_app/provider/user_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/doctor_dashboard.dart';
 import 'package:health_monitoring_app/view/forgot_password.dart';
@@ -17,15 +16,6 @@ class DoctorScreen extends StatefulWidget {
 }
 
 class _DoctorScreenState extends State<DoctorScreen> {
-  late UserProvider _userProvider;
-
-  @override
-  void didChangeDependencies() {
-    _userProvider = Provider.of<UserProvider>(context, listen: false);
-    _userProvider.getAllUserData();
-    super.didChangeDependencies();
-  }
-
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
