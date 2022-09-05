@@ -13,8 +13,23 @@ void showFlushBar(BuildContext context, String msg) => Flushbar(
       ),
       message: msg,
       messageColor: Colors.white,
-      backgroundColor: Colors.grey.shade900,
-      duration: const Duration(milliseconds: 4200),
+      backgroundColor: Colors.lightGreen.shade400,
+      duration: const Duration(milliseconds: 3000),
+      flushbarPosition: FlushbarPosition.TOP,
+      margin: const EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(10),
+    ).show(context);
+
+void showFlushBarErrorMsg(BuildContext context, String msg) => Flushbar(
+      icon: const Icon(
+        Icons.sentiment_very_dissatisfied,
+        size: 25,
+        color: Colors.white,
+      ),
+      message: msg,
+      messageColor: Colors.white,
+      backgroundColor: Colors.redAccent,
+      duration: const Duration(milliseconds: 1500),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(10),

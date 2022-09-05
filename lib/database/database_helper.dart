@@ -6,6 +6,7 @@ class DatabaseHelper {
   static const _usersProfileCollection = 'userProfileInfo';
   static const _sensorDataCollection = 'sensorData';
   static const _doctorCollection = 'doctor';
+
   static final FirebaseFirestore db = FirebaseFirestore.instance;
   static final _userID = AuthService.currentUser?.uid;
 

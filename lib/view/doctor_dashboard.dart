@@ -37,6 +37,13 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
   bool isUserListVisible = true;
   bool isDetailVisible = false;
 
+  final _msgController = TextEditingController();
+  @override
+  void dispose() {
+    _msgController.dispose();
+    super.dispose();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -86,28 +93,36 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                   BorderRadius.all(Radius.circular(15)),
                             ),
                             child: ListTile(
-                              onTap: () {
-                                _searchFromDB(getProfile.uid!);
-                                setState(() {
-                                  totalBpm = 0;
-                                  totalSpo2 = 0;
-                                  totalTempC = 0;
-                                  totaltempF = 0;
-                                });
-                              },
-                              leading: getProfile.gender == 'Male'
-                                  ? Image.asset('assets/man.png', height: 50)
-                                  : Image.asset('assets/woman.png', height: 50),
-                              title: Text(
-                                "${getProfile.username!} (${getProfile.gender!})",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey.shade800),
-                              ),
-                              subtitle: Text(getProfile.email!),
-                              trailing: const Icon(Icons.arrow_forward_ios,
-                                  color: Colors.green),
-                            ),
+                                onTap: () {
+                                  _searchFromDB(getProfile.uid!);
+                                  setState(() {
+                                    totalBpm = 0;
+                                    totalSpo2 = 0;
+                                    totalTempC = 0;
+                                    totaltempF = 0;
+                                  });
+                                },
+                                leading: getProfile.gender == 'Male'
+                                    ? Image.asset('assets/man.png', height: 50)
+                                    : Image.asset('assets/woman.png',
+                                        height: 50),
+                                title: Text(
+                                  "${getProfile.username!} (${getProfile.gender!})",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade800),
+                                ),
+                                subtitle: Text(getProfile.email!),
+                                trailing: IconButton(
+                                  tooltip:
+                                      "If you want to delete just press the delete button",
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.redAccent),
+                                  onPressed: () {
+                                    _deleteUserFromList(getProfile.uid!);
+                                    getUserProfileList();
+                                  },
+                                )),
                           ),
                         );
                       },
@@ -129,12 +144,14 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, top: 20.0),
+                            padding: const EdgeInsets.only(
+                                left: 20.0, right: 20.0, top: 20.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       username,
@@ -143,41 +160,33 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           fontSize: 25,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    gender == 'Male'
-                                        ? const Icon(
-                                            Icons.male,
-                                            color: Colors.white,
-                                          )
-                                        : const Icon(
-                                            Icons.female,
-                                            color: Colors.white,
-                                          )
+                                    IconButton(
+                                        onPressed: _openDialog,
+                                        icon: const Icon(Icons.message,
+                                            color: Colors.white))
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 20.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Age: $myAge | Gender: $gender',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Age: $myAge | Gender: $gender',
+                                      style: const TextStyle(
+                                        color: Colors.white,
                                       ),
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              isUserListVisible = true;
-                                              isDetailVisible = false;
-                                            });
-                                          },
-                                          tooltip: "Go Back",
-                                          icon: const Icon(Icons.arrow_back_ios,
-                                              color: Colors.pink)),
-                                    ],
-                                  ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isUserListVisible = true;
+                                            isDetailVisible = false;
+                                          });
+                                        },
+                                        tooltip: "Go Back",
+                                        icon: const Icon(Icons.arrow_back_ios,
+                                            color: Colors.pink)),
+                                  ],
                                 ),
                                 const SizedBox(height: 5),
                                 const Text(
@@ -589,6 +598,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
 // User Profile info
   String username = '';
   String gender = '';
+  String uniqueID = '';
   DateTime? age;
   Future getUserProfileInfo(String userID) async {
     await DatabaseHelper.db
@@ -599,6 +609,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       (querySnapshot) {
         username = querySnapshot.data()!['username'];
         gender = querySnapshot.data()!['gender'];
+        uniqueID = querySnapshot.data()!['uid'];
         age = querySnapshot.data()!['birthday'].toDate();
       },
     );
@@ -608,6 +619,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     setState(() {
       username;
       gender;
+      uniqueID;
       age;
     });
   }
@@ -642,5 +654,63 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       _userProfileList =
           List.from(data.docs.map((doc) => UserProfileModel.fromSnapshot(doc)));
     });
+  }
+
+// user delete method
+  void _deleteUserFromList(String uid) async {
+    await DatabaseHelper.db
+        .collection('sendToDoctor')
+        .doc(doctorUID)
+        .collection('userList')
+        .doc(uid)
+        .delete();
+  }
+
+  void _openDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text("Send Message"),
+              content: TextField(
+                minLines: 1,
+                maxLines: 50,
+                controller: _msgController,
+                decoration:
+                    const InputDecoration(hintText: "Write your message"),
+              ),
+              actions: [
+                TextButton(
+                  child: const Text("CANCEL"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text("SEND"),
+                  onPressed: () {
+                    if (_msgController.text.isEmpty) {
+                      showFlushBarErrorMsg(context, "Please write somethings");
+                    } else {
+                      DatabaseHelper.db
+                          .collection("doctorAdvice")
+                          .doc(uniqueID)
+                          .collection("message")
+                          .doc()
+                          .set({
+                        "doctorName": doctorName,
+                        "doctorGender": doctorGender,
+                        "message": _msgController.text,
+                        "time": DateTime.now(),
+                      });
+                      Navigator.of(context).pop();
+                      showFlushBar(context, "Message send successfull");
+                      setState(() {
+                        _msgController.clear();
+                      });
+                    }
+                  },
+                )
+              ],
+            ));
   }
 }

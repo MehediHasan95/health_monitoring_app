@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
-import 'package:health_monitoring_app/doctor_list.dart';
+import 'package:health_monitoring_app/view/doctor_advice.dart';
+import 'package:health_monitoring_app/view/doctor_list.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/view/about_screen.dart';
@@ -467,6 +468,13 @@ class _DashScreenState extends State<DashScreen> {
                 },
                 leading: const Icon(Icons.health_and_safety),
                 title: const Text('Doctor List'),
+              ),
+              ListTile(
+                onTap: () {
+                  Navigator.popAndPushNamed(context, DoctorAdvice.routeNames);
+                },
+                leading: const Icon(Icons.message),
+                title: const Text('Doctor Advice'),
               ),
               ListTile(
                 onTap: (() {

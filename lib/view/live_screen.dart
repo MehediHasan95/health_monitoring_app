@@ -84,7 +84,7 @@ class _LiveScreenState extends State<LiveScreen> {
       isFingerTop = true;
     }
 
-    // Life health condition check
+    // Heart health condition check
     String heartHealthMsg = "";
     if (sensorData.bpm! > 180 && sensorData.spo2! > 100) {
       heartHealthMsg = "High";
@@ -92,12 +92,32 @@ class _LiveScreenState extends State<LiveScreen> {
         sensorData.bpm! <= 100 &&
         sensorData.avgSpo2! >= 95 &&
         sensorData.spo2! <= 100) {
-      heartHealthMsg = "Excellent";
+      heartHealthMsg = "Normal";
     } else if (sensorData.bpm! < 60 &&
         sensorData.bpm! > 42 &&
         sensorData.spo2! < 95 &&
         sensorData.spo2! > 88) {
       heartHealthMsg = "Low";
+    } else if ((sensorData.bpm! < 42 &&
+        sensorData.bpm! > 10 &&
+        sensorData.spo2! < 88 &&
+        sensorData.spo2! > 10)) {
+      heartHealthMsg = "Extreme low";
+    }
+
+    // body temperature health condition check
+    String tempHealthMsg = "";
+    if (sensorData.bodyTempC! > 39.1) {
+      tempHealthMsg = "High fever";
+    } else if (sensorData.bodyTempC! > 37.8 && sensorData.bodyTempC! < 39.0) {
+      tempHealthMsg = "Light fever";
+    } else if (sensorData.bodyTempC! >= 35.9 && sensorData.bodyTempC! <= 37.5) {
+      tempHealthMsg = "Normal";
+    } else if (sensorData.bodyTempC! >= 36.2 && sensorData.bodyTempC! <= 35.8) {
+      tempHealthMsg = "Low";
+    } else if ((sensorData.bodyTempC! < 35.0 &&
+        sensorData.bodyTempC! >= 30.0)) {
+      tempHealthMsg = "Extreme low";
     }
 
     return Scaffold(
@@ -297,11 +317,20 @@ class _LiveScreenState extends State<LiveScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                      "Heart Condition: ${heartHealthMsg == '' ? '?' : heartHealthMsg}",
-                      style: const TextStyle(
-                          color: Colors.greenAccent,
-                          fontWeight: FontWeight.bold)),
+                  child: Column(
+                    children: [
+                      Text(
+                          "Heart Condition: ${heartHealthMsg == '' ? '?' : heartHealthMsg}",
+                          style: const TextStyle(
+                              color: Colors.greenAccent,
+                              fontWeight: FontWeight.bold)),
+                      Text(
+                          "Temperature Condition: ${tempHealthMsg == '' ? '?' : tempHealthMsg}",
+                          style: const TextStyle(
+                              color: Colors.greenAccent,
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                 ),
                 Visibility(
                   visible: isFingerTop,

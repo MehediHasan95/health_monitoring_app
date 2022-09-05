@@ -23,18 +23,10 @@ class _DoctorListState extends State<DoctorList> {
   void didChangeDependencies() {
     _doctorProvider = Provider.of<DoctorProvider>(context);
     super.didChangeDependencies();
-    _isUserAddedOrNot();
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = false;
-    if (shareData != null) {
-      setState(() {
-        isActive = true;
-      });
-    }
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -56,7 +48,6 @@ class _DoctorListState extends State<DoctorList> {
                 itemCount: _doctorProvider.doctorList.length,
                 itemBuilder: (context, index) {
                   final doctorProfile = _doctorProvider.doctorList[index];
-
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Card(
@@ -76,17 +67,17 @@ class _DoctorListState extends State<DoctorList> {
                               color: Colors.grey.shade800),
                         ),
                         subtitle: Text(doctorProfile.email!),
-                        trailing: IconButton(
-                            onPressed: _shareWithDoctor,
-                            icon: isActive == true
-                                ? const Icon(
-                                    Icons.done_all,
-                                    color: Colors.green,
-                                  )
-                                : const Icon(
-                                    Icons.add,
-                                    color: Colors.red,
-                                  )),
+                        trailing: ElevatedButton(
+                          onPressed: () {
+                            _shareWithDoctor(doctorProfile.uid);
+                            showFlushBar(context, "Added Successfull");
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            primary: Colors.green,
+                          ),
+                          child: const Icon(Icons.add),
+                        ),
                       ),
                     ),
                   );
@@ -99,28 +90,8 @@ class _DoctorListState extends State<DoctorList> {
     );
   }
 
-// Check is value not null
-  void _isUserAddedOrNot() async {
-    final doctorUID = _doctorProvider.doctorList.first.uid;
-    await DatabaseHelper.db
-        .collection("sendToDoctor")
-        .doc(doctorUID)
-        .collection("userList")
-        .doc(uid)
-        .get()
-        .then((querySnapshot) {
-      shareData = querySnapshot.data();
-    });
-    setState(() {
-      if (shareData != null) {
-        shareData;
-      }
-    });
-  }
-
 // Data share with doctor
-  void _shareWithDoctor() async {
-    final doctorUID = _doctorProvider.doctorList.first.uid;
+  void _shareWithDoctor(String? doctorID) async {
     await DatabaseHelper.db
         .collection("userProfileInfo")
         .doc(uid)
@@ -128,16 +99,11 @@ class _DoctorListState extends State<DoctorList> {
         .then((querySnapshot) {
       shareData = querySnapshot.data();
     });
-    DatabaseHelper.db
+    await DatabaseHelper.db
         .collection("sendToDoctor")
-        .doc(doctorUID)
+        .doc(doctorID)
         .collection("userList")
         .doc(uid)
         .set(shareData!);
-    setState(() {
-      shareData;
-    });
-    // ignore: use_build_context_synchronously
-    showFlushBar(context, 'Your record send succefully');
   }
 }
