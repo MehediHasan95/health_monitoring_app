@@ -571,17 +571,17 @@ class _DashScreenState extends State<DashScreen> {
           if (averageBpm.round() >= 180 &&
               averageSpo2.round() >= 100 &&
               averageTempC.round() >= 38) {
-            healthConditionMsg = 'Health Condition is High';
+            healthConditionMsg = 'You need to go hospital';
           } else if ((averageBpm.round() >= 60 && averageBpm.round() <= 100) &&
               (averageSpo2.round() >= 95 && averageSpo2.round() <= 100) &&
               (averageTempC.round() >= 36 && averageTempC.round() <= 37)) {
-            healthConditionMsg = 'Health Condition is excellent';
+            healthConditionMsg = 'Health Condition is Normal';
           } else if (averageBpm.round() < 60 &&
               averageSpo2.round() < 88 &&
               averageTempC.round() < 35) {
             healthConditionMsg = "You need to go hospital";
           } else {
-            healthConditionMsg = 'Health Condition is Normal';
+            healthConditionMsg = 'Health Condition is Average';
           }
         }
         setState(() {

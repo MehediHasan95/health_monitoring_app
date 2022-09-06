@@ -670,26 +670,34 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: const Text("Send Message"),
+              actionsAlignment: MainAxisAlignment.spaceAround,
+              title: Text("Message",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.purple.shade900)),
               content: TextField(
                 minLines: 1,
-                maxLines: 50,
+                maxLines: 500,
                 controller: _msgController,
-                decoration:
-                    const InputDecoration(hintText: "Write your message"),
+                decoration: const InputDecoration(hintText: "Write here"),
               ),
               actions: [
                 TextButton(
-                  child: const Text("CANCEL"),
+                  child: const Text('CLOSE',
+                      style: TextStyle(color: Colors.redAccent)),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    setState(() {
+                      _msgController.clear();
+                    });
                   },
                 ),
                 TextButton(
-                  child: const Text("SEND"),
+                  child:
+                      const Text('SEND', style: TextStyle(color: Colors.green)),
                   onPressed: () {
                     if (_msgController.text.isEmpty) {
-                      showFlushBarErrorMsg(context, "Please write somethings");
+                      showFlushBarErrorMsg(context, "Please write something");
                     } else {
                       DatabaseHelper.db
                           .collection("doctorAdvice")

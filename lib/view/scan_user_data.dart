@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
@@ -26,6 +27,13 @@ class _ScanUserDataState extends State<ScanUserData> {
   double averageTempF = 0;
   bool isVisiable = false;
 
+  final _msgController = TextEditingController();
+  @override
+  void dispose() {
+    _msgController.dispose();
+    super.dispose();
+  }
+
   // ignore: prefer_typing_uninitialized_variables
   var myAge;
 
@@ -47,7 +55,7 @@ class _ScanUserDataState extends State<ScanUserData> {
         onTap: (index) {
           _scanQR();
         },
-        height: 55,
+        height: 50,
         items: const [
           Padding(
             padding: EdgeInsets.all(5.0),
@@ -84,16 +92,27 @@ class _ScanUserDataState extends State<ScanUserData> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0, top: 20.0),
+                          padding: const EdgeInsets.only(
+                              left: 20.0, right: 20.0, top: 20.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                username,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    username,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  IconButton(
+                                      onPressed: _openDialog,
+                                      icon: const Icon(Icons.message,
+                                          color: Colors.white))
+                                ],
                               ),
                               Text(
                                 'Age: $myAge | Gender: $gender',
@@ -417,6 +436,7 @@ class _ScanUserDataState extends State<ScanUserData> {
       isVisiable = true;
       getUserProfileInfo(scanQRCode);
       getAverageValue(scanQRCode);
+      getDoctorProfileInfo();
     } else {
       // ignore: use_build_context_synchronously
       showNotFoundWarning(context);
@@ -457,6 +477,7 @@ class _ScanUserDataState extends State<ScanUserData> {
 
   String username = '';
   String gender = '';
+  String uniqueID = '';
   DateTime? age;
   Future getUserProfileInfo(String scanQRCode) async {
     await DatabaseHelper.db
@@ -467,6 +488,7 @@ class _ScanUserDataState extends State<ScanUserData> {
       (querySnapshot) {
         username = querySnapshot.data()!['username'];
         gender = querySnapshot.data()!['gender'];
+        uniqueID = querySnapshot.data()!['uid'];
         age = querySnapshot.data()!['birthday'].toDate();
       },
     );
@@ -476,7 +498,25 @@ class _ScanUserDataState extends State<ScanUserData> {
     setState(() {
       username;
       gender;
+      uniqueID;
       age;
+    });
+  }
+
+  String? doctorName = '';
+  String? doctorGender = '';
+
+  Future getDoctorProfileInfo() async {
+    final uid = AuthService.currentUser?.uid;
+    await DatabaseHelper.db.collection('doctor').doc(uid).get().then(
+      (querySnapshot) {
+        doctorName = querySnapshot.data()!['name'];
+        doctorGender = querySnapshot.data()!['gender'];
+      },
+    );
+    setState(() {
+      doctorName;
+      doctorGender;
     });
   }
 
@@ -491,5 +531,58 @@ class _ScanUserDataState extends State<ScanUserData> {
       totaltempF = 0;
     });
     return _searchFromDB(scanQRCode);
+  }
+
+  void _openDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              actionsAlignment: MainAxisAlignment.spaceAround,
+              title: Text("Message",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.purple.shade900)),
+              content: TextField(
+                minLines: 1,
+                maxLines: 500,
+                controller: _msgController,
+                decoration: const InputDecoration(hintText: "Write here"),
+              ),
+              actions: [
+                TextButton(
+                  child: const Text("CANCEL",
+                      style: TextStyle(color: Colors.redAccent)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child:
+                      const Text("SEND", style: TextStyle(color: Colors.green)),
+                  onPressed: () {
+                    if (_msgController.text.isEmpty) {
+                      showFlushBarErrorMsg(context, "Please write something");
+                    } else {
+                      DatabaseHelper.db
+                          .collection("doctorAdvice")
+                          .doc(uniqueID)
+                          .collection("message")
+                          .doc()
+                          .set({
+                        "doctorName": doctorName,
+                        "doctorGender": doctorGender,
+                        "message": _msgController.text,
+                        "time": DateTime.now(),
+                      });
+                      Navigator.of(context).pop();
+                      showFlushBar(context, "Message send successfull");
+                      setState(() {
+                        _msgController.clear();
+                      });
+                    }
+                  },
+                )
+              ],
+            ));
   }
 }

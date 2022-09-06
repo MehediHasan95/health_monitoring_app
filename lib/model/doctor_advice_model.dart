@@ -2,7 +2,6 @@ class DoctorAdviceModel {
   String? doctorName;
   String? doctorGender;
   String? message;
-
   DateTime? time;
 
   DoctorAdviceModel({

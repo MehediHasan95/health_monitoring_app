@@ -3,8 +3,9 @@ class DoctorModel {
   String? name;
   String? gender;
   String? email;
+  String? specialist;
 
-  DoctorModel({this.uid, this.name, this.gender, this.email});
+  DoctorModel({this.uid, this.name, this.gender, this.email, this.specialist});
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -12,6 +13,7 @@ class DoctorModel {
       'name': name,
       'gender': gender,
       'email': email,
+      'specialist': specialist,
     };
     return map;
   }
@@ -21,5 +23,6 @@ class DoctorModel {
         name: map['name'],
         gender: map['gender'],
         email: map['email'],
+        specialist: map['specialist'],
       );
 }

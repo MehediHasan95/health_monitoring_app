@@ -14,7 +14,7 @@ void showFlushBar(BuildContext context, String msg) => Flushbar(
       message: msg,
       messageColor: Colors.white,
       backgroundColor: Colors.lightGreen.shade400,
-      duration: const Duration(milliseconds: 3000),
+      duration: const Duration(milliseconds: 2500),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(10),

@@ -66,7 +66,7 @@ class _DoctorListState extends State<DoctorList> {
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade800),
                         ),
-                        subtitle: Text(doctorProfile.email!),
+                        subtitle: Text(doctorProfile.specialist!),
                         trailing: ElevatedButton(
                           onPressed: () {
                             _shareWithDoctor(doctorProfile.uid);
@@ -74,7 +74,10 @@ class _DoctorListState extends State<DoctorList> {
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            primary: Colors.green,
+                            primary: Colors.pink.shade200,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
                           child: const Icon(Icons.add),
                         ),
