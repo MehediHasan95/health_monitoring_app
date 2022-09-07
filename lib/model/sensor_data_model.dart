@@ -27,11 +27,4 @@ class SensorDataModel {
         tempC = snapshot.data()['tempC'],
         tempF = snapshot.data()['tempF'],
         timestamp = snapshot.data()['timestamp'].toDate();
-
-  // factory SensorDataModel.fromMap(Map<String, dynamic> map) => SensorDataModel(
-  //     bpm: map['bpm'],
-  //     spo2: map['spo2'],
-  //     tempC: map['tempC'],
-  //     tempF: map['tempF'],
-  //     timestamp: map['timestamp']);
 }

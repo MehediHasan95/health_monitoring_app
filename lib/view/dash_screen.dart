@@ -440,10 +440,6 @@ class _DashScreenState extends State<DashScreen> {
                         gender!,
                         style: const TextStyle(color: Colors.white),
                       ),
-                      // Text(
-                      //   'Age: $myAge',
-                      //   style: const TextStyle(color: Colors.white),
-                      // ),
                     ],
                   )),
               ListTile(

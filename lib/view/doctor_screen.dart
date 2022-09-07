@@ -92,7 +92,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyEmailErrMsg;
                         }
                         return null;
                       },
@@ -126,7 +126,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyPasswordErrMsg;
                         }
                         return null;
                       },

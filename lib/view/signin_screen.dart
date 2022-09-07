@@ -90,7 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyEmailErrMsg;
                         }
                         return null;
                       },
@@ -126,7 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyPasswordErrMsg;
                         }
                         return null;
                       },

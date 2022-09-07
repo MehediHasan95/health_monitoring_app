@@ -2,7 +2,10 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const String emptyFieldErrMsg = 'This field cannot be empty';
+const String emptyNameErrMsg = 'Please enter your username';
+const String emptyEmailErrMsg = 'Please enter your email address';
+const String emptyPasswordErrMsg = 'Please enter your password';
+const String emptyGenderErrMsg = 'Please select your gender';
 
 // Flushbar
 void showFlushBar(BuildContext context, String msg) => Flushbar(

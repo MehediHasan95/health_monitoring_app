@@ -95,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyNameErrMsg;
                         }
                         return null;
                       },
@@ -134,7 +134,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           .toList(),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyGenderErrMsg;
                         }
                         return null;
                       },
@@ -160,7 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyEmailErrMsg;
                         }
                         return null;
                       },
@@ -196,7 +196,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyPasswordErrMsg;
                         }
                         return null;
                       },
@@ -303,7 +303,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final selectDateOfBirth = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
+      firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
     if (selectDateOfBirth != null) {

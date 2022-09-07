@@ -3,7 +3,6 @@ import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
-
 import 'package:provider/provider.dart';
 
 class DoctorList extends StatefulWidget {
@@ -70,7 +69,8 @@ class _DoctorListState extends State<DoctorList> {
                         trailing: ElevatedButton(
                           onPressed: () {
                             _shareWithDoctor(doctorProfile.uid);
-                            showFlushBar(context, "Added Successfull");
+                            showFlushBar(
+                                context, "Your Data share successfully");
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,

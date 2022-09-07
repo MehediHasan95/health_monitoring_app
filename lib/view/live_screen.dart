@@ -3,6 +3,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/controller/load_data.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
@@ -14,6 +15,7 @@ import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/not_found.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 
 class LiveScreen extends StatefulWidget {
   const LiveScreen({Key? key}) : super(key: key);
@@ -75,10 +77,9 @@ class _LiveScreenState extends State<LiveScreen> {
     final isBpmTrue = sensorData.bpm;
     final isSpO2True = sensorData.spo2;
 
-    if (isBpmTrue! >= 60.0 && isSpO2True! >= 90) {
+    if (isBpmTrue! >= 42.0 && isSpO2True! >= 88) {
       isButtonActive = true;
       isFingerTop = false;
-      startTimer();
     } else {
       isButtonActive = false;
       isFingerTop = true;
@@ -87,22 +88,22 @@ class _LiveScreenState extends State<LiveScreen> {
     // Heart health condition check
     String heartHealthMsg = "";
     if (sensorData.bpm! > 180 && sensorData.spo2! > 100) {
-      heartHealthMsg = "High";
+      heartHealthMsg = " High";
     } else if (sensorData.bpm! >= 60 &&
         sensorData.bpm! <= 100 &&
         sensorData.avgSpo2! >= 95 &&
         sensorData.spo2! <= 100) {
-      heartHealthMsg = "Normal";
+      heartHealthMsg = " Normal";
     } else if (sensorData.bpm! < 60 &&
         sensorData.bpm! > 42 &&
         sensorData.spo2! < 95 &&
         sensorData.spo2! > 88) {
-      heartHealthMsg = "Low";
+      heartHealthMsg = " Low";
     } else if ((sensorData.bpm! < 42 &&
         sensorData.bpm! > 10 &&
         sensorData.spo2! < 88 &&
         sensorData.spo2! > 10)) {
-      heartHealthMsg = "Extreme low";
+      heartHealthMsg = " Extreme low";
     }
 
     // body temperature health condition check
@@ -162,7 +163,7 @@ class _LiveScreenState extends State<LiveScreen> {
                       ],
                     ),
                     SizedBox(
-                        height: 50,
+                        height: 30,
                         child: LottieBuilder.asset('assets/live.json')),
                   ],
                 ),
@@ -319,16 +320,18 @@ class _LiveScreenState extends State<LiveScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Text(
-                          "Heart Condition: ${heartHealthMsg == '' ? '?' : heartHealthMsg}",
-                          style: const TextStyle(
-                              color: Colors.greenAccent,
-                              fontWeight: FontWeight.bold)),
-                      Text(
-                          "Temperature Condition: ${tempHealthMsg == '' ? '?' : tempHealthMsg}",
-                          style: const TextStyle(
-                              color: Colors.greenAccent,
-                              fontWeight: FontWeight.bold)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const FaIcon(FontAwesomeIcons.heartPulse,
+                              color: Colors.redAccent),
+                          Text(heartHealthMsg == '' ? ' ?' : heartHealthMsg,
+                              style: const TextStyle(color: Colors.white)),
+                          const Icon(Icons.thermostat, color: Colors.redAccent),
+                          Text(tempHealthMsg == '' ? '?' : tempHealthMsg,
+                              style: const TextStyle(color: Colors.white))
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -346,36 +349,41 @@ class _LiveScreenState extends State<LiveScreen> {
                     endRadius: 50,
                     glowColor: Colors.white,
                     child: ElevatedButton(
-                      onPressed: () {
-                        HapticFeedback.heavyImpact();
-                        final sensorDataModel = SensorDataModel(
-                          bpm: sensorData.bpm.toString(),
-                          spo2: sensorData.spo2.toString(),
-                          tempC: sensorData.bodyTempC.toString(),
-                          tempF: sensorData.bodyTempF.toString(),
-                          timestamp: DateTime.now(),
-                        );
-                        Provider.of<SensorDataProvider>(context, listen: false)
-                            .saveSensorData(sensorDataModel)
-                            .then((value) {
-                          setState(() {
-                            isButtonActive == false;
-                          });
-                          showFlushBar(
-                            context,
-                            "Your record has been saved successfully",
+                        onPressed: () {
+                          HapticFeedback.heavyImpact();
+                          final sensorDataModel = SensorDataModel(
+                            bpm: sensorData.bpm.toString(),
+                            spo2: sensorData.spo2.toString(),
+                            tempC: sensorData.bodyTempC.toString(),
+                            tempF: sensorData.bodyTempF.toString(),
+                            timestamp: DateTime.now(),
                           );
-                        }).catchError((error) {
-                          showFlushBar(context, error);
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.pink,
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(25),
-                      ),
-                      child: const Text("SAVE"),
-                    ),
+                          Provider.of<SensorDataProvider>(context,
+                                  listen: false)
+                              .saveSensorData(sensorDataModel)
+                              .then((value) {
+                            setState(() {
+                              isButtonActive == false;
+                            });
+                            showFlushBar(
+                              context,
+                              "Your record has been saved successfully",
+                            );
+                          }).catchError((error) {
+                            showFlushBar(context, error);
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.pink,
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(25),
+                        ),
+                        child: const SlideCountdown(
+                            duration: Duration(seconds: 20),
+                            replacement: Text('SAVE'),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.zero,
+                                color: Colors.pink))),
                   ),
                 ),
                 const SizedBox(height: 50),
@@ -435,18 +443,5 @@ class _LiveScreenState extends State<LiveScreen> {
     } else {
       welcomeMsg = 'Good Night';
     }
-  }
-
-  int timeLeft = 10;
-  void startTimer() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (timeLeft > 0) {
-        setState(() {
-          timeLeft--;
-        });
-      } else {
-        timer.cancel();
-      }
-    });
   }
 }

@@ -82,7 +82,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyFieldErrMsg;
+                          return emptyEmailErrMsg;
                         }
                         return null;
                       },
