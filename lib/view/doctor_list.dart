@@ -133,17 +133,20 @@ class _DoctorListState extends State<DoctorList> {
               ),
               content: Column(
                 children: [
-                  Text("${doctorProfile.specialist}"),
-                  const Text(
-                    "Senior Consultant, Dept. of Clinical & Interventional Cardiology, Apollo Hospitals Dhaka.",
-                  ),
-                  const Text("MBBS, D.Card (DU), FCPS (Medicine)"),
-                  Text("${doctorProfile.email}"),
+                  Text("(${doctorProfile.specialist})",
+                      style: TextStyle(color: Colors.grey.shade900)),
+                  Text("${doctorProfile.hospital}",
+                      style: TextStyle(color: Colors.grey.shade900)),
+                  Text("${doctorProfile.degree}",
+                      style: TextStyle(color: Colors.grey.shade900)),
+                  // Text("${doctorProfile.email}",
+                  //     style: TextStyle(color: Colors.grey.shade900)),
                 ],
               ),
               actions: [
                 TextButton(
-                  child: const Text('CLOSE'),
+                  child: const Text('CLOSE',
+                      style: TextStyle(color: Colors.redAccent)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },

@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -108,10 +109,13 @@ class _ScanUserDataState extends State<ScanUserData> {
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  IconButton(
-                                      onPressed: _openDialog,
-                                      icon: const Icon(Icons.message,
-                                          color: Colors.white))
+                                  AvatarGlow(
+                                    endRadius: 25,
+                                    child: IconButton(
+                                        onPressed: _openDialog,
+                                        icon: const Icon(Icons.message,
+                                            color: Colors.pink)),
+                                  )
                                 ],
                               ),
                               Text(

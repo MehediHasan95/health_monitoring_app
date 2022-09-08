@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
@@ -160,10 +161,13 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           fontSize: 25,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    IconButton(
-                                        onPressed: _openDialog,
-                                        icon: const Icon(Icons.message,
-                                            color: Colors.white))
+                                    AvatarGlow(
+                                      endRadius: 25,
+                                      child: IconButton(
+                                          onPressed: _openDialog,
+                                          icon: const Icon(Icons.message,
+                                              color: Colors.pink)),
+                                    )
                                   ],
                                 ),
                                 Row(
@@ -521,12 +525,12 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                 onTap: (() {
                   Navigator.popAndPushNamed(context, ScanUserData.routeNames);
                 }),
-                leading: const Icon(Icons.qr_code_scanner),
+                leading: const Icon(Icons.qr_code_scanner, color: Colors.teal),
                 title: const Text('Scan Now'),
               ),
               ListTile(
                 onTap: _doctorSignOut,
-                leading: const Icon(Icons.logout),
+                leading: const Icon(Icons.logout, color: Colors.redAccent),
                 title: const Text('Sign Out'),
               )
             ],

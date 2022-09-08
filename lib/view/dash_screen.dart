@@ -172,14 +172,14 @@ class _DashScreenState extends State<DashScreen> {
                                     radius: 55,
                                     lineWidth: 15,
                                     percent: averageTempC / 50,
-                                    progressColor: Colors.deepOrange,
+                                    progressColor: Colors.amber.shade900,
                                     center: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        const FaIcon(
+                                        FaIcon(
                                           FontAwesomeIcons.temperatureFull,
-                                          color: Colors.deepOrange,
+                                          color: Colors.amber.shade900,
                                         ),
                                         Text(averageTempC.toStringAsFixed(2),
                                             style: const TextStyle(
@@ -447,7 +447,7 @@ class _DashScreenState extends State<DashScreen> {
                   Navigator.pushReplacementNamed(
                       context, LiveScreen.routeNames);
                 }),
-                leading: const Icon(Icons.sensors),
+                leading: const Icon(Icons.sensors, color: Colors.green),
                 title: const Text('Live'),
               ),
               ListTile(
@@ -455,21 +455,23 @@ class _DashScreenState extends State<DashScreen> {
                   Navigator.popAndPushNamed(
                       context, HealthTipsScreen.routeNames);
                 },
-                leading: const Icon(Icons.tips_and_updates),
+                leading:
+                    const Icon(Icons.tips_and_updates, color: Colors.amber),
                 title: const Text('Health Tips'),
               ),
               ListTile(
                 onTap: () {
                   Navigator.popAndPushNamed(context, DoctorList.routeNames);
                 },
-                leading: const Icon(Icons.health_and_safety),
+                leading: const Icon(Icons.health_and_safety,
+                    color: Colors.redAccent),
                 title: const Text('Doctor List'),
               ),
               ListTile(
                 onTap: () {
                   Navigator.popAndPushNamed(context, DoctorAdvice.routeNames);
                 },
-                leading: const Icon(Icons.message),
+                leading: Icon(Icons.message, color: Colors.blue.shade900),
                 title: const Text('Doctor Advice'),
               ),
               ListTile(
@@ -477,19 +479,19 @@ class _DashScreenState extends State<DashScreen> {
                   Navigator.popAndPushNamed(
                       context, BarcodeGenerate.routeNames);
                 }),
-                leading: const Icon(Icons.qr_code),
+                leading: const Icon(Icons.qr_code, color: Colors.teal),
                 title: const Text('QR Code'),
               ),
               ListTile(
                 onTap: (() {
                   Navigator.popAndPushNamed(context, AboutScreen.routeNames);
                 }),
-                leading: const Icon(Icons.attribution),
+                leading: const Icon(Icons.error, color: Colors.pink),
                 title: const Text('About'),
               ),
               ListTile(
                 onTap: _signOut,
-                leading: const Icon(Icons.logout),
+                leading: const Icon(Icons.logout, color: Colors.cyan),
                 title: const Text('Sign Out'),
               ),
             ],
