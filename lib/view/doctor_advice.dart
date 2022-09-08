@@ -59,22 +59,15 @@ class _DoctorAdviceState extends State<DoctorAdvice> {
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: ListTile(
-                              title: Row(
-                                children: [
-                                  Text(
-                                    getAdvice.doctorName!,
-                                    style: TextStyle(
-                                        color: Colors.grey.shade800,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  getAdvice.doctorGender == "Male"
-                                      ? const Icon(Icons.male)
-                                      : const Icon(Icons.female)
-                                ],
+                              title: Text(
+                                getAdvice.doctorName!,
+                                style: TextStyle(
+                                    color: Colors.purple.shade900,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
                               ),
                               subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   ReadMoreText(
                                     getAdvice.message!,
@@ -91,10 +84,10 @@ class _DoctorAdviceState extends State<DoctorAdvice> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.purple.shade900,
                                     ),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      height: 2,
-                                    ),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        height: 2,
+                                        color: Colors.grey.shade900),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 8.0),
@@ -102,8 +95,8 @@ class _DoctorAdviceState extends State<DoctorAdvice> {
                                         DateFormat('dd MMMM yyyy, hh:mm a')
                                             .format(getAdvice.time!)
                                             .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.pink,
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600,
                                             fontWeight: FontWeight.bold)),
                                   )
                                 ],

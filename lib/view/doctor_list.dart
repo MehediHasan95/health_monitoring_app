@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
+import 'package:health_monitoring_app/model/doctor_model.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:provider/provider.dart';
@@ -81,6 +83,9 @@ class _DoctorListState extends State<DoctorList> {
                           ),
                           child: const Icon(Icons.add),
                         ),
+                        onTap: () {
+                          _getDoctorProfile(doctorProfile);
+                        },
                       ),
                     ),
                   );
@@ -108,5 +113,42 @@ class _DoctorListState extends State<DoctorList> {
         .collection("userList")
         .doc(uid)
         .set(shareData!);
+  }
+
+  void _getDoctorProfile(DoctorModel doctorProfile) {
+    showDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: Column(
+                children: [
+                  doctorProfile.gender == "Male"
+                      ? Image.asset('assets/man-doctor.png', height: 120)
+                      : Image.asset('assets/woman-doctor.png', height: 120),
+                  const SizedBox(height: 10),
+                  Text("${doctorProfile.name}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.purple.shade900)),
+                ],
+              ),
+              content: Column(
+                children: [
+                  Text("${doctorProfile.specialist}"),
+                  const Text(
+                    "Senior Consultant, Dept. of Clinical & Interventional Cardiology, Apollo Hospitals Dhaka.",
+                  ),
+                  const Text("MBBS, D.Card (DU), FCPS (Medicine)"),
+                  Text("${doctorProfile.email}"),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  child: const Text('CLOSE'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ));
   }
 }
