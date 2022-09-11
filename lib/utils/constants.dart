@@ -6,6 +6,8 @@ const String emptyNameErrMsg = 'Please enter your username';
 const String emptyEmailErrMsg = 'Please enter your email address';
 const String emptyPasswordErrMsg = 'Please enter your password';
 const String emptyGenderErrMsg = 'Please select your gender';
+const String emptySpecialistErrMsg = 'Please select your specialist';
+const String emptyHospitalErrMsg = 'Please select your hospital';
 
 // Flushbar
 void showFlushBar(BuildContext context, String msg) => Flushbar(

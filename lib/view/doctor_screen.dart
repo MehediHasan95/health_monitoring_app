@@ -4,6 +4,7 @@ import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/doctor_dashboard.dart';
+import 'package:health_monitoring_app/view/doctor_sign_up.dart';
 import 'package:health_monitoring_app/view/forgot_password.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +54,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   shrinkWrap: true,
                   children: [
                     const Text(
-                      'DOCTOR PORTAL',
+                      'DOCTOR SIGN IN',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,
@@ -170,6 +171,27 @@ class _DoctorScreenState extends State<DoctorScreen> {
                       _errMsg,
                       style: const TextStyle(color: Colors.yellowAccent),
                       textAlign: TextAlign.center,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Don't have an account?",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                              primary: Colors.pink.shade200),
+                          onPressed: () {
+                            Navigator.popAndPushNamed(
+                                context, DoctorSignUp.routeNames);
+                          },
+                          child: const Text(
+                            'Sign Up',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
                     )
                   ],
                 )),

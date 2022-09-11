@@ -227,7 +227,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 10,
                     ),
                     ElevatedButton(
-                      onPressed: _SignUpUser,
+                      onPressed: _signUpUser,
                       style: ElevatedButton.styleFrom(
                         primary: Colors.pink.shade200,
                         shape: RoundedRectangleBorder(
@@ -276,7 +276,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   // ignore: non_constant_identifier_names
-  void _SignUpUser() async {
+  void _signUpUser() async {
     if (_formKey.currentState!.validate()) {
       try {
         final uid = await AuthService.signUpUser(

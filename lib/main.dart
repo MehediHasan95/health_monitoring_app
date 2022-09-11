@@ -9,7 +9,9 @@ import 'package:health_monitoring_app/view/about_screen.dart';
 import 'package:health_monitoring_app/view/barcode_generator.dart';
 import 'package:health_monitoring_app/view/dash_screen.dart';
 import 'package:health_monitoring_app/view/doctor_dashboard.dart';
+import 'package:health_monitoring_app/view/doctor_registration_success.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
+import 'package:health_monitoring_app/view/doctor_sign_up.dart';
 import 'package:health_monitoring_app/view/health_tips_screen.dart';
 import 'package:health_monitoring_app/view/live_screen.dart';
 import 'package:health_monitoring_app/view/scan_user_data.dart';
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
           SignInScreen.routeNames: (context) => const SignInScreen(),
           SignUpScreen.routeNames: (context) => const SignUpScreen(),
           DoctorScreen.routeNames: (context) => const DoctorScreen(),
+          DoctorSignUp.routeNames: (context) => const DoctorSignUp(),
           LiveScreen.routeNames: (context) => const LiveScreen(),
           DashScreen.routeNames: (context) => const DashScreen(),
           DoctorDashboard.routeNames: (context) => const DoctorDashboard(),
@@ -57,6 +60,8 @@ class MyApp extends StatelessWidget {
           ScanUserData.routeNames: (context) => const ScanUserData(),
           DoctorList.routeNames: (context) => const DoctorList(),
           DoctorAdvice.routeNames: (context) => const DoctorAdvice(),
+          DoctorRegistrationSuccess.routeNames: (context) =>
+              const DoctorRegistrationSuccess(),
         },
       ),
     );

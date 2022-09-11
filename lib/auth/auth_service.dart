@@ -12,13 +12,29 @@ class AuthService {
     return credential.user?.uid;
   }
 
-// SignUp method
+// user SignUp method
   static Future<String?> signUpUser(String username, String gender,
       DateTime dateOfBirth, String email, String password) async {
     final credential = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     await DatabaseHelper.createUserProfileInfo(
         username, gender, email, dateOfBirth);
+    return credential.user?.uid;
+  }
+
+  // Doctor SignUp method
+  static Future<String?> doctorSignUpUser(
+      String uniqueId,
+      String name,
+      String email,
+      String password,
+      String gender,
+      String specialist,
+      String hospital) async {
+    final credential = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    await DatabaseHelper.createDoctorProfileInfo(
+        uniqueId, name, email, password, gender, specialist, hospital);
     return credential.user?.uid;
   }
 

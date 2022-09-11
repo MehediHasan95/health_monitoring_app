@@ -22,6 +22,26 @@ class DatabaseHelper {
     });
   }
 
+// Create Doctor Database
+  static Future<void> createDoctorProfileInfo(
+      String uniqueId,
+      String username,
+      String email,
+      String password,
+      String gender,
+      String specialist,
+      String hospital) async {
+    return await db.collection(_doctorCollection).doc(_userID).set({
+      "uid": _userID,
+      "uniqueId": uniqueId,
+      "name": username,
+      "email": email,
+      "gender": gender,
+      "specialist": specialist,
+      "hospital": hospital
+    });
+  }
+
   static Future<void> addSensorData(SensorDataModel sensorDataModel) {
     return db
         .collection(_sensorDataCollection)
