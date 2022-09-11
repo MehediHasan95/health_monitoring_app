@@ -95,7 +95,9 @@ class _DashScreenState extends State<DashScreen> {
                                     animationDuration: 1000,
                                     radius: 55,
                                     lineWidth: 15,
-                                    percent: averageBpm / 180,
+                                    percent: averageBpm <= 180
+                                        ? averageBpm / 180
+                                        : 0,
                                     progressColor: Colors.pink,
                                     center: Column(
                                       mainAxisAlignment:
@@ -130,7 +132,9 @@ class _DashScreenState extends State<DashScreen> {
                                     animationDuration: 1000,
                                     radius: 55,
                                     lineWidth: 15,
-                                    percent: averageSpo2 / 110,
+                                    percent: averageSpo2 <= 110
+                                        ? averageSpo2 / 110
+                                        : 0,
                                     progressColor: Colors.deepPurple,
                                     center: Column(
                                       mainAxisAlignment:
@@ -171,7 +175,9 @@ class _DashScreenState extends State<DashScreen> {
                                     animationDuration: 1000,
                                     radius: 55,
                                     lineWidth: 15,
-                                    percent: averageTempC / 50,
+                                    percent: averageTempC <= 50
+                                        ? averageTempC / 50
+                                        : 0,
                                     progressColor: Colors.amber.shade900,
                                     center: Column(
                                       mainAxisAlignment:
@@ -206,7 +212,9 @@ class _DashScreenState extends State<DashScreen> {
                                     animationDuration: 1000,
                                     radius: 55,
                                     lineWidth: 15,
-                                    percent: averageTempF / 122,
+                                    percent: averageTempF <= 122
+                                        ? averageTempF / 122
+                                        : 0,
                                     progressColor: Colors.cyan.shade900,
                                     center: Column(
                                       mainAxisAlignment:

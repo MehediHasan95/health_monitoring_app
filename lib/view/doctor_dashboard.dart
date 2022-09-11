@@ -370,7 +370,11 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           width: 200,
                                           lineHeight: 15,
                                           percent:
-                                              double.parse(getValue.bpm!) / 180,
+                                              double.parse(getValue.bpm!) <= 180
+                                                  ? double.parse(
+                                                          getValue.bpm!) /
+                                                      180
+                                                  : 0,
                                           backgroundColor: Colors.white30,
                                           linearGradient: LinearGradient(
                                               colors: [
@@ -401,9 +405,14 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           animationDuration: 1000,
                                           width: 200,
                                           lineHeight: 15,
-                                          percent:
-                                              double.parse(getValue.spo2!) /
-                                                  110,
+
+                                          percent: double.parse(
+                                                      getValue.spo2!) <=
+                                                  110
+                                              ? double.parse(getValue.spo2!) /
+                                                  110
+                                              : 0,
+
                                           backgroundColor: Colors.white30,
                                           linearGradient: LinearGradient(
                                               colors: [
@@ -435,9 +444,14 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           animationDuration: 1000,
                                           width: 200,
                                           lineHeight: 15,
-                                          percent:
-                                              double.parse(getValue.tempC!) /
-                                                  50,
+
+                                          percent: double.parse(
+                                                      getValue.tempC!) <=
+                                                  50
+                                              ? double.parse(getValue.tempC!) /
+                                                  50
+                                              : 0,
+
                                           backgroundColor: Colors.white30,
                                           linearGradient: LinearGradient(
                                               colors: [
@@ -477,8 +491,14 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                             begin: Alignment.centerLeft,
                                             end: Alignment.bottomRight,
                                           ),
-                                          percent:
-                                              double.parse(getValue.bpm!) / 122,
+
+                                          percent: double.parse(
+                                                      getValue.tempF!) <=
+                                                  122
+                                              ? double.parse(getValue.tempF!) /
+                                                  122
+                                              : 0,
+
                                           backgroundColor: Colors.white30,
                                           // progressColor: Colors.amberAccent,
                                           leading: Text("${getValue.tempF!}°F",
