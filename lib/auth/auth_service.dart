@@ -39,8 +39,8 @@ class AuthService {
   }
 
 // SignOut method
-  static Future<void> signOut() {
-    return _auth.signOut();
+  static Future<void> signOut() async {
+    return await _auth.signOut();
   }
 
 // Reset password method

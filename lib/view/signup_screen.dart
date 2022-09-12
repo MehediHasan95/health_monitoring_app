@@ -105,16 +105,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     DropdownButtonFormField<String>(
                       style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                           border: InputBorder.none,
                           prefixIcon: Icon(
-                            Icons.male,
+                            selectGender == "Male" ? Icons.male : Icons.female,
                             color: Colors.white,
                           ),
                           fillColor: Colors.white30,
                           filled: true,
                           hintText: "Gender",
-                          hintStyle: TextStyle(color: Colors.white)),
+                          hintStyle: const TextStyle(color: Colors.white)),
                       icon: const Icon(
                         Icons.keyboard_arrow_down,
                         color: Colors.white,

@@ -49,6 +49,7 @@ class _DoctorListState extends State<DoctorList> {
                 itemCount: _doctorProvider.doctorList.length,
                 itemBuilder: (context, index) {
                   final doctorProfile = _doctorProvider.doctorList[index];
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Card(
@@ -122,8 +123,8 @@ class _DoctorListState extends State<DoctorList> {
               title: Column(
                 children: [
                   doctorProfile.gender == "Male"
-                      ? Image.asset('assets/man-doctor.png', height: 120)
-                      : Image.asset('assets/woman-doctor.png', height: 120),
+                      ? Image.asset('assets/man-doctor.png', height: 150)
+                      : Image.asset('assets/woman-doctor.png', height: 150),
                   const SizedBox(height: 10),
                   Text("${doctorProfile.name}",
                       style: TextStyle(
@@ -137,10 +138,6 @@ class _DoctorListState extends State<DoctorList> {
                       style: TextStyle(color: Colors.grey.shade900)),
                   Text("${doctorProfile.hospital}",
                       style: TextStyle(color: Colors.grey.shade900)),
-                  Text("${doctorProfile.degree}",
-                      style: TextStyle(color: Colors.grey.shade900)),
-                  // Text("${doctorProfile.email}",
-                  //     style: TextStyle(color: Colors.grey.shade900)),
                 ],
               ),
               actions: [

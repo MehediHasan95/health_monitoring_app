@@ -9,25 +9,21 @@ import 'package:health_monitoring_app/view/doctor_screen.dart';
 const gender = ["Male", "Female"];
 const specialist = [
   "Cardiologist",
+  "Neurologist",
   "Chest & Medicine",
   "Medicine",
+  "Radiologists",
   "Neuromedicine",
   "Kidney & Medicine"
 ];
-
 const hospital = [
   "Evercare Hospital Dhaka",
-  "United Hospitals Limited ",
-  "United Hospital Dhaka",
+  "Square Hospitals Ltd.",
+  "United Hospitals Ltd.",
+  "BIRDEM General Hospital",
+  "National Heart Foundation",
   "Aysha Memorial Hospital",
   "Popular Hospital Dhaka"
-];
-
-const degree = [
-  "MBBS, BCS, MD",
-  "MBBS, FCPS, FCPS",
-  "MBBS, MCPS, MD",
-  "MBBS, D.Card, FCPS"
 ];
 
 class DoctorSignUp extends StatefulWidget {
@@ -47,8 +43,6 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
   String? selectGender;
   String? selectSpecialist;
   String? selectHospital;
-  String? selectDegree;
-  DateTime? dateOfBirth;
   String _errMsg = '';
   bool _obscureText = true;
 
@@ -103,7 +97,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                     // Image.asset('assets/signin.jpg'),
 
                     const SizedBox(
-                      height: 10,
+                      height: 30,
                     ),
                     TextFormField(
                       keyboardType: TextInputType.name,
@@ -223,16 +217,16 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                     ),
                     DropdownButtonFormField<String>(
                       style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                           border: InputBorder.none,
                           prefixIcon: Icon(
-                            Icons.male,
+                            selectGender == "Male" ? Icons.male : Icons.female,
                             color: Colors.white,
                           ),
                           fillColor: Colors.white30,
                           filled: true,
                           hintText: "Gender",
-                          hintStyle: TextStyle(color: Colors.white)),
+                          hintStyle: const TextStyle(color: Colors.white)),
                       icon: const Icon(
                         Icons.keyboard_arrow_down,
                         color: Colors.white,
@@ -265,7 +259,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                       decoration: const InputDecoration(
                           border: InputBorder.none,
                           prefixIcon: Icon(
-                            Icons.hearing,
+                            Icons.psychology,
                             color: Colors.white,
                           ),
                           fillColor: Colors.white30,
@@ -305,47 +299,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                       decoration: const InputDecoration(
                           border: InputBorder.none,
                           prefixIcon: Icon(
-                            Icons.school,
-                            color: Colors.white,
-                          ),
-                          fillColor: Colors.white30,
-                          filled: true,
-                          hintText: "Degree",
-                          hintStyle: TextStyle(color: Colors.white)),
-                      icon: const Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Colors.white,
-                      ),
-                      dropdownColor: Colors.pink.shade200,
-                      value: selectDegree,
-                      onChanged: ((value) {
-                        setState(() {
-                          selectDegree = value;
-                        });
-                      }),
-                      items: degree
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e, overflow: TextOverflow.ellipsis),
-                              ))
-                          .toList(),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return emptyHospitalErrMsg;
-                        }
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    DropdownButtonFormField<String>(
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          prefixIcon: Icon(
-                            Icons.local_hospital,
+                            Icons.home,
                             color: Colors.white,
                           ),
                           fillColor: Colors.white30,
