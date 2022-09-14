@@ -34,7 +34,7 @@ void showFlushBarErrorMsg(BuildContext context, String msg) => Flushbar(
       message: msg,
       messageColor: Colors.white,
       backgroundColor: Colors.redAccent,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1000),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(10),

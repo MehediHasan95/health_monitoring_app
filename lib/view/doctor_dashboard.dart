@@ -5,6 +5,7 @@ import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
 import 'package:health_monitoring_app/model/user_profile_model.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
+import 'package:health_monitoring_app/view/doctor_chat_room.dart';
 import 'package:health_monitoring_app/view/scan_user_data.dart';
 import 'package:health_monitoring_app/view/welcome_screen.dart';
 import 'package:intl/intl.dart';
@@ -85,6 +86,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                       itemBuilder: (context, index) {
                         final getProfile =
                             _userProfileList[index] as UserProfileModel;
+
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Card(
@@ -164,7 +166,13 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                     AvatarGlow(
                                       endRadius: 25,
                                       child: IconButton(
-                                          onPressed: _openDialog,
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DoctorChatRoom(
+                                                            value: uniqueID)));
+                                          },
                                           icon: const Icon(Icons.message,
                                               color: Colors.pink)),
                                     )
@@ -690,59 +698,59 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         .delete();
   }
 
-  void _openDialog() {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              actionsAlignment: MainAxisAlignment.spaceAround,
-              title: Text("Message",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.purple.shade900)),
-              content: TextField(
-                minLines: 1,
-                maxLines: 500,
-                controller: _msgController,
-                decoration: const InputDecoration(hintText: "Write here"),
-              ),
-              actions: [
-                TextButton(
-                  child: const Text('CLOSE',
-                      style: TextStyle(color: Colors.redAccent)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      _msgController.clear();
-                    });
-                  },
-                ),
-                TextButton(
-                  child:
-                      const Text('SEND', style: TextStyle(color: Colors.green)),
-                  onPressed: () {
-                    if (_msgController.text.isEmpty) {
-                      showFlushBarErrorMsg(context, "Please write something");
-                    } else {
-                      DatabaseHelper.db
-                          .collection("doctorAdvice")
-                          .doc(uniqueID)
-                          .collection("message")
-                          .doc()
-                          .set({
-                        "doctorName": doctorName,
-                        "doctorGender": doctorGender,
-                        "message": _msgController.text,
-                        "time": DateTime.now(),
-                      });
-                      Navigator.of(context).pop();
-                      showFlushBar(context, "Message send successfull");
-                      setState(() {
-                        _msgController.clear();
-                      });
-                    }
-                  },
-                )
-              ],
-            ));
-  }
+  // void _openDialog() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //             actionsAlignment: MainAxisAlignment.spaceAround,
+  //             title: Text("Message",
+  //                 style: TextStyle(
+  //                     fontWeight: FontWeight.bold,
+  //                     color: Colors.purple.shade900)),
+  //             content: TextField(
+  //               minLines: 1,
+  //               maxLines: 500,
+  //               controller: _msgController,
+  //               decoration: const InputDecoration(hintText: "Write here"),
+  //             ),
+  //             actions: [
+  //               TextButton(
+  //                 child: const Text('CLOSE',
+  //                     style: TextStyle(color: Colors.redAccent)),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                   setState(() {
+  //                     _msgController.clear();
+  //                   });
+  //                 },
+  //               ),
+  //               TextButton(
+  //                 child:
+  //                     const Text('SEND', style: TextStyle(color: Colors.green)),
+  //                 onPressed: () {
+  //                   if (_msgController.text.isEmpty) {
+  //                     showFlushBarErrorMsg(context, "Please write something");
+  //                   } else {
+  //                     DatabaseHelper.db
+  //                         .collection("doctorAdvice")
+  //                         .doc(uniqueID)
+  //                         .collection("message")
+  //                         .doc()
+  //                         .set({
+  //                       "doctorName": doctorName,
+  //                       "doctorGender": doctorGender,
+  //                       "message": _msgController.text,
+  //                       "time": DateTime.now(),
+  //                     });
+  //                     Navigator.of(context).pop();
+  //                     showFlushBar(context, "Message send successfull");
+  //                     setState(() {
+  //                       _msgController.clear();
+  //                     });
+  //                   }
+  //                 },
+  //               )
+  //             ],
+  //           ));
+  // }
 }

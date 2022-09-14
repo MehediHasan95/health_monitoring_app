@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:health_monitoring_app/view/doctor_advice.dart';
 import 'package:health_monitoring_app/view/doctor_list.dart';
 import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/provider/sensor_data_provider.dart';
@@ -59,7 +58,6 @@ class MyApp extends StatelessWidget {
           BarcodeGenerate.routeNames: (context) => const BarcodeGenerate(),
           ScanUserData.routeNames: (context) => const ScanUserData(),
           DoctorList.routeNames: (context) => const DoctorList(),
-          DoctorAdvice.routeNames: (context) => const DoctorAdvice(),
           DoctorRegistrationSuccess.routeNames: (context) =>
               const DoctorRegistrationSuccess(),
         },
