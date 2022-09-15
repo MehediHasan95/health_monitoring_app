@@ -76,7 +76,6 @@ class _UserChatRoomState extends State<UserChatRoom> {
                             QueryDocumentSnapshot showGetMsg =
                                 snapshot.data!.docs[index];
                             String name = showGetMsg['name'];
-                            String gender = showGetMsg['gender'];
                             String message = showGetMsg['message'];
                             DateTime time = showGetMsg['time'].toDate();
                             return Padding(
@@ -85,6 +84,14 @@ class _UserChatRoomState extends State<UserChatRoom> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Center(
+                                    child: Text(
+                                        DateFormat(' dd/MM/yyyy, hh:mm a')
+                                            .format(time)
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white70)),
+                                  ),
                                   Card(
                                       color: Colors.white70,
                                       shape: const RoundedRectangleBorder(
@@ -94,57 +101,23 @@ class _UserChatRoomState extends State<UserChatRoom> {
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
-                                        child: Row(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            uid == uid
-                                                ? gender == "Male"
-                                                    ? Image.asset(
-                                                        'assets/man.png',
-                                                        height: 40)
-                                                    : Image.asset(
-                                                        'assets/man.png',
-                                                        height: 40)
-                                                : gender == "Male"
-                                                    ? Image.asset(
-                                                        'assets/man-doctor.png',
-                                                        height: 40)
-                                                    : Image.asset(
-                                                        'assets/woman-doctor.png',
-                                                        height: 40),
-                                            const SizedBox(width: 10),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(name,
-                                                        style: TextStyle(
-                                                            color: Colors.purple
-                                                                .shade900,
-                                                            // fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    Text(
-                                                        DateFormat(
-                                                                ' dd/MM/yyyy hh:mm a')
-                                                            .format(time)
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: Colors.grey
-                                                                .shade800)),
-                                                  ],
-                                                ),
-                                                Text(message,
-                                                    style: TextStyle(
-                                                        // fontSize: 18,
-                                                        color: Colors
-                                                            .grey.shade800,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ],
-                                            ),
+                                            Text(name,
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color:
+                                                        Colors.purple.shade900,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            Text(message,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.grey.shade800,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                           ],
                                         ),
                                       )),
@@ -163,9 +136,16 @@ class _UserChatRoomState extends State<UserChatRoom> {
                     controller: _msgController,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.send, color: Colors.white),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          gapPadding: 0.0,
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Colors.white70, width: 0.5),
+                        ),
+                        suffixIcon: ElevatedButton(
                           onPressed: () {
                             if (_msgController.text == "") {
                               showFlushBarErrorMsg(
@@ -174,6 +154,12 @@ class _UserChatRoomState extends State<UserChatRoom> {
                               onSendMessage();
                             }
                           },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.transparent,
+                            elevation: 0,
+                            shape: const CircleBorder(),
+                          ),
+                          child: const Icon(Icons.send),
                         ),
                         fillColor: Colors.white30,
                         filled: true,
