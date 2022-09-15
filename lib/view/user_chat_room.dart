@@ -76,6 +76,7 @@ class _UserChatRoomState extends State<UserChatRoom> {
                             QueryDocumentSnapshot showGetMsg =
                                 snapshot.data!.docs[index];
                             String name = showGetMsg['name'];
+                            String gender = showGetMsg['gender'];
                             String message = showGetMsg['message'];
                             DateTime time = showGetMsg['time'].toDate();
                             return Padding(
@@ -93,30 +94,57 @@ class _UserChatRoomState extends State<UserChatRoom> {
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        child: Row(
                                           children: [
-                                            Text(
-                                                DateFormat(
-                                                        'dd MMMM yyyy, hh:mm a')
-                                                    .format(time)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: 8,
-                                                    color:
-                                                        Colors.grey.shade800)),
-                                            Text(message,
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.grey.shade800,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Text(name,
-                                                style: TextStyle(
-                                                    fontSize: 8,
-                                                    color:
-                                                        Colors.grey.shade800)),
+                                            uid == uid
+                                                ? gender == "Male"
+                                                    ? Image.asset(
+                                                        'assets/man.png',
+                                                        height: 40)
+                                                    : Image.asset(
+                                                        'assets/man.png',
+                                                        height: 40)
+                                                : gender == "Male"
+                                                    ? Image.asset(
+                                                        'assets/man-doctor.png',
+                                                        height: 40)
+                                                    : Image.asset(
+                                                        'assets/woman-doctor.png',
+                                                        height: 40),
+                                            const SizedBox(width: 10),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(name,
+                                                        style: TextStyle(
+                                                            color: Colors.purple
+                                                                .shade900,
+                                                            // fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    Text(
+                                                        DateFormat(
+                                                                ' dd/MM/yyyy hh:mm a')
+                                                            .format(time)
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Colors.grey
+                                                                .shade800)),
+                                                  ],
+                                                ),
+                                                Text(message,
+                                                    style: TextStyle(
+                                                        // fontSize: 18,
+                                                        color: Colors
+                                                            .grey.shade800,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                              ],
+                                            ),
                                           ],
                                         ),
                                       )),
@@ -213,6 +241,7 @@ class _UserChatRoomState extends State<UserChatRoom> {
         .collection("chat")
         .add({
       "name": username,
+      "gender": gender,
       "message": _msgController.text,
       "time": DateTime.now(),
     });
