@@ -67,8 +67,10 @@ class _DoctorChatRoomState extends State<DoctorChatRoom> {
                         return const Text("Something is wrong");
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.pink.shade200,
+                          ),
                         );
                       }
 

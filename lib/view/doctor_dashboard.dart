@@ -46,11 +46,18 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     super.dispose();
   }
 
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   getDoctorProfileInfo();
+  //   getUserProfileList();
+  // }
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     getDoctorProfileInfo();
     getUserProfileList();
+    super.initState();
   }
 
   @override
@@ -696,60 +703,4 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         .doc(uid)
         .delete();
   }
-
-  // void _openDialog() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //             actionsAlignment: MainAxisAlignment.spaceAround,
-  //             title: Text("Message",
-  //                 style: TextStyle(
-  //                     fontWeight: FontWeight.bold,
-  //                     color: Colors.purple.shade900)),
-  //             content: TextField(
-  //               minLines: 1,
-  //               maxLines: 500,
-  //               controller: _msgController,
-  //               decoration: const InputDecoration(hintText: "Write here"),
-  //             ),
-  //             actions: [
-  //               TextButton(
-  //                 child: const Text('CLOSE',
-  //                     style: TextStyle(color: Colors.redAccent)),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                   setState(() {
-  //                     _msgController.clear();
-  //                   });
-  //                 },
-  //               ),
-  //               TextButton(
-  //                 child:
-  //                     const Text('SEND', style: TextStyle(color: Colors.green)),
-  //                 onPressed: () {
-  //                   if (_msgController.text.isEmpty) {
-  //                     showFlushBarErrorMsg(context, "Please write something");
-  //                   } else {
-  //                     DatabaseHelper.db
-  //                         .collection("doctorAdvice")
-  //                         .doc(uniqueID)
-  //                         .collection("message")
-  //                         .doc()
-  //                         .set({
-  //                       "doctorName": doctorName,
-  //                       "doctorGender": doctorGender,
-  //                       "message": _msgController.text,
-  //                       "time": DateTime.now(),
-  //                     });
-  //                     Navigator.of(context).pop();
-  //                     showFlushBar(context, "Message send successfull");
-  //                     setState(() {
-  //                       _msgController.clear();
-  //                     });
-  //                   }
-  //                 },
-  //               )
-  //             ],
-  //           ));
-  // }
 }

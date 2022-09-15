@@ -66,8 +66,10 @@ class _UserChatRoomState extends State<UserChatRoom> {
                         return const Text("Something is wrong");
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.pink.shade200,
+                          ),
                         );
                       }
                       return ListView.builder(

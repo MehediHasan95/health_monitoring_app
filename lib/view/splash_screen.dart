@@ -16,7 +16,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 6), () {
+    Timer(const Duration(seconds: 5), () {
       if (AuthService.currentUser == null) {
         Navigator.of(context).pushNamedAndRemoveUntil(
             WelcomeScreen.routeNames, (Route<dynamic> route) => false);
@@ -25,7 +25,6 @@ class _SplashScreenState extends State<SplashScreen> {
             LiveScreen.routeNames, (Route<dynamic> route) => false);
       }
     });
-
     super.initState();
   }
 

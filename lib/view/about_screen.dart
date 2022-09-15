@@ -30,7 +30,7 @@ class _AboutScreenState extends State<AboutScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset('assets/lotus.png', height: 80),
+                Image.asset('assets/healthcare.png', height: 80),
                 const Text(
                   'Health Corner',
                   style: TextStyle(
