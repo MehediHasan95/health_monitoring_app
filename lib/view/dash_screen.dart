@@ -470,9 +470,8 @@ class _DashScreenState extends State<DashScreen> {
                 onTap: () {
                   Navigator.popAndPushNamed(context, DoctorList.routeNames);
                 },
-                leading: const Icon(Icons.health_and_safety,
-                    color: Colors.redAccent),
-                title: const Text('Doctor List'),
+                leading: const Icon(Icons.message, color: Colors.redAccent),
+                title: const Text('Doctor Message'),
               ),
               ListTile(
                 onTap: (() {
@@ -503,10 +502,9 @@ class _DashScreenState extends State<DashScreen> {
 
 // SignOut method
   void _signOut() {
-    AuthService.signOut().then((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          WelcomeScreen.routeNames, (Route<dynamic> route) => false);
-    });
+    AuthService.signOut().whenComplete(() => Navigator.of(context)
+        .pushNamedAndRemoveUntil(
+            WelcomeScreen.routeNames, (Route<dynamic> route) => false));
   }
 
   //Get User Data List
@@ -564,7 +562,6 @@ class _DashScreenState extends State<DashScreen> {
           averageSpo2 = totalSpo2 / totalElements;
           averageTempC = totalTempC / totalElements;
           averageTempF = totaltempF / totalElements;
-
           // Checking health condition
           if (averageBpm.round() >= 180 &&
               averageSpo2.round() >= 100 &&

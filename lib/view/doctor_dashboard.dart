@@ -569,10 +569,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
   }
 
   void _doctorSignOut() {
-    AuthService.signOut().then((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          WelcomeScreen.routeNames, (Route<dynamic> route) => false);
-    });
+    AuthService.signOut().whenComplete(() => Navigator.of(context)
+        .pushNamedAndRemoveUntil(
+            WelcomeScreen.routeNames, (Route<dynamic> route) => false));
   }
 
   void _searchFromDB(String userID) async {

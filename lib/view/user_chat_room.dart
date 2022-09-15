@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
+import 'package:intl/intl.dart';
 
 class UserChatRoom extends StatefulWidget {
   final String value;
@@ -45,112 +46,116 @@ class _UserChatRoomState extends State<UserChatRoom> {
                   colors: [Colors.pink.shade200, Colors.purple.shade900],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter)),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: DatabaseHelper.db
-                      .collection("doctorChatBox")
-                      .doc(widget.value)
-                      .collection("message")
-                      .orderBy("time", descending: false)
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.data != null) {
+          child: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: DatabaseHelper.db
+                        .collection("doctorChatBox")
+                        .doc(widget.value)
+                        .collection("message")
+                        .doc(uid)
+                        .collection("chat")
+                        .orderBy("time", descending: false)
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text("Something is wrong");
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                       return ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
+                            QueryDocumentSnapshot showGetMsg =
+                                snapshot.data!.docs[index];
+                            String name = showGetMsg['name'];
+                            String message = showGetMsg['message'];
+                            DateTime time = showGetMsg['time'].toDate();
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Card(
-                                  color: Colors.white70,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                        snapshot.data!.docs[index]["message"]),
-                                  )),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Card(
+                                      color: Colors.white70,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                DateFormat(
+                                                        'dd MMMM yyyy, hh:mm a')
+                                                    .format(time)
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 8,
+                                                    color:
+                                                        Colors.grey.shade800)),
+                                            Text(message,
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.grey.shade800,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            Text(name,
+                                                style: TextStyle(
+                                                    fontSize: 8,
+                                                    color:
+                                                        Colors.grey.shade800)),
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ),
                             );
                           });
-                    } else {
-                      return Container();
-                    }
-                  },
+                    },
+                  ),
                 ),
-              ),
-              // Expanded(
-              //   flex: 1,
-              //   child: StreamBuilder<QuerySnapshot>(
-              //     stream: DatabaseHelper.db
-              //         .collection("userChatBox")
-              //         .doc(uid)
-              //         .collection("message")
-              //         .orderBy("time", descending: false)
-              //         .snapshots(),
-              //     builder: (BuildContext context,
-              //         AsyncSnapshot<QuerySnapshot> snapshot) {
-              //       if (snapshot.data != null) {
-              //         return ListView.builder(
-              //             itemCount: snapshot.data!.docs.length,
-              //             itemBuilder: (context, index) {
-              //               return Padding(
-              //                 padding:
-              //                     const EdgeInsets.symmetric(horizontal: 8.0),
-              //                 child: Card(
-              //                     color: Colors.white70,
-              //                     shape: const RoundedRectangleBorder(
-              //                       borderRadius: BorderRadius.all(
-              //                         Radius.circular(15),
-              //                       ),
-              //                     ),
-              //                     child: Padding(
-              //                       padding: const EdgeInsets.all(10.0),
-              //                       child: Text(
-              //                           snapshot.data!.docs[index]["message"]),
-              //                     )),
-              //               );
-              //             });
-              //       } else {
-              //         return Container();
-              //       }
-              //     },
-              //   ),
-              // ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  minLines: 1,
-                  maxLines: 500,
-                  controller: _msgController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      suffixIcon: IconButton(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    minLines: 1,
+                    maxLines: 500,
+                    controller: _msgController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.send, color: Colors.white),
                           onPressed: () {
                             if (_msgController.text == "") {
                               showFlushBarErrorMsg(
                                   context, "Please write something");
                             } else {
                               onSendMessage();
-                              _msgController.clear();
                             }
                           },
-                          icon: const Icon(Icons.send, color: Colors.white)),
-                      fillColor: Colors.white30,
-                      filled: true,
-                      hintText: "Message",
-                      hintStyle: const TextStyle(color: Colors.white)),
-                  cursorColor: Colors.white,
+                        ),
+                        fillColor: Colors.white30,
+                        filled: true,
+                        hintText: "Message",
+                        hintStyle: const TextStyle(color: Colors.white)),
+                    cursorColor: Colors.white,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -185,16 +190,32 @@ class _UserChatRoomState extends State<UserChatRoom> {
     });
   }
 
+// .collection("userChatBox")
   void onSendMessage() async {
     await DatabaseHelper.db
         .collection("userChatBox")
         .doc(uid)
         .collection("message")
+        .doc(widget.value)
+        .collection('chat')
         .add({
-      "userName": username,
+      "name": username,
       "gender": gender,
       "message": _msgController.text,
       "time": DateTime.now(),
     });
+
+    await DatabaseHelper.db
+        .collection("doctorChatBox")
+        .doc(widget.value)
+        .collection("message")
+        .doc(uid)
+        .collection("chat")
+        .add({
+      "name": username,
+      "message": _msgController.text,
+      "time": DateTime.now(),
+    });
+    _msgController.clear();
   }
 }

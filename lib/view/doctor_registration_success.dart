@@ -31,7 +31,7 @@ class _DoctorRegistrationSuccessState extends State<DoctorRegistrationSuccess> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              LottieBuilder.asset('assets/doctorRegistrationSuccess.json'),
+              LottieBuilder.asset('assets/successfull.json'),
             ],
           ),
         ));
