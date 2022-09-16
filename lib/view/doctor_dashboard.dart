@@ -1,5 +1,5 @@
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
@@ -170,19 +170,16 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           fontSize: 25,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    AvatarGlow(
-                                      endRadius: 25,
-                                      child: IconButton(
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DoctorChatRoom(
-                                                            value: uniqueID)));
-                                          },
-                                          icon: const Icon(Icons.message,
-                                              color: Colors.pink)),
-                                    )
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DoctorChatRoom(
+                                                          value: uniqueID)));
+                                        },
+                                        icon: const Icon(Icons.message,
+                                            color: Colors.pink))
                                   ],
                                 ),
                                 Row(
@@ -210,7 +207,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                 const SizedBox(height: 5),
                                 const Text(
                                   "AVERAGE VALUE",
-                                  style: TextStyle(color: Colors.pink),
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: Colors.pink),
                                 ),
                               ],
                             ),
@@ -222,8 +221,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                 children: [
                                   Text(averageBpm.toStringAsFixed(2),
                                       style: const TextStyle(
-                                        fontSize: 50,
-                                        color: Colors.white,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.redAccent,
                                       )),
                                   const Text(
                                     'PR',
@@ -239,8 +239,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                 children: [
                                   Text(averageSpo2.toStringAsFixed(2),
                                       style: const TextStyle(
-                                        fontSize: 50,
-                                        color: Colors.white,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.greenAccent,
                                       )),
                                   const Text(
                                     '%',
@@ -261,8 +262,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                 children: [
                                   Text(averageTempC.toStringAsFixed(2),
                                       style: const TextStyle(
-                                        fontSize: 50,
-                                        color: Colors.white,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blueAccent,
                                       )),
                                   const Text(
                                     '°C',
@@ -278,8 +280,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                 children: [
                                   Text(averageTempF.toStringAsFixed(2),
                                       style: const TextStyle(
-                                        fontSize: 50,
-                                        color: Colors.white,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.amberAccent,
                                       )),
                                   const Text(
                                     '°F',
@@ -379,6 +382,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey.shade800)),
+                                        const FaIcon(
+                                            FontAwesomeIcons.heartPulse,
+                                            size: 15),
                                         LinearPercentIndicator(
                                           animation: true,
                                           animationDuration: 1000,
@@ -415,6 +421,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey.shade800)),
+                                        const FaIcon(FontAwesomeIcons.droplet,
+                                            size: 15),
                                         LinearPercentIndicator(
                                           animation: true,
                                           animationDuration: 1000,
@@ -454,6 +462,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey.shade800)),
+                                        const FaIcon(
+                                            FontAwesomeIcons.temperatureFull,
+                                            size: 15),
                                         LinearPercentIndicator(
                                           animation: true,
                                           animationDuration: 1000,
@@ -493,6 +504,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey.shade800)),
+                                        const FaIcon(
+                                            FontAwesomeIcons.temperatureHalf,
+                                            size: 15),
                                         LinearPercentIndicator(
                                           animation: true,
                                           animationDuration: 1000,

@@ -86,14 +86,6 @@ class _UserChatRoomState extends State<UserChatRoom> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Center(
-                                    child: Text(
-                                        DateFormat(' dd/MM/yyyy, hh:mm a')
-                                            .format(time)
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white70)),
-                                  ),
                                   Card(
                                       color: Colors.white70,
                                       shape: const RoundedRectangleBorder(
@@ -107,7 +99,12 @@ class _UserChatRoomState extends State<UserChatRoom> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(name,
+                                            Text(
+                                                name +
+                                                    DateFormat(
+                                                            ' dd/MM/yy, HH:mm')
+                                                        .format(time)
+                                                        .toString(),
                                                 style: TextStyle(
                                                     fontSize: 10,
                                                     color:

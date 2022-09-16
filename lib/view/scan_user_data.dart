@@ -1,7 +1,7 @@
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
@@ -110,20 +110,17 @@ class _ScanUserDataState extends State<ScanUserData> {
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  AvatarGlow(
-                                    endRadius: 25,
-                                    child: IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DoctorChatRoom(
-                                                          value: uniqueID)));
-                                        },
-                                        // onPressed: _openDialog,
-                                        icon: const Icon(Icons.message,
-                                            color: Colors.pink)),
-                                  )
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DoctorChatRoom(
+                                                        value: uniqueID)));
+                                      },
+                                      // onPressed: _openDialog,
+                                      icon: const Icon(Icons.message,
+                                          color: Colors.pink))
                                 ],
                               ),
                               Text(
@@ -135,7 +132,9 @@ class _ScanUserDataState extends State<ScanUserData> {
                               const SizedBox(height: 5),
                               const Text(
                                 "AVERAGE VALUE",
-                                style: TextStyle(color: Colors.pink),
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: Colors.pink),
                               ),
                             ],
                           ),
@@ -147,8 +146,9 @@ class _ScanUserDataState extends State<ScanUserData> {
                               children: [
                                 Text(averageBpm.toStringAsFixed(2),
                                     style: const TextStyle(
-                                      fontSize: 50,
-                                      color: Colors.white,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.redAccent,
                                     )),
                                 const Text(
                                   'PR',
@@ -164,8 +164,9 @@ class _ScanUserDataState extends State<ScanUserData> {
                               children: [
                                 Text(averageSpo2.toStringAsFixed(2),
                                     style: const TextStyle(
-                                      fontSize: 50,
-                                      color: Colors.white,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.greenAccent,
                                     )),
                                 const Text(
                                   '%',
@@ -186,8 +187,9 @@ class _ScanUserDataState extends State<ScanUserData> {
                               children: [
                                 Text(averageTempC.toStringAsFixed(2),
                                     style: const TextStyle(
-                                      fontSize: 50,
-                                      color: Colors.white,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blueAccent,
                                     )),
                                 const Text(
                                   '°C',
@@ -203,8 +205,9 @@ class _ScanUserDataState extends State<ScanUserData> {
                               children: [
                                 Text(averageTempF.toStringAsFixed(2),
                                     style: const TextStyle(
-                                      fontSize: 50,
-                                      color: Colors.white,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.amberAccent,
                                     )),
                                 const Text(
                                   '°F',
@@ -299,6 +302,8 @@ class _ScanUserDataState extends State<ScanUserData> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.grey.shade800)),
+                                    const FaIcon(FontAwesomeIcons.heartPulse,
+                                        size: 15),
                                     LinearPercentIndicator(
                                       animation: true,
                                       animationDuration: 1000,
@@ -331,6 +336,8 @@ class _ScanUserDataState extends State<ScanUserData> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.grey.shade800)),
+                                    const FaIcon(FontAwesomeIcons.droplet,
+                                        size: 15),
                                     LinearPercentIndicator(
                                       animation: true,
                                       animationDuration: 1000,
@@ -364,6 +371,9 @@ class _ScanUserDataState extends State<ScanUserData> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.grey.shade800)),
+                                    const FaIcon(
+                                        FontAwesomeIcons.temperatureFull,
+                                        size: 15),
                                     LinearPercentIndicator(
                                       animation: true,
                                       animationDuration: 1000,
@@ -397,6 +407,9 @@ class _ScanUserDataState extends State<ScanUserData> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.grey.shade800)),
+                                    const FaIcon(
+                                        FontAwesomeIcons.temperatureHalf,
+                                        size: 15),
                                     LinearPercentIndicator(
                                       animation: true,
                                       animationDuration: 1000,
@@ -544,57 +557,4 @@ class _ScanUserDataState extends State<ScanUserData> {
     });
     return _searchFromDB(scanQRCode);
   }
-
-  // void _openDialog() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //             actionsAlignment: MainAxisAlignment.spaceAround,
-  //             title: Text("Message",
-  //                 style: TextStyle(
-  //                     fontWeight: FontWeight.bold,
-  //                     color: Colors.purple.shade900)),
-  //             content: TextField(
-  //               minLines: 1,
-  //               maxLines: 500,
-  //               controller: _msgController,
-  //               decoration: const InputDecoration(hintText: "Write here"),
-  //             ),
-  //             actions: [
-  //               TextButton(
-  //                 child: const Text("CANCEL",
-  //                     style: TextStyle(color: Colors.redAccent)),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //               ),
-  //               TextButton(
-  //                 child:
-  //                     const Text("SEND", style: TextStyle(color: Colors.green)),
-  //                 onPressed: () {
-  //                   if (_msgController.text.isEmpty) {
-  //                     showFlushBarErrorMsg(context, "Please write something");
-  //                   } else {
-  //                     DatabaseHelper.db
-  //                         .collection("doctorAdvice")
-  //                         .doc(uniqueID)
-  //                         .collection("message")
-  //                         .doc()
-  //                         .set({
-  //                       "doctorName": doctorName,
-  //                       "doctorGender": doctorGender,
-  //                       "message": _msgController.text,
-  //                       "time": DateTime.now(),
-  //                     });
-  //                     Navigator.of(context).pop();
-  //                     showFlushBar(context, "Message send successfull");
-  //                     setState(() {
-  //                       _msgController.clear();
-  //                     });
-  //                   }
-  //                 },
-  //               )
-  //             ],
-  //           ));
-  // }
 }
