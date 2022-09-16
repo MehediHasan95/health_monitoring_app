@@ -34,7 +34,7 @@ class _UserChatRoomState extends State<UserChatRoom>
 
   void setStatus(String status) async {
     await DatabaseHelper.db
-        .collection("doctor")
+        .collection("userProfileInfo")
         .doc(uid)
         .update({"status": status});
   }
