@@ -38,6 +38,9 @@ class _NotFoundState extends State<NotFound> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // LottieBuilder.asset(
+                  //   'assets/notFound.json',
+                  // ),
                   Image.asset('assets/notFound.png'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

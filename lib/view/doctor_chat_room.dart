@@ -72,9 +72,15 @@ class _DoctorChatRoomState extends State<DoctorChatRoom>
                     Text(username),
                     shapshot.data!["status"]?.toString() == "Online"
                         ? const Text("Online",
-                            style: TextStyle(fontSize: 10, color: Colors.green))
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold))
                         : const Text("Offline",
-                            style: TextStyle(fontSize: 10, color: Colors.red)),
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold)),
                   ],
                 );
               } else {
@@ -146,7 +152,7 @@ class _DoctorChatRoomState extends State<DoctorChatRoom>
                                             Text(
                                                 name +
                                                     DateFormat(
-                                                            ' dd/MM/yy, HH:mm')
+                                                            ' dd/MM/yy, hh:mm a')
                                                         .format(time)
                                                         .toString(),
                                                 style: TextStyle(
