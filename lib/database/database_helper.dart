@@ -19,6 +19,7 @@ class DatabaseHelper {
       "gender": gender,
       "email": email,
       "birthday": dateOfBirth,
+      "status": "Offline"
     });
   }
 
@@ -38,7 +39,8 @@ class DatabaseHelper {
       "email": email,
       "gender": gender,
       "specialist": specialist,
-      "hospital": hospital
+      "hospital": hospital,
+      "status": "Offline"
     });
   }
 

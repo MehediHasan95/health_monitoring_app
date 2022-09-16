@@ -13,7 +13,8 @@ class DoctorChatRoom extends StatefulWidget {
   State<DoctorChatRoom> createState() => _DoctorChatRoomState();
 }
 
-class _DoctorChatRoomState extends State<DoctorChatRoom> {
+class _DoctorChatRoomState extends State<DoctorChatRoom>
+    with WidgetsBindingObserver {
   final uid = AuthService.currentUser?.uid;
 
   final _msgController = TextEditingController();
@@ -25,9 +26,28 @@ class _DoctorChatRoomState extends State<DoctorChatRoom> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    setStatus("Online");
     getDoctorProfileInfo();
     getUserProfileInfo(widget.value);
     super.initState();
+  }
+
+  void setStatus(String status) async {
+    await DatabaseHelper.db
+        .collection("doctor")
+        .doc(uid)
+        .update({"status": status});
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setStatus("Online");
+    } else {
+      setStatus('Offline');
+    }
+    super.didChangeAppLifecycleState(state);
   }
 
   @override
@@ -39,7 +59,29 @@ class _DoctorChatRoomState extends State<DoctorChatRoom> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: Text(username),
+          title: StreamBuilder<DocumentSnapshot>(
+            stream: DatabaseHelper.db
+                .collection("userProfileInfo")
+                .doc(widget.value)
+                .snapshots(),
+            builder: (context, shapshot) {
+              if (shapshot.data != null) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(username),
+                    shapshot.data!["status"]?.toString() == "Online"
+                        ? const Text("Online",
+                            style: TextStyle(fontSize: 10, color: Colors.green))
+                        : const Text("Offline",
+                            style: TextStyle(fontSize: 10, color: Colors.red)),
+                  ],
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
         ),
         body: Container(
           decoration: BoxDecoration(
