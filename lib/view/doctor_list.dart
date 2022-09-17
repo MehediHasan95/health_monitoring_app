@@ -78,7 +78,7 @@ class _DoctorListState extends State<DoctorList> {
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            primary: Colors.pink.shade200,
+                            backgroundColor: Colors.pink.shade200,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),

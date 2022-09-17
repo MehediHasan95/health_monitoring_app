@@ -204,7 +204,7 @@ class _DoctorChatRoomState extends State<DoctorChatRoom>
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,
+                            backgroundColor: Colors.transparent,
                             elevation: 0,
                             shape: const CircleBorder(),
                           ),

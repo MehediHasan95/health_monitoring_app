@@ -339,7 +339,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                         _doctorSignUp(_verifiedController.text);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.pink.shade200,
+                        backgroundColor: Colors.pink.shade200,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -365,7 +365,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
-                              primary: Colors.pink.shade200),
+                              foregroundColor: Colors.pink.shade200),
                           onPressed: () {
                             Navigator.popAndPushNamed(
                                 context, DoctorScreen.routeNames);

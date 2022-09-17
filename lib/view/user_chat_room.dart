@@ -202,7 +202,7 @@ class _UserChatRoomState extends State<UserChatRoom>
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,
+                            backgroundColor: Colors.transparent,
                             elevation: 0,
                             shape: const CircleBorder(),
                           ),

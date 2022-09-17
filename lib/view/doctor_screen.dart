@@ -157,7 +157,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                     ElevatedButton(
                       onPressed: _doctorSignIn,
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.pink.shade200,
+                        backgroundColor: Colors.pink.shade200,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -181,7 +181,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
-                              primary: Colors.pink.shade200),
+                              foregroundColor: Colors.pink.shade200),
                           onPressed: () {
                             Navigator.popAndPushNamed(
                                 context, DoctorSignUp.routeNames);

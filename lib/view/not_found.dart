@@ -78,7 +78,7 @@ class _NotFoundState extends State<NotFound> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.pink.shade200,
+                          backgroundColor: Colors.pink.shade200,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),

@@ -47,7 +47,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.pink.shade200,
+                  backgroundColor: Colors.pink.shade200,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
@@ -59,7 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.pink.shade200,
+                  backgroundColor: Colors.pink.shade200,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),

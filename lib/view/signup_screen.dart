@@ -215,8 +215,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   .format(dateOfBirth!))),
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
+                        backgroundColor: Colors.white30,
                         alignment: Alignment.centerLeft,
-                        primary: Colors.white30,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero),
                         textStyle: const TextStyle(color: Colors.white),
@@ -229,7 +229,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ElevatedButton(
                       onPressed: _signUpUser,
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.pink.shade200,
+                        backgroundColor: Colors.pink.shade200,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -255,7 +255,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
-                              primary: Colors.pink.shade200),
+                              foregroundColor: Colors.pink.shade200),
                           onPressed: () {
                             Navigator.popAndPushNamed(
                                 context, SignInScreen.routeNames);

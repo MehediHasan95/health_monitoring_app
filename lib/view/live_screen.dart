@@ -374,7 +374,7 @@ class _LiveScreenState extends State<LiveScreen> {
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.pink,
+                          backgroundColor: Colors.pink,
                           shape: const CircleBorder(),
                           padding: const EdgeInsets.all(25),
                         ),
@@ -394,7 +394,7 @@ class _LiveScreenState extends State<LiveScreen> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.pink.shade200,
+                        backgroundColor: Colors.pink.shade200,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),

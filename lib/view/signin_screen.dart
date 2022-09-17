@@ -156,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ElevatedButton(
                       onPressed: _signInUser,
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.pink.shade200,
+                        backgroundColor: Colors.pink.shade200,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -180,7 +180,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
-                              primary: Colors.pink.shade200),
+                              foregroundColor: Colors.pink.shade200),
                           onPressed: () {
                             Navigator.popAndPushNamed(
                                 context, SignUpScreen.routeNames);
