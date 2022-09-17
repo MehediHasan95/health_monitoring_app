@@ -470,7 +470,7 @@ class _DashScreenState extends State<DashScreen> {
                 onTap: () {
                   Navigator.popAndPushNamed(context, DoctorList.routeNames);
                 },
-                leading: const Icon(Icons.message, color: Colors.redAccent),
+                leading: Icon(Icons.message, color: Colors.blue.shade900),
                 title: const Text('Doctor Message'),
               ),
               ListTile(

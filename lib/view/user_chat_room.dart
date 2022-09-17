@@ -70,16 +70,28 @@ class _UserChatRoomState extends State<UserChatRoom>
                   children: [
                     Text(doctorName!),
                     shapshot.data!["status"]?.toString() == "Online"
-                        ? const Text("Online",
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold))
-                        : const Text("Offline",
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold)),
+                        ? Row(
+                            children: const [
+                              Icon(Icons.circle,
+                                  color: Colors.greenAccent, size: 10),
+                              Text(" Online",
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.greenAccent,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          )
+                        : Row(
+                            children: const [
+                              Icon(Icons.circle,
+                                  color: Colors.redAccent, size: 10),
+                              Text(" Offline",
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                   ],
                 );
               } else {

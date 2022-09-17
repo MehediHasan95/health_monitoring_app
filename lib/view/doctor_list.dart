@@ -50,7 +50,6 @@ class _DoctorListState extends State<DoctorList> {
                 itemCount: _doctorProvider.doctorList.length,
                 itemBuilder: (context, index) {
                   final doctorProfile = _doctorProvider.doctorList[index];
-
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Card(
@@ -122,6 +121,7 @@ class _DoctorListState extends State<DoctorList> {
         .set(shareData!);
   }
 
+// show doctor profile info
   void _getDoctorProfile(DoctorModel doctorProfile) {
     showDialog(
         context: context,
