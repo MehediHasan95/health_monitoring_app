@@ -69,7 +69,7 @@ class _DoctorChatRoomState extends State<DoctorChatRoom>
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(doctorName!),
+                    Text(username),
                     shapshot.data!["status"]?.toString() == "Online"
                         ? Row(
                             children: const [
