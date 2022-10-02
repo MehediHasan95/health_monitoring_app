@@ -83,6 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: _nameController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.person,
@@ -106,6 +107,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     DropdownButtonFormField<String>(
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
+                          errorStyle:
+                              const TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             selectGender == "Male" ? Icons.male : Icons.female,
@@ -148,6 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: _emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.email,
@@ -173,6 +177,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: _passwordController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
+                          errorStyle:
+                              const TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: const Icon(
                             Icons.lock,
@@ -241,11 +247,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      _errMsg,
-                      style: const TextStyle(color: Colors.yellowAccent),
-                      textAlign: TextAlign.center,
-                    ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -294,6 +296,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       } on FirebaseAuthException catch (error) {
         setState(() {
           _errMsg = error.message!;
+          showWarningMessage(context, _errMsg);
         });
       }
     }

@@ -132,9 +132,7 @@ class _ScanUserDataState extends State<ScanUserData> {
                               const SizedBox(height: 5),
                               const Text(
                                 "AVERAGE VALUE",
-                                style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.pink),
+                                style: TextStyle(color: Colors.pink),
                               ),
                             ],
                           ),

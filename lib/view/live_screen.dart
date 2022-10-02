@@ -365,10 +365,11 @@ class _LiveScreenState extends State<LiveScreen> {
                             setState(() {
                               isButtonActive == false;
                             });
-                            showFlushBar(
-                              context,
-                              "Your record has been saved successfully",
-                            );
+                            showConfirmAlert(context);
+                            // showFlushBar(
+                            //   context,
+                            //   "Your record has been saved successfully",
+                            // );
                           }).catchError((error) {
                             showFlushBar(context, error);
                           });

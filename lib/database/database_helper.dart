@@ -6,6 +6,8 @@ class DatabaseHelper {
   static const _usersProfileCollection = 'userProfileInfo';
   static const _sensorDataCollection = 'sensorData';
   static const _doctorCollection = 'doctor';
+  static const _specialistCollection = 'Specialist';
+  static const _hospitalCollection = 'Hospital';
 
   static final FirebaseFirestore db = FirebaseFirestore.instance;
   static final _userID = AuthService.currentUser?.uid;
@@ -73,4 +75,12 @@ class DatabaseHelper {
 // Get all doctor data
   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllDoctorData() =>
       db.collection(_doctorCollection).snapshots();
+
+// Get all Specialist list
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllSpecialist() =>
+      db.collection(_specialistCollection).snapshots();
+
+// Get all hospital list
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllHospital() =>
+      db.collection(_hospitalCollection).snapshots();
 }

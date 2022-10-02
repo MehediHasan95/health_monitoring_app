@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -46,6 +47,19 @@ class _AboutScreenState extends State<AboutScreen> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FaIcon(FontAwesomeIcons.facebook,
+                        color: Colors.blue.shade800),
+                    const SizedBox(width: 20),
+                    const FaIcon(FontAwesomeIcons.youtube,
+                        color: Colors.redAccent),
+                    const SizedBox(width: 20),
+                    const FaIcon(FontAwesomeIcons.twitter, color: Colors.blue),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 const Text('Version: 1.0.0',
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white)),

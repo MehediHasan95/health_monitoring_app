@@ -70,6 +70,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       controller: _emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.email,
@@ -103,11 +104,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      _errMsg,
-                      style: const TextStyle(color: Colors.yellowAccent),
-                      textAlign: TextAlign.center,
-                    )
                   ],
                 )),
           ),
@@ -127,6 +123,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       } on FirebaseAuthException catch (error) {
         setState(() {
           _errMsg = error.message!;
+          showWarningMessage(context, _errMsg);
         });
       }
     }

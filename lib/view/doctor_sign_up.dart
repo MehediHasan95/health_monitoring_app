@@ -2,29 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
+import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/doctor_registration_success.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
+import 'package:provider/provider.dart';
 
 const gender = ["Male", "Female"];
-const specialist = [
-  "Cardiologist",
-  "Neurologist",
-  "Chest & Medicine",
-  "Medicine",
-  "Radiologists",
-  "Neuromedicine",
-  "Kidney & Medicine"
-];
-const hospital = [
-  "Evercare Hospital Dhaka",
-  "Square Hospitals Ltd.",
-  "United Hospitals Ltd.",
-  "BIRDEM General Hospital",
-  "National Heart Foundation",
-  "Aysha Memorial Hospital",
-  "Popular Hospital Dhaka"
-];
 
 class DoctorSignUp extends StatefulWidget {
   const DoctorSignUp({Key? key}) : super(key: key);
@@ -46,6 +30,8 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
   String _errMsg = '';
   bool _obscureText = true;
 
+  late DoctorProvider _doctorProvider;
+
   @override
   void dispose() {
     _verifiedController.dispose();
@@ -53,6 +39,12 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _doctorProvider = Provider.of<DoctorProvider>(context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -90,12 +82,10 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                       height: 5,
                     ),
                     const Text(
-                      "Create an account. It's free",
+                      "Only registered doctors can create accounts",
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
-                    // Image.asset('assets/signin.jpg'),
-
                     const SizedBox(
                       height: 30,
                     ),
@@ -105,6 +95,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                       controller: _verifiedController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.verified,
@@ -117,22 +108,21 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                       cursorColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return emptyNameErrMsg;
+                          return emptyUniqueErrMsg;
                         }
                         return null;
                       },
                     ),
-
                     const SizedBox(
                       height: 10,
                     ),
-
                     TextFormField(
                       keyboardType: TextInputType.name,
                       autofillHints: const [AutofillHints.name],
                       controller: _nameController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.person,
@@ -159,6 +149,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                       controller: _emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.email,
@@ -184,6 +175,8 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                       controller: _passwordController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
+                          errorStyle:
+                              const TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: const Icon(
                             Icons.lock,
@@ -218,6 +211,8 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                     DropdownButtonFormField<String>(
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
+                          errorStyle:
+                              const TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             selectGender == "Male" ? Icons.male : Icons.female,
@@ -257,6 +252,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                     DropdownButtonFormField<String>(
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.psychology,
@@ -277,7 +273,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                           selectSpecialist = value;
                         });
                       }),
-                      items: specialist
+                      items: _doctorProvider.specialist
                           .map((e) => DropdownMenuItem(
                                 value: e,
                                 child: Text(e, overflow: TextOverflow.ellipsis),
@@ -290,13 +286,13 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                         return null;
                       },
                     ),
-
                     const SizedBox(
                       height: 10,
                     ),
                     DropdownButtonFormField<String>(
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.home,
@@ -317,7 +313,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                           selectHospital = value;
                         });
                       }),
-                      items: hospital
+                      items: _doctorProvider.hospital
                           .map((e) => DropdownMenuItem(
                                 value: e,
                                 child: Text(e, overflow: TextOverflow.ellipsis),
@@ -333,7 +329,6 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                     const SizedBox(
                       height: 10,
                     ),
-
                     ElevatedButton(
                       onPressed: () {
                         _doctorSignUp(_verifiedController.text);
@@ -350,11 +345,6 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                     ),
                     const SizedBox(
                       height: 10,
-                    ),
-                    Text(
-                      _errMsg,
-                      style: const TextStyle(color: Colors.yellowAccent),
-                      textAlign: TextAlign.center,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -399,7 +389,8 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
           .then(
         (verifiedDoc) async {
           if (verifiedDoc.docs.isEmpty) {
-            showFlushBarErrorMsg(context, "You are not verified doctor");
+            // showFlushBarErrorMsg(context, "You are not verified doctor");
+            showWarningMessage(context, "You are not verified doctor");
           } else if (verifiedDoc.docs.isNotEmpty) {
             for (var elements in verifiedDoc.docs) {
               uniqueID = elements.data()['verified'];
@@ -428,6 +419,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                     } on FirebaseAuthException catch (error) {
                       setState(() {
                         _errMsg = error.message!;
+                        showWarningMessage(context, _errMsg);
                       });
                     }
                   }
@@ -435,7 +427,9 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                     isExist = elements.data()['uniqueId'];
                     if (isExist == verified) {
                       // ignore: use_build_context_synchronously
-                      showFlushBarErrorMsg(context, "Already Exist");
+                      showWarningMessage(context, "Already Exist");
+                      // showFlushBarErrorMsg(context, "Already Exist");
+
                     }
                   }
                 });

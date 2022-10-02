@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:health_monitoring_app/model/sensor_data_model.dart';
-import 'package:health_monitoring_app/model/user_profile_model.dart';
 import 'package:health_monitoring_app/utils/constants.dart';
 import 'package:health_monitoring_app/view/doctor_chat_room.dart';
 import 'package:health_monitoring_app/view/scan_user_data.dart';
@@ -34,7 +34,6 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
   // ignore: prefer_typing_uninitialized_variables
   var myAge;
   List<Object> _dataList = [];
-  List<Object> _userProfileList = [];
 
   bool isUserListVisible = true;
   bool isDetailVisible = false;
@@ -46,17 +45,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     super.dispose();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   getDoctorProfileInfo();
-  //   getUserProfileList();
-  // }
-
   @override
   void initState() {
     getDoctorProfileInfo();
-    getUserProfileList();
     super.initState();
   }
 
@@ -86,58 +77,75 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
               children: [
                 Visibility(
                   visible: isUserListVisible,
-                  child: Expanded(
-                    flex: 1,
-                    child: ListView.builder(
-                      itemCount: _userProfileList.length,
-                      itemBuilder: (context, index) {
-                        final getProfile =
-                            _userProfileList[index] as UserProfileModel;
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Card(
-                            color: Colors.white70,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: DatabaseHelper.db
+                          .collection("sendToDoctor")
+                          .doc(doctorUID)
+                          .collection("userList")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text("Something is wrong");
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.pink.shade200,
                             ),
-                            child: ListTile(
-                                onTap: () {
-                                  _searchFromDB(getProfile.uid!);
-                                  setState(() {
-                                    totalBpm = 0;
-                                    totalSpo2 = 0;
-                                    totalTempC = 0;
-                                    totaltempF = 0;
-                                  });
-                                },
-                                leading: getProfile.gender == 'Male'
-                                    ? Image.asset('assets/man.png', height: 50)
-                                    : Image.asset('assets/woman.png',
-                                        height: 50),
-                                title: Text(
-                                  "${getProfile.username!} (${getProfile.gender!})",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade800),
-                                ),
-                                subtitle: Text(getProfile.email!),
-                                trailing: IconButton(
-                                  tooltip:
-                                      "If you want to delete just press the delete button",
-                                  icon: const Icon(Icons.delete,
-                                      color: Colors.redAccent),
-                                  onPressed: () {
-                                    _deleteUserFromList(getProfile.uid!);
-                                    getUserProfileList();
-                                  },
-                                )),
-                          ),
+                          );
+                        }
+                        return Expanded(
+                          flex: 1,
+                          child: ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                QueryDocumentSnapshot showUserProfile =
+                                    snapshot.data!.docs[index];
+                                String getUID = showUserProfile['uid'];
+                                String name = showUserProfile['username'];
+                                String email = showUserProfile['email'];
+                                String gender = showUserProfile['gender'];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Card(
+                                    color: Colors.white70,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                    ),
+                                    child: ListTile(
+                                        onTap: () {
+                                          _searchFromDB(getUID);
+                                        },
+                                        leading: gender == 'Male'
+                                            ? Image.asset('assets/man.png',
+                                                height: 50)
+                                            : Image.asset('assets/woman.png',
+                                                height: 50),
+                                        title: Text(
+                                          "$name ($gender)",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800),
+                                        ),
+                                        subtitle: Text(email),
+                                        trailing: IconButton(
+                                          tooltip:
+                                              "If you want to delete just press the delete button",
+                                          icon: const Icon(Icons.delete,
+                                              color: Colors.redAccent),
+                                          onPressed: () {
+                                            _deleteUserFromList(getUID);
+                                          },
+                                        )),
+                                  ),
+                                );
+                              }),
                         );
-                      },
-                    ),
-                  ),
+                      }),
                 ),
                 Visibility(
                   visible: isDetailVisible,
@@ -207,9 +215,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                 const SizedBox(height: 5),
                                 const Text(
                                   "AVERAGE VALUE",
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Colors.pink),
+                                  style: TextStyle(color: Colors.pink),
                                 ),
                               ],
                             ),
@@ -617,6 +623,10 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     setState(() {
       _dataList =
           List.from(data.docs.map((doc) => SensorDataModel.fromSnapshot(doc)));
+      totalBpm = 0;
+      totalSpo2 = 0;
+      totalTempC = 0;
+      totaltempF = 0;
     });
   }
 
@@ -692,19 +702,6 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       doctorName;
       doctorGender;
       doctorEmail;
-    });
-  }
-
-  //Get User profile List
-  Future getUserProfileList() async {
-    var data = await DatabaseHelper.db
-        .collection('sendToDoctor')
-        .doc(doctorUID)
-        .collection('userList')
-        .get();
-    setState(() {
-      _userProfileList =
-          List.from(data.docs.map((doc) => UserProfileModel.fromSnapshot(doc)));
     });
   }
 

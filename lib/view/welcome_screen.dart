@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:health_monitoring_app/provider/doctor_provider.dart';
 import 'package:health_monitoring_app/view/doctor_screen.dart';
 import 'package:health_monitoring_app/view/signin_screen.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -11,6 +13,16 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  late DoctorProvider _doctorProvider;
+
+  @override
+  void didChangeDependencies() {
+    _doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+    _doctorProvider.getAllSpecialist();
+    _doctorProvider.getAllHospital();
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -78,6 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       controller: _emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             Icons.email,
@@ -103,6 +104,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       controller: _passwordController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
+                          errorStyle:
+                              const TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: const Icon(
                             Icons.lock,
@@ -166,11 +169,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      _errMsg,
-                      style: const TextStyle(color: Colors.yellowAccent),
-                      textAlign: TextAlign.center,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -205,6 +203,7 @@ class _SignInScreenState extends State<SignInScreen> {
       try {
         final uid = await AuthService.signInUser(
             _emailController.text.toLowerCase(), _passwordController.text);
+
         if (uid != null) {
           // ignore: use_build_context_synchronously
           final isUser = await Provider.of<UserProvider>(context, listen: false)
@@ -215,13 +214,16 @@ class _SignInScreenState extends State<SignInScreen> {
                 LiveScreen.routeNames, (Route<dynamic> route) => false);
           } else {
             setState(() {
-              _errMsg = "Sorry doctor you cannot log in as a user";
+              showWarningMessage(
+                  context, "Sorry, you are logging in to the wrong place");
+              AuthService.signOut();
             });
           }
         }
       } on FirebaseAuthException catch (error) {
         setState(() {
           _errMsg = error.message!;
+          showWarningMessage(context, _errMsg);
         });
       }
     }

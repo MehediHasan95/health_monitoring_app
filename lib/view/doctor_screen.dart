@@ -69,11 +69,6 @@ class _DoctorScreenState extends State<DoctorScreen> {
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
-                    // const SizedBox(height: 30),
-                    // Image.asset(
-                    //   'assets/doctor.png',
-                    //   height: 150,
-                    // ),
                     const SizedBox(height: 50),
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
@@ -81,6 +76,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                       controller: _emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                          errorStyle: TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon: Icon(
                             color: Colors.white,
@@ -106,6 +102,8 @@ class _DoctorScreenState extends State<DoctorScreen> {
                       controller: _passwordController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
+                          errorStyle:
+                              const TextStyle(color: Colors.yellowAccent),
                           border: InputBorder.none,
                           prefixIcon:
                               const Icon(Icons.lock, color: Colors.white),
@@ -167,11 +165,6 @@ class _DoctorScreenState extends State<DoctorScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      _errMsg,
-                      style: const TextStyle(color: Colors.yellowAccent),
-                      textAlign: TextAlign.center,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -217,13 +210,16 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 DoctorDashboard.routeNames, (Route<dynamic> route) => false);
           } else {
             setState(() {
-              _errMsg = 'Sorry user you cannot log in as a doctor';
+              showWarningMessage(
+                  context, "Sorry, you are logging in to the wrong place");
+              AuthService.signOut();
             });
           }
         }
       } on FirebaseAuthException catch (error) {
         setState(() {
           _errMsg = error.message!;
+          showWarningMessage(context, _errMsg);
         });
       }
     }

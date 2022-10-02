@@ -1,13 +1,16 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 
-const String emptyNameErrMsg = 'Please enter your username';
-const String emptyEmailErrMsg = 'Please enter your email address';
-const String emptyPasswordErrMsg = 'Please enter your password';
-const String emptyGenderErrMsg = 'Please select your gender';
-const String emptySpecialistErrMsg = 'Please select your specialist';
-const String emptyHospitalErrMsg = 'Please select your hospital';
+const String emptyUniqueErrMsg = 'Please Enter Your UniqueID';
+const String emptyNameErrMsg = 'Please Enter Your Name';
+const String emptyEmailErrMsg = 'Please Enter Your Email ID';
+const String emptyPasswordErrMsg = 'Please Enter Your Password';
+const String emptyGenderErrMsg = 'Please Select Your Gender';
+const String emptySpecialistErrMsg = 'Please Select Your Specialist';
+const String emptyHospitalErrMsg = 'Please Select Your Hospital';
 
 // Flushbar
 void showFlushBar(BuildContext context, String msg) => Flushbar(
@@ -19,7 +22,7 @@ void showFlushBar(BuildContext context, String msg) => Flushbar(
       message: msg,
       messageColor: Colors.white,
       backgroundColor: Colors.lightGreen.shade400,
-      duration: const Duration(milliseconds: 2500),
+      duration: const Duration(milliseconds: 2000),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(10),
@@ -34,15 +37,11 @@ void showFlushBarErrorMsg(BuildContext context, String msg) => Flushbar(
       message: msg,
       messageColor: Colors.white,
       backgroundColor: Colors.redAccent,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 2000),
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(10),
     ).show(context);
-
-// SnackBar
-void showSnackBar(BuildContext context, String msg) =>
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 
 // Show warning message
 Future<bool?> showExitWarning(BuildContext context) async => showDialog<bool>(
@@ -68,7 +67,7 @@ Future<bool?> showNotFoundWarning(BuildContext context) async =>
     showDialog<bool>(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-              title: const Icon(Icons.sentiment_very_dissatisfied),
+              title: const Center(child: FaIcon(FontAwesomeIcons.faceSadTear)),
               content: Text(
                 'No Information Found',
                 style: TextStyle(color: Colors.grey.shade800, fontSize: 18),
@@ -77,5 +76,41 @@ Future<bool?> showNotFoundWarning(BuildContext context) async =>
                 CupertinoDialogAction(
                     onPressed: () => Navigator.pop(context, false),
                     child: const Text('NO')),
+              ],
+            ));
+
+// Show login warning
+Future<bool?> showWarningMessage(BuildContext context, String errMsg) async =>
+    showDialog<bool>(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: LottieBuilder.asset("assets/error.json", height: 100),
+              content: Text(
+                errMsg,
+                style: const TextStyle(color: Colors.redAccent),
+              ),
+              actions: [
+                CupertinoDialogAction(
+                    isDestructiveAction: true,
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text('CLOSE')),
+              ],
+            ));
+
+// Show confirm alert dialog
+Future<bool?> showConfirmAlert(
+  BuildContext context,
+) async =>
+    showDialog<bool>(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: LottieBuilder.asset('assets/confirm.json',
+                  height: 120, repeat: false),
+              content: const Text("Your record is saved successfully"),
+              actions: [
+                CupertinoDialogAction(
+                    isDestructiveAction: true,
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text('CLOSE')),
               ],
             ));
