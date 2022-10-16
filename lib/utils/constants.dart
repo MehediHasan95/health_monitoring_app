@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 
-const String emptyUniqueErrMsg = 'Please Enter Your UniqueID';
+const String emptyUniqueErrMsg = 'Please Enter Your Registration ID';
 const String emptyNameErrMsg = 'Please Enter Your Name';
 const String emptyEmailErrMsg = 'Please Enter Your Email ID';
 const String emptyPasswordErrMsg = 'Please Enter Your Password';
@@ -87,14 +87,8 @@ Future<bool?> showWarningMessage(BuildContext context, String errMsg) async =>
               title: LottieBuilder.asset("assets/error.json", height: 100),
               content: Text(
                 errMsg,
-                style: const TextStyle(color: Colors.redAccent),
+                style: const TextStyle(color: Colors.redAccent, fontSize: 18),
               ),
-              actions: [
-                CupertinoDialogAction(
-                    isDestructiveAction: true,
-                    onPressed: () => Navigator.pop(context, false),
-                    child: const Text('CLOSE')),
-              ],
             ));
 
 // Show confirm alert dialog

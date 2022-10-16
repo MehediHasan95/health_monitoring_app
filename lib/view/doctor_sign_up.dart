@@ -103,7 +103,7 @@ class _DoctorSignUpState extends State<DoctorSignUp> {
                           ),
                           fillColor: Colors.white30,
                           filled: true,
-                          hintText: 'Unique ID',
+                          hintText: 'Registration ID',
                           hintStyle: TextStyle(color: Colors.white)),
                       cursorColor: Colors.white,
                       validator: (value) {
