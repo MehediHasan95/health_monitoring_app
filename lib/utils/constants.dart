@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:health_monitoring_app/database/database_helper.dart';
 import 'package:lottie/lottie.dart';
 
 const String emptyUniqueErrMsg = 'Please Enter Your Registration ID';
@@ -106,5 +107,35 @@ Future<bool?> showConfirmAlert(
                     isDestructiveAction: true,
                     onPressed: () => Navigator.pop(context, false),
                     child: const Text('CLOSE')),
+              ],
+            ));
+
+Future<bool?> deleteDialog(BuildContext context, String collection1,
+        String doctorUID, String collection2, String uid) async =>
+    showDialog<bool>(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: LottieBuilder.asset('assets/delete.json', height: 120),
+              content: Text(
+                'Do you want to remove this account?',
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 18),
+              ),
+              actions: [
+                CupertinoDialogAction(
+                    onPressed: () => Navigator.pop(context, false),
+                    child:
+                        const Text('NO', style: TextStyle(color: Colors.red))),
+                CupertinoDialogAction(
+                    onPressed: () => {
+                          Navigator.pop(context, true),
+                          DatabaseHelper.db
+                              .collection(collection1)
+                              .doc(doctorUID)
+                              .collection(collection2)
+                              .doc(uid)
+                              .delete()
+                        },
+                    child: const Text('YES',
+                        style: TextStyle(color: Colors.green))),
               ],
             ));
