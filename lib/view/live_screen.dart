@@ -3,7 +3,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_monitoring_app/auth/auth_service.dart';
 import 'package:health_monitoring_app/controller/load_data.dart';
 import 'package:health_monitoring_app/database/database_helper.dart';
@@ -323,13 +322,17 @@ class _LiveScreenState extends State<LiveScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const FaIcon(FontAwesomeIcons.heartPulse,
-                              color: Colors.redAccent),
-                          Text(heartHealthMsg == '' ? ' ?' : heartHealthMsg,
-                              style: const TextStyle(color: Colors.white)),
-                          const Icon(Icons.thermostat, color: Colors.redAccent),
+                          const Text("Heart: ",
+                              style: TextStyle(color: Colors.white)),
+                          Text(heartHealthMsg == '' ? '?' : heartHealthMsg,
+                              style:
+                                  const TextStyle(color: Colors.amberAccent)),
+                          const Text(" || ",
+                              style: TextStyle(color: Colors.white)),
+                          const Text("Temp: ",
+                              style: TextStyle(color: Colors.white)),
                           Text(tempHealthMsg == '' ? '?' : tempHealthMsg,
-                              style: const TextStyle(color: Colors.white))
+                              style: const TextStyle(color: Colors.amberAccent))
                         ],
                       ),
                     ],
@@ -366,10 +369,6 @@ class _LiveScreenState extends State<LiveScreen> {
                               isButtonActive == false;
                             });
                             showConfirmAlert(context);
-                            // showFlushBar(
-                            //   context,
-                            //   "Your record has been saved successfully",
-                            // );
                           }).catchError((error) {
                             showFlushBar(context, error);
                           });

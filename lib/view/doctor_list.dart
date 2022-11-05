@@ -72,17 +72,18 @@ class _DoctorListState extends State<DoctorList> {
                         trailing: ElevatedButton(
                           onPressed: () {
                             _shareWithDoctor(doctorProfile.uid);
+
                             showFlushBar(
                                 context, "Your Data share successfully");
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            backgroundColor: Colors.pink.shade200,
+                            backgroundColor: Colors.transparent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          child: const Icon(Icons.add),
+                          child: const Icon(Icons.add, color: Colors.redAccent),
                         ),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -119,6 +120,13 @@ class _DoctorListState extends State<DoctorList> {
         .collection("userList")
         .doc(uid)
         .set(shareData!);
+
+    await DatabaseHelper.db
+        .collection("addedDoctor")
+        .doc(doctorID)
+        .collection("doctorList")
+        .doc(uid)
+        .set({"status": true});
   }
 
 // show doctor profile info

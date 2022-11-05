@@ -99,9 +99,9 @@ Future<bool?> showConfirmAlert(
     showDialog<bool>(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-              title: LottieBuilder.asset('assets/confirm.json',
-                  height: 120, repeat: false),
-              content: const Text("Your record is saved successfully"),
+              title: LottieBuilder.asset('assets/confirm.json', height: 120),
+              content: Text("Your record has been successfully saved",
+                  style: TextStyle(fontSize: 18, color: Colors.grey.shade800)),
               actions: [
                 CupertinoDialogAction(
                     isDestructiveAction: true,

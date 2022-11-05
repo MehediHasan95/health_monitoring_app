@@ -707,12 +707,6 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
 
 // user delete method
   void _deleteUserFromList(String uid) {
-    // await DatabaseHelper.db
-    //     .collection('sendToDoctor')
-    //     .doc(doctorUID)
-    //     .collection('userList')
-    //     .doc(uid)
-    //     .delete();
     deleteDialog(context, 'sendToDoctor', doctorUID!, 'userList', uid);
   }
 }
