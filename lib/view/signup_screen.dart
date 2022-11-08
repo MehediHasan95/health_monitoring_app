@@ -58,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   shrinkWrap: true,
                   children: [
                     const Text(
-                      'CREATE AN ACCOUNT',
+                      'USER SIGN UP',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,

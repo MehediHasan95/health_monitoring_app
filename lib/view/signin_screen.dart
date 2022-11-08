@@ -54,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   shrinkWrap: true,
                   children: [
                     const Text(
-                      'SIGN IN',
+                      'USER SIGN IN',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,

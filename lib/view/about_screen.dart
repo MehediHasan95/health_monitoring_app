@@ -33,9 +33,9 @@ class _AboutScreenState extends State<AboutScreen> {
               children: [
                 Image.asset('assets/healthcare.png', height: 80),
                 const Text(
-                  'Health Corner',
+                  'FitSens',
                   style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 25,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),

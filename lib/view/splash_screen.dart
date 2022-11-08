@@ -45,9 +45,9 @@ class _SplashScreenState extends State<SplashScreen> {
           Column(
             children: const [
               Text(
-                'Health Corner',
+                'FitSens',
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 30,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
