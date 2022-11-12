@@ -86,23 +86,26 @@ class _LiveScreenState extends State<LiveScreen> {
 
     // Heart health condition check
     String heartHealthMsg = "";
-    if (sensorData.bpm! > 180 && sensorData.spo2! > 100) {
-      heartHealthMsg = " High";
-    } else if (sensorData.bpm! >= 60 &&
-        sensorData.bpm! <= 100 &&
-        sensorData.avgSpo2! >= 95 &&
-        sensorData.spo2! <= 100) {
-      heartHealthMsg = " Normal";
-    } else if (sensorData.bpm! < 60 &&
-        sensorData.bpm! > 42 &&
-        sensorData.spo2! < 95 &&
-        sensorData.spo2! > 88) {
-      heartHealthMsg = " Low";
-    } else if ((sensorData.bpm! < 42 &&
-        sensorData.bpm! > 10 &&
-        sensorData.spo2! < 88 &&
-        sensorData.spo2! > 10)) {
-      heartHealthMsg = " Extreme low";
+    if (sensorData.bpm! > 180) {
+      heartHealthMsg = "High";
+    } else if (sensorData.bpm! >= 60 && sensorData.bpm! <= 100) {
+      heartHealthMsg = "Normal";
+    } else if (sensorData.bpm! < 60 && sensorData.bpm! > 42) {
+      heartHealthMsg = "Low";
+    } else if ((sensorData.bpm! < 42 && sensorData.bpm! > 10)) {
+      heartHealthMsg = "Extreme low";
+    }
+
+    // Heart health condition check
+    String oxygenHealthMsg = "";
+    if (sensorData.spo2! > 100) {
+      oxygenHealthMsg = "High";
+    } else if (sensorData.spo2! >= 95 && sensorData.spo2! <= 100) {
+      oxygenHealthMsg = "Normal";
+    } else if (sensorData.spo2! < 95 && sensorData.spo2! > 88) {
+      oxygenHealthMsg = "Low";
+    } else if ((sensorData.spo2! < 88 && sensorData.spo2! > 10)) {
+      oxygenHealthMsg = "Extreme low";
     }
 
     // body temperature health condition check
@@ -214,7 +217,7 @@ class _LiveScreenState extends State<LiveScreen> {
                               ],
                             ),
                             Text(
-                              'Avgerage: ${sensorData.avgBpm} BPM',
+                              heartHealthMsg == "" ? "?" : heartHealthMsg,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey[800]),
@@ -244,7 +247,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              'Avgerage: ${sensorData.avgSpo2}%',
+                              oxygenHealthMsg == "" ? "?" : oxygenHealthMsg,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey[800]),
@@ -274,7 +277,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              'Avgerage: ${sensorData.avgBodyTempC}°C',
+                              tempHealthMsg == "" ? "?" : tempHealthMsg,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey[800]),
@@ -304,36 +307,13 @@ class _LiveScreenState extends State<LiveScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              'Avgerage: ${sensorData.avgBodyTempF}°F',
+                              tempHealthMsg == "" ? "?" : tempHealthMsg,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey[800]),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Heart: ",
-                              style: TextStyle(color: Colors.white)),
-                          Text(heartHealthMsg == '' ? '?' : heartHealthMsg,
-                              style:
-                                  const TextStyle(color: Colors.amberAccent)),
-                          const Text(" || ",
-                              style: TextStyle(color: Colors.white)),
-                          const Text("Temp: ",
-                              style: TextStyle(color: Colors.white)),
-                          Text(tempHealthMsg == '' ? '?' : tempHealthMsg,
-                              style: const TextStyle(color: Colors.amberAccent))
-                        ],
                       ),
                     ],
                   ),
