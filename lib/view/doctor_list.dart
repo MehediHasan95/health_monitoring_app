@@ -72,9 +72,7 @@ class _DoctorListState extends State<DoctorList> {
                         trailing: ElevatedButton(
                           onPressed: () {
                             _shareWithDoctor(doctorProfile.uid);
-
-                            showFlushBar(
-                                context, "Your Data share successfully");
+                            showShareDataAlert(context);
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,

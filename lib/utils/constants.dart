@@ -111,6 +111,24 @@ Future<bool?> showConfirmAlert(
               ],
             ));
 
+// share data to doctor message
+Future<bool?> showShareDataAlert(
+  BuildContext context,
+) async =>
+    showDialog<bool>(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: LottieBuilder.asset('assets/share.json', height: 120),
+              content: Text("Yahoo!! Share your records successfully.",
+                  style: TextStyle(fontSize: 18, color: Colors.grey.shade800)),
+              actions: [
+                CupertinoDialogAction(
+                    isDestructiveAction: true,
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text('CLOSE')),
+              ],
+            ));
+
 Future<bool?> deleteDialog(BuildContext context, String collection1,
         String doctorUID, String collection2, String uid) async =>
     showDialog<bool>(
