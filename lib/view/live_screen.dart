@@ -108,21 +108,6 @@ class _LiveScreenState extends State<LiveScreen> {
       oxygenHealthMsg = "Extreme low";
     }
 
-    // body temperature health condition check
-    String tempHealthMsg = "";
-    if (sensorData.bodyTempC! > 39.1) {
-      tempHealthMsg = "High fever";
-    } else if (sensorData.bodyTempC! > 37.8 && sensorData.bodyTempC! < 39.0) {
-      tempHealthMsg = "Light fever";
-    } else if (sensorData.bodyTempC! >= 35.9 && sensorData.bodyTempC! <= 37.5) {
-      tempHealthMsg = "Normal";
-    } else if (sensorData.bodyTempC! >= 36.2 && sensorData.bodyTempC! <= 35.8) {
-      tempHealthMsg = "Low";
-    } else if ((sensorData.bodyTempC! < 35.0 &&
-        sensorData.bodyTempC! >= 30.0)) {
-      tempHealthMsg = "Extreme low";
-    }
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -277,10 +262,10 @@ class _LiveScreenState extends State<LiveScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              tempHealthMsg == "" ? "?" : tempHealthMsg,
+                              "Enviro. ${sensorData.roomTempC}°C",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.grey[800]),
+                                  color: Colors.purple.shade900),
                             ),
                           ],
                         ),
@@ -307,10 +292,10 @@ class _LiveScreenState extends State<LiveScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              tempHealthMsg == "" ? "?" : tempHealthMsg,
+                              "Enviro. ${sensorData.roomTempF}°F",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.grey[800]),
+                                  color: Colors.purple.shade900),
                             ),
                           ],
                         ),
